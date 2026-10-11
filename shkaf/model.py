@@ -3,7 +3,7 @@
 
 Оси: x – вдоль стены 2–7 (0 = угол «2»), y – от стены в комнату, z – вверх от пола.
 """
-from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, SHELF, RAIL, CLOTH_L, MID, SHOE, SPACER, DOOR_GAP)  # noqa: F401
+from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, SHELF, RAIL, CLOTH_L, MID, DR_Z, DR_H, LOW, SPACER, DOOR_GAP)  # noqa: F401
 
 boxes = []
 groups = {}
@@ -64,21 +64,27 @@ def build():
         box(x0, x1, CD / 2 - 10, CD / 2 + 10, RAIL - 10, RAIL + 10, "rail")
         clothes(x0, x1, CLOTH_L)
 
-    # выдвижная полка для обуви внизу каждого отсека + проставки под петли
+    # внутренний выдвижной ящик внизу каждого отсека, над ним полка; проставки под петли
     for c, (x0, x1) in enumerate(((T, MID - T / 2), (MID + T / 2, W - T))):
         for xs in (x0, x1 - SPACER):
-            box(xs, xs + SPACER, 0, CD, ZB + T, SHOE[-1] + 160, "spacer")
-        sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
-        for i, z in enumerate(SHOE):
-            group("shoe%d_%d" % (c, i), type="slide", dir=[0, 1], travel=400,
-                  needs=["door%d" % (2 * c), "door%d" % (2 * c + 1)])
-            box(sx0, sx1, 40, 540, z, z + T, "shelf")
-            box(sx0, sx1, 520, 540, z + T, z + 60, "shelf")       # бортик
-            for k in range(3):
-                bx = sx0 + 25 + k * 230
-                box(bx, bx + 85, 120, 420, z + T, z + T + 100, "shoe")
-                box(bx + 95, bx + 180, 120, 420, z + T, z + T + 100, "shoe")
-            end()
+            box(xs, xs + SPACER, 0, CD, ZB + T, LOW, "spacer")
+        box(x0, x1, 0, CD - 2, LOW, LOW + T, "shelf")
+        for k in range(2):                                   # обувь на полке
+            bx = x0 + 60 + k * 260
+            box(bx, bx + 85, 140, 440, LOW + T, LOW + T + 100, "shoe")
+            box(bx + 95, bx + 180, 140, 440, LOW + T, LOW + T + 100, "shoe")
+        group("drawer%d" % c, type="slide", dir=[0, 1], travel=400,
+              needs=["door%d" % (2 * c), "door%d" % (2 * c + 1)])
+        fx0, fx1 = x0 + SPACER + 2, x1 - SPACER - 2
+        box(fx0, fx1, CD - 40, CD - 22, DR_Z, DR_Z + DR_H, "dfront")       # фасад ящика
+        cx = (fx0 + fx1) / 2
+        box(cx - 64, cx + 64, CD - 22, CD - 6, DR_Z + DR_H - 58, DR_Z + DR_H - 42, "handle")
+        bx0, bx1 = fx0 + 13, fx1 - 13                                       # короб ящика
+        for xa in (bx0, bx1 - 12):
+            box(xa, xa + 12, 40, CD - 40, DR_Z + 20, DR_Z + 170, "dbox")
+        box(bx0, bx1, 40, 52, DR_Z + 20, DR_Z + 170, "dbox")
+        box(bx0, bx1, 40, CD - 40, DR_Z + 20, DR_Z + 28, "dbox")
+        end()
 
     # фасады: 4 распашные двери, ручки у стыка створок
     dw = W / 4

@@ -2,7 +2,7 @@
 """Чертёж подвесного шкафа в прихожей (стена 2–7), лист А3, масштаб 1:20.
 
 Шкаф 1580 × 600 × 2280 мм + фальш-планки 20 мм с двух сторон = 1620, висит на 300 мм от чистого пола, до потолка 2580.
-Антресоль 500 мм, под ней полка 400 мм, ниже штанга; внизу в каждом отсеке выдвижная полка для обуви.
+Антресоль 500 мм, под ней полка 400 мм, ниже штанга; внизу в каждом отсеке выдвижной ящик, над ним полка.
 """
 import os
 import random
@@ -30,8 +30,10 @@ ZA = ZT - ANT           # верх полки антресоли = 2080
 SHELF = ZA - 400        # верх полки под антресолью = 1680 (отделение 400)
 RAIL = SHELF - T - 64   # штанга = 1600 (на 400 ниже прежней)
 MID = W / 2             # средняя стойка
-SHOE = [330]            # выдвижная полка для обуви внизу каждого отсека (низ полки)
-CLOTH_L = 1050          # длина одежды под штангой
+DR_Z = 330              # низ фасада внутреннего ящика
+DR_H = 200              # высота фасада ящика
+LOW = 560               # низ полки над ящиком (верх полки 576)
+CLOTH_L = 850           # длина одежды под штангой
 SPACER = 25             # проставки под петли для выдвижных полок
 DOOR_GAP = 2
 WALL = [FILL, W, FILL, 200, 900, 115]   # развёртка стены 2–7 (сумма 2835)
@@ -145,14 +147,15 @@ def view_inside(ox, fy):
         rect(v.X(x0 + 400), v.Z(SHELF + 160), (x1 - x0 - 450) * S, 160 * S, fill="#d8ccbc", stroke="#aaa", sw=0.12)
         hangers(v, x0, x1, RAIL, CLOTH_L)
         for xs in (x0, x1 - SPACER):                    # проставки под петли
-            v.box(xs, xs + SPACER, ZB + T, SHOE[-1] + 160, fill="#d9cbb8", sw=0.15)
-        for z in SHOE:                                  # выдвижная полка для обуви
-            sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
-            v.box(sx0, sx1, z, z + T, fill="#a89580", sw=0.2)
-            v.box(sx0, sx1, z + T, z + 60, fill="none", sw=0.15)        # бортик
-            for k in range(3):                                          # пары обуви
-                bx = sx0 + 30 + k * 230
-                rect(v.X(bx), v.Z(z + T + 110), 190 * S, 110 * S, fill="#4a4440", stroke="none")
+            v.box(xs, xs + SPACER, ZB + T, LOW, fill="#d9cbb8", sw=0.15)
+        fx0, fx1 = x0 + SPACER + 2, x1 - SPACER - 2   # фасад внутреннего ящика
+        v.box(fx0, fx1, DR_Z, DR_Z + DR_H, fill="#d8d1c7", sw=0.3)
+        cx = v.X((fx0 + fx1) / 2)
+        line(cx - 64 * S, v.Z(DR_Z + DR_H - 50), cx + 64 * S, v.Z(DR_Z + DR_H - 50), w=0.6, color="#3a3632")
+        text(cx, v.Z(DR_Z + 70), "ящик", size=1.8, fill="#555")
+        v.box(x0, x1, LOW, LOW + T)                     # полка над ящиком
+        rect(v.X(x0 + 40), v.Z(LOW + T + 110), 190 * S, 110 * S, fill="#4a4440", stroke="none")
+        rect(v.X(x0 + 260), v.Z(LOW + T + 110), 190 * S, 110 * S, fill="#4a4440", stroke="none")
     for xr0, xr1 in ((T, MID - T / 2), (MID + T / 2, W - T)):
         y = v.Z(RAIL)
         line(v.X(xr0) + 0.3, y, v.X(xr1) - 0.3, y, w=0.6, color="#555")
@@ -162,10 +165,9 @@ def view_inside(ox, fy):
     dim_h(v.X(0), v.X(MID), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
     dim_h(v.X(MID), v.X(W), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
     dim_h(v.X(0), v.X(W), yb + 6, str(W))
-    dim_h(v.X(MID + T / 2 + SPACER + 13), v.X(W - T - SPACER - 13), v.Z(SHOE[-1] + 200),
-          "≈690", size=1.7)
-    leader(v.X(MID / 2), v.Z(SHOE[0] + 30), v.X(MID / 2 + 120), v.Z(ZB - 110),
-           "выдвижная полка для обуви (по одной в каждом отсеке)", size=1.8)
+    dim_h(v.X(MID + T / 2 + SPACER + 2), v.X(W - T - SPACER - 2), v.Z(DR_Z) + 2.5, "≈712", size=1.6)
+    leader(v.X(MID / 2 - 150), v.Z(DR_Z + 40), v.X(MID / 2 + 40), v.Z(ZB - 110),
+           "ящик + полка над ним (в каждом отсеке)", size=1.8)
     xr = v.X(W) + 5
     zs = [0, ZB, RAIL, SHELF, ZA, ZT]
     for a, b in zip(zs, zs[1:]):
@@ -174,9 +176,10 @@ def view_inside(ox, fy):
     dim_v(v.Z(ZA), v.Z(SHELF), xr + 6, "400 полка", size=1.9)
     dim_v(v.Z(RAIL), v.Z(0), xr + 12, str(RAIL), size=2.0)
     xl = v.X(0) - 5
-    zs = [ZB] + SHOE
+    zs = [ZB, DR_Z + DR_H, LOW + T]
     for a, b in zip(zs, zs[1:]):
         dim_v(v.Z(b), v.Z(a), xl, str(b - a), ext_from=v.X(0), size=1.5)
+    dim_v(v.Z(RAIL), v.Z(LOW + T), xl, str(RAIL - LOW - T), ext_from=v.X(0), size=1.6)
     dim_v(v.Z(ZB), v.Z(0), xl, str(ZB), ext_from=v.X(0), size=1.8)
     for x, s in ((MID / 2, "1"), (MID + MID / 2, "2")):
         cx, cy = v.X(x), v.Z(ZT - 150)
@@ -204,15 +207,17 @@ def view_section(ox, fy):
     # штанга
     e(f'<circle cx="{v.X(CD / 2):.2f}" cy="{v.Z(RAIL):.2f}" r="0.8" fill="#555"/>')
     rect(v.X(CD / 2 - 220), v.Z(RAIL) + 1.2, 440 * S, CLOTH_L * S - 1.2, fill="#ece8e3", stroke="#b5aca2", sw=0.12)
-    # выдвижная полка: на месте и в выдвинутом положении (пунктир)
-    for i, z in enumerate(SHOE * 2):
-        off = 400 if i == 1 else 0
+    # полка над ящиком
+    v.box(0, CD, LOW, LOW + T, fill=CUT)
+    rect(v.X(120), v.Z(LOW + T + 110), 300 * S, 110 * S, fill="#4a4440", stroke="none")
+    # внутренний ящик: на месте и выдвинутый (пунктир)
+    for off in (0, 400):
         dash = "1 0.7" if off else None
-        v.box(40 + off, 540 + off, z, z + T, fill="none" if off else "#a89580", sw=0.25, dash=dash)
-        v.box(520 + off, 540 + off, z + T, z + 60, fill="none" if off else "#a89580", sw=0.2, dash=dash)
-        line(v.X(20), v.Z(z + 8), v.X(CD - 10 + off), v.Z(z + 8), w=0.2, color="#c9a227")
-        rect(v.X(120 + off), v.Z(z + T + 110), 300 * S, 110 * S, fill="#4a4440" if not off else "none",
-             stroke="#4a4440", sw=0.15, dash=dash)
+        fill = "none" if off else "#efe9e1"
+        v.box(40 + off, CD - 40 + off, DR_Z + 20, DR_Z + 170, fill=fill, sw=0.2, dash=dash)   # короб
+        v.box(CD - 40 + off, CD - 22 + off, DR_Z, DR_Z + DR_H, fill="none" if off else "#d8d1c7",
+              sw=0.3, dash=dash)                                                            # фасад ящика
+    line(v.X(20), v.Z(DR_Z + 30), v.X(CD - 30 + 400), v.Z(DR_Z + 30), w=0.2, color="#c9a227")
     # фасад открыт (пунктир) у выдвинутой полки
     line(v.X(DEPTH), v.Z(ZB + 2), v.X(DEPTH), v.Z(ZT - 4), w=0.1, color="#bbb")
     # размеры
@@ -220,11 +225,11 @@ def view_section(ox, fy):
     dim_h(v.X(0), v.X(CD), yb, str(CD), ext_from=v.Z(ZB) + 1, size=2.0)
     dim_h(v.X(CD), v.X(DEPTH), yb, str(DT), ext_from=v.Z(ZB) + 1, size=1.7)
     dim_h(v.X(0), v.X(DEPTH), yb + 6, str(DEPTH))
-    dim_h(v.X(40), v.X(540), v.Z(SHOE[0]) + 3, "500", size=1.7)
-    dim_h(v.X(540), v.X(940), v.Z(SHOE[0] + 60) - 2, "ход 400", size=1.7)
+    dim_h(v.X(40), v.X(CD - 22), v.Z(DR_Z) + 3, "500", size=1.7)
+    dim_h(v.X(CD - 22), v.X(CD - 22 + 400), v.Z(DR_Z + DR_H) - 2, "ход 400", size=1.7)
     leader(v.X(14), v.Z(ZT - 80), v.X(150), v.Z(ZT - 260), "навес / монтажная\nшина к стене", size=1.8)
     leader(v.X(CD / 2), v.Z(RAIL), v.X(150), v.Z(RAIL - 160), "штанга", size=1.8)
-    leader(v.X(300), v.Z(SHOE[0] + 8), v.X(660), v.Z(SHOE[0] + 400),
+    leader(v.X(300), v.Z(DR_Z + 30), v.X(660), v.Z(LOW + 300),
            "направляющие\nполного выдвижения", size=1.8)
     return v
 
@@ -280,8 +285,8 @@ def notes(x, y):
         "      фасады 18 мм, 4 распашные двери ≈393 × 2274, по 5 петель на дверь.",
         "Крепление к стене — навесы / монтажная шина, задняя стенка ХДФ.",
         "Отсеки 1 и 2 (по 790): антресоль 500, под ней полка (отделение 400),",
-        "      штанга на Н=1600 (опущена на 400), под штангой ≈1100 до полки обуви.",
-        "Внизу в каждом отсеке — выдвижная полка для обуви с бортиком,",
+        "      штанга на Н=1600 (опущена на 400), под штангой ≈1000 до нижней полки (одежда до 850).",
+        "Внизу в каждом отсеке — внутренний выдвижной ящик (фасад 200), над ним полка;",
         "      направляющие полного выдвижения 500 мм; проставки 25 мм под петли.",
         "Общий габарит 1620 = фальш-планка 20 + корпус 1580 + фальш-планка 20.",
         "Розетки на стене 2–7 (Н=250 и Н=1950, 200 от края шкафа) попадают",
