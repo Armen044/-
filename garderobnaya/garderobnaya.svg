@@ -139,37 +139,41 @@
 <rect x="322.00" y="206.67" width="76.00" height="5.33" fill="url(#hatch)" stroke="#111" stroke-width="0.2" />
 <rect x="322.00" y="205.60" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="322.00" y="36.00" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<rect x="367.47" y="36.00" width="1.07" height="170.67" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<rect x="384.13" y="36.00" width="1.07" height="170.67" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="396.93" y="36.00" width="1.07" height="170.67" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="322.00" y="64.27" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="322.30" y1="65.93" x2="397.70" y2="65.93" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
-<path d="M329.58,70.00 l-3.41,1.60 l6.82,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="326.17" y="71.60" width="6.82" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
-<path d="M337.16,70.00 l-3.41,1.60 l6.82,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="333.75" y="71.60" width="6.82" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
-<path d="M344.73,70.00 l-3.41,1.60 l6.82,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="341.32" y="71.60" width="6.82" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
-<path d="M352.31,70.00 l-3.41,1.60 l6.82,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="348.90" y="71.60" width="6.82" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
-<path d="M359.89,70.00 l-3.41,1.60 l6.82,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="356.48" y="71.60" width="6.82" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M329.77,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="326.27" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M337.53,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="334.04" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M345.30,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="341.81" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M353.07,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="349.57" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M360.83,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="357.34" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M368.60,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="365.11" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M376.37,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="372.87" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <text x="323.50" y="69.10" font-size="1.7" text-anchor="start" font-weight="normal" fill="#444">штанга Н=2130</text>
-<line x1="322.40" y1="70.00" x2="367.07" y2="70.00" stroke="#555" stroke-width="0.6"/>
+<line x1="322.40" y1="70.00" x2="383.73" y2="70.00" stroke="#555" stroke-width="0.6"/>
 <circle cx="322.00" cy="70.00" r="0.55" fill="#555"/>
-<circle cx="367.47" cy="70.00" r="0.55" fill="#555"/>
-<rect x="322.00" y="187.60" width="45.47" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<circle cx="384.13" cy="70.00" r="0.55" fill="#555"/>
+<rect x="322.00" y="187.60" width="62.13" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="322.00" y1="37.07" x2="322.00" y2="205.60" stroke="#111" stroke-width="0.3" stroke-dasharray="1.5 1"/>
-<rect x="368.53" y="106.93" width="28.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<rect x="368.53" y="85.60" width="28.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<line x1="368.83" y1="87.27" x2="396.63" y2="87.27" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
-<path d="M370.07,204.27 L370.07,124.00 Q382.73,110.00 395.40,124.00 L395.40,204.27 z" fill="#dfe9f3" stroke="#2f5d8a" stroke-width="0.3"/>
-<text x="382.73" y="158.13" font-size="2.0" text-anchor="middle" font-weight="bold" fill="#2f5d8a" transform="rotate(-90 382.73 158.13)">ГЛАДИЛЬНАЯ ДОСКА</text>
-<path d="M379.73,106.93 l6,0 l-1.2,-2.4 l-3.2,0 z" fill="#2f5d8a"/>
-<circle cx="396.20" cy="125.33" r="0.5" fill="#2f5d8a"/>
-<circle cx="396.20" cy="152.00" r="0.5" fill="#2f5d8a"/>
-<rect x="392.53" y="97.27" width="2.80" height="2.80" fill="#fff" stroke="#c0392b" stroke-width="0.3" />
-<circle cx="393.93" cy="98.67" r="0.7" fill="none" stroke="#c0392b" stroke-width="0.25"/>
-<rect x="367.47" y="36.00" width="1.07" height="29.33" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<rect x="385.20" y="106.93" width="11.73" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<rect x="385.20" y="85.60" width="11.73" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<line x1="385.50" y1="87.27" x2="396.63" y2="87.27" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
+<rect x="388.73" y="118.27" width="4.67" height="86.67" fill="#dfe9f3" stroke="#2f5d8a" stroke-width="0.3" />
+<text x="391.77" y="161.60" font-size="1.7" text-anchor="middle" font-weight="bold" fill="#2f5d8a" transform="rotate(-90 391.77 161.60)">ДОСКА (ребром)</text>
+<path d="M389.47,106.93 l3.2,0 l-0.4,-4 l-2.4,0 z" fill="#2f5d8a"/>
+<line x1="385.20" y1="128.67" x2="388.73" y2="128.67" stroke="#2f5d8a" stroke-width="0.5"/>
+<line x1="385.20" y1="178.67" x2="388.73" y2="178.67" stroke="#2f5d8a" stroke-width="0.5"/>
+<rect x="389.67" y="95.93" width="2.80" height="2.80" fill="#fff" stroke="#c0392b" stroke-width="0.3" />
+<circle cx="391.07" cy="97.33" r="0.7" fill="none" stroke="#c0392b" stroke-width="0.25"/>
+<rect x="384.13" y="36.00" width="1.07" height="29.33" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="322.00" y="36.00" width="76.00" height="176.00" fill="none" stroke="#111" stroke-width="0.45" />
 <line x1="318.00" y1="212.00" x2="402.00" y2="212.00" stroke="#111" stroke-width="0.5"/>
 <text x="78.00" y="22.00" font-size="3.6" text-anchor="middle" font-weight="bold" fill="#111">ЛЕВАЯ СТЕНА</text>
@@ -233,17 +237,17 @@
 <line x1="301.10" y1="33.90" x2="302.90" y2="32.10" stroke="#111" stroke-width="0.35"/>
 <text x="282.00" y="32.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">600 угол</text>
 <line x1="322.00" y1="213.00" x2="322.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
-<line x1="368.00" y1="213.00" x2="368.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
-<line x1="320.50" y1="222.00" x2="369.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
+<line x1="384.67" y1="213.00" x2="384.67" y2="223.50" stroke="#111" stroke-width="0.15"/>
+<line x1="320.50" y1="222.00" x2="386.17" y2="222.00" stroke="#111" stroke-width="0.18"/>
 <line x1="321.10" y1="222.90" x2="322.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
-<line x1="367.10" y1="222.90" x2="368.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
-<text x="345.00" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">690</text>
-<line x1="368.00" y1="213.00" x2="368.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
+<line x1="383.77" y1="222.90" x2="385.57" y2="221.10" stroke="#111" stroke-width="0.35"/>
+<text x="353.33" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">940</text>
+<line x1="384.67" y1="213.00" x2="384.67" y2="223.50" stroke="#111" stroke-width="0.15"/>
 <line x1="398.00" y1="213.00" x2="398.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
-<line x1="366.50" y1="222.00" x2="399.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
-<line x1="367.10" y1="222.90" x2="368.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
+<line x1="383.17" y1="222.00" x2="399.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
+<line x1="383.77" y1="222.90" x2="385.57" y2="221.10" stroke="#111" stroke-width="0.35"/>
 <line x1="397.10" y1="222.90" x2="398.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
-<text x="383.00" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">450</text>
+<text x="391.33" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">200</text>
 <line x1="320.50" y1="229.00" x2="399.50" y2="229.00" stroke="#111" stroke-width="0.18"/>
 <line x1="321.10" y1="229.90" x2="322.90" y2="228.10" stroke="#111" stroke-width="0.35"/>
 <line x1="397.10" y1="229.90" x2="398.90" y2="228.10" stroke="#111" stroke-width="0.35"/>
@@ -348,10 +352,10 @@
 <line x1="409.10" y1="36.90" x2="410.90" y2="35.10" stroke="#111" stroke-width="0.35"/>
 <line x1="409.10" y1="212.90" x2="410.90" y2="211.10" stroke="#111" stroke-width="0.35"/>
 <text x="409.20" y="124.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 409.20 124.00)">2640</text>
-<line x1="370.20" y1="106.50" x2="370.20" y2="207.10" stroke="#111" stroke-width="0.18"/>
-<line x1="369.30" y1="108.90" x2="371.10" y2="107.10" stroke="#111" stroke-width="0.35"/>
-<line x1="369.30" y1="206.50" x2="371.10" y2="204.70" stroke="#111" stroke-width="0.35"/>
-<text x="369.40" y="156.80" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 369.40 156.80)">1464 доска</text>
+<line x1="387.27" y1="106.50" x2="387.27" y2="207.10" stroke="#111" stroke-width="0.18"/>
+<line x1="386.37" y1="108.90" x2="388.17" y2="107.10" stroke="#111" stroke-width="0.35"/>
+<line x1="386.37" y1="206.50" x2="388.17" y2="204.70" stroke="#111" stroke-width="0.35"/>
+<text x="386.47" y="156.80" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 386.47 156.80)">1464</text>
 <line x1="272.00" y1="65.93" x2="246.00" y2="50.67" stroke="#111" stroke-width="0.18"/>
 <circle cx="272.00" cy="65.93" r="0.45" fill="#111"/>
 <text x="246.80" y="51.57" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">LED-лента в алюм. профиле</text>
@@ -370,10 +374,10 @@
 <text x="222.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">З2</text>
 <circle cx="272.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
 <text x="272.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">З3</text>
-<circle cx="345.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="345.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">П1</text>
-<circle cx="383.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="383.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">П2</text>
+<circle cx="353.33" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="353.33" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">П1</text>
+<circle cx="391.33" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="391.33" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">П2</text>
 <text x="143.00" y="40.00" font-size="1.8" text-anchor="start" font-weight="normal" fill="#c0392b">угол</text>
 <text x="301.00" y="40.00" font-size="1.8" text-anchor="end" font-weight="normal" fill="#c0392b">угол</text>
 <text x="175.00" y="247.00" font-size="3.6" text-anchor="middle" font-weight="bold" fill="#111">ПЛАН (вид сверху)</text>
@@ -393,7 +397,7 @@
 <line x1="155.00" y1="272.00" x2="155.00" y2="312.00" stroke="#111" stroke-width="0.4"/>
 <line x1="195.00" y1="272.00" x2="195.00" y2="312.00" stroke="#111" stroke-width="0.4"/>
 <line x1="95.00" y1="350.00" x2="135.00" y2="350.00" stroke="#111" stroke-width="0.4"/>
-<line x1="215.00" y1="358.00" x2="255.00" y2="358.00" stroke="#111" stroke-width="0.4"/>
+<line x1="215.00" y1="374.67" x2="255.00" y2="374.67" stroke="#111" stroke-width="0.4"/>
 <line x1="95.00" y1="312.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="215.00" y1="312.00" x2="255.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="135.00" y1="272.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.15" stroke-dasharray="1.5 1"/>
@@ -401,8 +405,8 @@
 <line x1="96.07" y1="292.00" x2="155.00" y2="292.00" stroke="#555" stroke-width="0.5" stroke-dasharray="2 0.8"/>
 <line x1="195.00" y1="292.00" x2="253.93" y2="292.00" stroke="#555" stroke-width="0.5" stroke-dasharray="2 0.8"/>
 <line x1="115.00" y1="313.33" x2="115.00" y2="350.00" stroke="#555" stroke-width="0.5" stroke-dasharray="2 0.8"/>
-<line x1="235.00" y1="313.33" x2="235.00" y2="358.00" stroke="#555" stroke-width="0.5" stroke-dasharray="2 0.8"/>
-<rect x="220.33" y="368.00" width="29.33" height="3.33" fill="#dfe9f3" stroke="#2f5d8a" stroke-width="0.25" />
+<line x1="235.00" y1="313.33" x2="235.00" y2="374.67" stroke="#555" stroke-width="0.5" stroke-dasharray="2 0.8"/>
+<rect x="222.33" y="379.00" width="25.33" height="4.67" fill="#dfe9f3" stroke="#2f5d8a" stroke-width="0.25" />
 <line x1="135.00" y1="310.33" x2="215.00" y2="310.33" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.6 0.8"/>
 <line x1="133.33" y1="312.00" x2="133.33" y2="388.00" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.6 0.8"/>
 <line x1="216.67" y1="312.00" x2="216.67" y2="388.00" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.6 0.8"/>
@@ -416,10 +420,10 @@
 <text x="115.00" y="369.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">Л1</text>
 <circle cx="115.00" cy="339.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
 <text x="115.00" y="339.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">Л2</text>
-<circle cx="235.00" cy="343.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="235.00" y="343.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">П1</text>
-<circle cx="235.00" cy="382.33" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="235.00" y="383.13" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">П2</text>
+<circle cx="235.00" cy="351.33" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="235.00" y="352.13" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">П1</text>
+<circle cx="218.00" cy="377.67" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="218.00" y="378.47" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">П2</text>
 <text x="175.00" y="327.33" font-size="2.6" text-anchor="middle" font-weight="bold" fill="#555">ПРОХОД</text>
 <text x="175.00" y="331.33" font-size="2.2" text-anchor="middle" font-weight="normal" fill="#555">1200 × 1140</text>
 <line x1="95.00" y1="265.33" x2="95.00" y2="254.83" stroke="#111" stroke-width="0.15"/>
@@ -495,21 +499,35 @@
 <line x1="265.27" y1="312.90" x2="267.07" y2="311.10" stroke="#111" stroke-width="0.35"/>
 <text x="265.37" y="292.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 265.37 292.00)">600</text>
 <line x1="261.67" y1="312.00" x2="267.67" y2="312.00" stroke="#111" stroke-width="0.15"/>
-<line x1="261.67" y1="358.00" x2="267.67" y2="358.00" stroke="#111" stroke-width="0.15"/>
-<line x1="266.17" y1="310.50" x2="266.17" y2="359.50" stroke="#111" stroke-width="0.18"/>
+<line x1="261.67" y1="374.67" x2="267.67" y2="374.67" stroke="#111" stroke-width="0.15"/>
+<line x1="266.17" y1="310.50" x2="266.17" y2="376.17" stroke="#111" stroke-width="0.18"/>
 <line x1="265.27" y1="312.90" x2="267.07" y2="311.10" stroke="#111" stroke-width="0.35"/>
-<line x1="265.27" y1="358.90" x2="267.07" y2="357.10" stroke="#111" stroke-width="0.35"/>
-<text x="265.37" y="335.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 265.37 335.00)">690</text>
-<line x1="261.67" y1="358.00" x2="267.67" y2="358.00" stroke="#111" stroke-width="0.15"/>
+<line x1="265.27" y1="375.57" x2="267.07" y2="373.77" stroke="#111" stroke-width="0.35"/>
+<text x="265.37" y="343.33" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 265.37 343.33)">940</text>
+<line x1="261.67" y1="374.67" x2="267.67" y2="374.67" stroke="#111" stroke-width="0.15"/>
 <line x1="261.67" y1="388.00" x2="267.67" y2="388.00" stroke="#111" stroke-width="0.15"/>
-<line x1="266.17" y1="356.50" x2="266.17" y2="389.50" stroke="#111" stroke-width="0.18"/>
-<line x1="265.27" y1="358.90" x2="267.07" y2="357.10" stroke="#111" stroke-width="0.35"/>
+<line x1="266.17" y1="373.17" x2="266.17" y2="389.50" stroke="#111" stroke-width="0.18"/>
+<line x1="265.27" y1="375.57" x2="267.07" y2="373.77" stroke="#111" stroke-width="0.35"/>
 <line x1="265.27" y1="388.90" x2="267.07" y2="387.10" stroke="#111" stroke-width="0.35"/>
-<text x="265.37" y="373.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 265.37 373.00)">450</text>
+<text x="265.37" y="381.33" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 265.37 381.33)">200</text>
 <line x1="213.67" y1="381.33" x2="279.67" y2="394.00" stroke="#111" stroke-width="0.18"/>
 <circle cx="213.67" cy="381.33" r="0.45" fill="#111"/>
-<text x="280.47" y="394.90" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">Ниша гладильной доски</text>
-<text x="280.47" y="397.80" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">450 × 600 (П2)</text>
+<text x="280.47" y="394.90" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша гладильной доски</text>
+<text x="280.47" y="397.80" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">200 × 600 (П2), доска стоит боком</text>
+<line x1="175.00" y1="264.33" x2="175.00" y2="395.67" stroke="#1f4e8c" stroke-width="0.35" stroke-dasharray="6 1.2 1 1.2"/>
+<line x1="175.00" y1="264.33" x2="180.00" y2="264.33" stroke="#1f4e8c" stroke-width="0.5"/>
+<path d="M180.00,264.33 l-2.20,1.20 l0.00,-2.40 z" fill="#1f4e8c"/>
+<text x="182.50" y="265.53" font-size="3.2" text-anchor="middle" font-weight="bold" fill="#1f4e8c">А</text>
+<line x1="175.00" y1="395.67" x2="180.00" y2="395.67" stroke="#1f4e8c" stroke-width="0.5"/>
+<path d="M180.00,395.67 l-2.20,1.20 l0.00,-2.40 z" fill="#1f4e8c"/>
+<text x="182.50" y="396.87" font-size="3.2" text-anchor="middle" font-weight="bold" fill="#1f4e8c">А</text>
+<line x1="211.00" y1="381.33" x2="262.67" y2="381.33" stroke="#1f4e8c" stroke-width="0.35" stroke-dasharray="6 1.2 1 1.2"/>
+<line x1="211.00" y1="381.33" x2="211.00" y2="386.33" stroke="#1f4e8c" stroke-width="0.5"/>
+<path d="M211.00,386.33 l-1.20,-2.20 l2.40,0.00 z" fill="#1f4e8c"/>
+<text x="211.00" y="390.03" font-size="3.2" text-anchor="middle" font-weight="bold" fill="#1f4e8c">Б</text>
+<line x1="262.67" y1="381.33" x2="262.67" y2="386.33" stroke="#1f4e8c" stroke-width="0.5"/>
+<path d="M262.67,386.33 l-1.20,-2.20 l2.40,0.00 z" fill="#1f4e8c"/>
+<text x="262.67" y="390.03" font-size="3.2" text-anchor="middle" font-weight="bold" fill="#1f4e8c">Б</text>
 <text x="425.00" y="112.00" font-size="3.2" text-anchor="start" font-weight="bold" fill="#111">УСЛОВНЫЕ ОБОЗНАЧЕНИЯ</text>
 <line x1="425.00" y1="119.00" x2="435.00" y2="119.00" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
 <text x="438.00" y="119.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">LED-лента 24 В в алюм. профиле с рассеивателем</text>
@@ -520,7 +538,7 @@
 <circle cx="435" cy="131" r="0.55" fill="#555"/>
 <text x="438.00" y="131.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Штанга для плечиков (овальная, хром/золото)</text>
 <rect x="427.00" y="135.00" width="6.00" height="4.00" fill="#dfe9f3" stroke="#2f5d8a" stroke-width="0.3" />
-<text x="438.00" y="137.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Гладильная доска (вертикальное хранение)</text>
+<text x="438.00" y="137.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Гладильная доска (хранение боком, ребром к проходу)</text>
 <line x1="425.00" y1="143.00" x2="435.00" y2="143.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="2 1"/>
 <text x="438.00" y="143.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Граница угловой зоны / открыто в угол</text>
 <rect x="428.60" y="147.60" width="2.80" height="2.80" fill="#fff" stroke="#c0392b" stroke-width="0.3" />
@@ -543,11 +561,11 @@
 <text x="433.00" y="189.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">900</text>
 <text x="443.00" y="189.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда (пальто, платья), угловая зона</text>
 <text x="425.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П1</text>
-<text x="433.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">690</text>
+<text x="433.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">940</text>
 <text x="443.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + полка для обуви Н=350, открыта в угол</text>
 <text x="425.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П2</text>
-<text x="433.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">450</text>
-<text x="443.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Ниша гладильной доски: доска, полка утюга (Н=1560), розетка</text>
+<text x="433.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">200</text>
+<text x="443.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560</text>
 <text x="425.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">—</text>
 <text x="433.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2400</text>
 <text x="443.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Антресоль Н=424 по всему периметру, LED снизу</text>

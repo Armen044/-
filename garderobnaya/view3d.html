@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Гардеробная 3D</title>
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<script src="vendor/three.min.js"></script>
+<script src="model.js"></script>
+</head>
+<body>
+<script>
+// ?view=front – перспектива от входа; ?view=axo – аксонометрия сверху со стороны входа
+const view = new URLSearchParams(location.search).get('view') || 'front';
+const Wpx = 2400, Hpx = 1700;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(Wpx, Hpx);
+renderer.setClearColor(0xffffff);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const COLORS = {
+  carcass: 0x8a7e72, plinth: 0x5e554d, front: 0x9c8f82, handle: 0xc9a227,
+  rail: 0xc9a227, board: 0xbcd3ea, iron: 0x2f5d8a, socket: 0xffffff,
+  wall_back: 0xe8e4df, wall_left: 0xe8e4df, wall_right: 0xe8e4df, floor: 0xa8774f,
+  box: 0x6b625a, shoe: 0x3d3733, bag0: 0x7a5236, bag1: 0x2e2b29, bag2: 0xc9a27a,
+};
+const EDGE = { carcass: 0x2a2520, plinth: 0x2a2520, front: 0x2a2520, board: 0x2f5d8a };
+
+function colorOf(kind) {
+  if (kind.startsWith('cloth')) return new THREE.Color(CLOTH[+kind.slice(5)]);
+  return new THREE.Color(COLORS[kind] ?? 0x999999);
+}
+
+const hidden = new Set();
+for (const [x0, x1, y0, y1, z0, z1, kind] of MODEL) {
+  if (hidden.has(kind)) continue;
+  const g = new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0);
+  let mat;
+  if (kind === 'led') {
+    mat = new THREE.MeshBasicMaterial({ color: 0xffd36b });
+  } else {
+    mat = new THREE.MeshStandardMaterial({
+      color: colorOf(kind), roughness: kind === 'handle' || kind === 'rail' ? 0.3 : 0.85,
+      metalness: kind === 'handle' || kind === 'rail' ? 0.6 : 0.0,
+    });
+  }
+  const m = new THREE.Mesh(g, mat);
+  m.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  m.castShadow = !kind.startsWith('wall') && kind !== 'floor';
+  m.receiveShadow = true;
+  scene.add(m);
+  if (EDGE[kind] !== undefined) {
+    const ls = new THREE.LineSegments(new THREE.EdgesGeometry(g),
+      new THREE.LineBasicMaterial({ color: EDGE[kind] }));
+    ls.position.copy(m.position);
+    scene.add(ls);
+  }
+}
+
+// свет
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a50, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 1.4);
+sun.position.set(900, 4200, 4200);
+sun.target.position.set(1200, 0, 800);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -2500, right: 2500, top: 2500, bottom: -2500, near: 100, far: 12000 });
+sun.shadow.bias = -0.0005;
+scene.add(sun, sun.target);
+// LED-подсветка: несколько тёплых источников вдоль антресоли и полок
+for (const [x, y, z] of [[1200, 2150, 650], [300, 2150, 1200], [2100, 2150, 1200], [1200, 1800, 650], [300, 1500, 1450]]) {
+  const p = new THREE.PointLight(0xffc977, 0.5, 1400, 1.5);
+  p.position.set(x, y, z);
+  scene.add(p);
+}
+
+let camera;
+if (view === 'axo') {
+  const k = 1.95;
+  camera = new THREE.OrthographicCamera(-Wpx * k / 2, Wpx * k / 2, Hpx * k / 2, -Hpx * k / 2, 10, 20000);
+  camera.position.set(1200 - 2900, 1250 + 6200, 870 + 5600);
+  camera.lookAt(1200, 900, 1000);
+} else {
+  camera = new THREE.PerspectiveCamera(46, Wpx / Hpx, 10, 20000);
+  camera.position.set(1200, 1550, 4700);
+  camera.lookAt(1200, 1250, 600);
+}
+renderer.render(scene, camera);
+window.DONE = true;
+</script>
+</body>
+</html>
