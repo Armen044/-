@@ -62,6 +62,7 @@
 <div id="tip"></div>
 
 <script>/*__THREE__*/</script>
+<script>/*__KIT__*/</script>
 <script>
 const DATA = /*__DATA__*/;
 
@@ -82,30 +83,27 @@ host.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, 1, 20, 40000);
 
-const COLORS = {
-  carcass: 0x8a7e72, plinth: 0x5e554d, front: 0x9c8f82, handle: 0xc9a227, rail: 0xc9a227,
-  dbox: 0xd8cfc4, dbottom: 0xe8e1d8,
-  facade: 0xeceae6, back: 0xd9d4cc, spacer: 0xb9a892, shelf: 0x9c8f82, box2: 0x8c7f73,
-  door_entry: 0x4a4541, board: 0xbcd3ea, iron: 0x2f5d8a, socket: 0xffffff, mirror_frame: 0x3a3d40, mirror: 0xe3edf3,
-  wall_back: 0xe8e4df, wall_left: 0xe8e4df, wall_right: 0xe8e4df, floor: 0xa8774f,
-  box: 0x6b625a, shoe: 0x3d3733, bag0: 0x7a5236, bag1: 0x2e2b29, bag2: 0xc9a27a,
+// внешний вид деталей по типу
+const SPECS = {
+  carcass: { color: 0xece8e2, map: 'board', tile: 400, rough: 0.7 },
+  shelf:   { color: 0xece8e2, map: 'board', tile: 400, rough: 0.7 },
+  spacer:  { color: 0xe2ddd5, map: 'board', tile: 400, rough: 0.7 },
+  back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
+  facade:  { color: 0xffffff, map: 'stone', tile: 760, rough: 0.32, env: 0.9 },
+  handle:  { color: 0x1c1a19, rough: 0.35, metal: 0.7, shape: 'bar' },
+  rail:    { color: 0xdedede, rough: 0.16, metal: 1, shape: 'rod' },
+  box:     { color: 0xcdc3b6, map: 'fabric', tile: 160, rough: 0.95 },
+  box2:    { color: 0x8a7f74, map: 'fabric', tile: 160, rough: 0.95 },
+  shoe:    { color: 0x2e2926, rough: 0.42, shape: 'shoe' },
+  wall_back:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_left:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_right: { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  floor:   { color: 0xffffff, map: 'parquet', tile: 1200, rough: 0.5, shadow: false },
+  door_entry: { color: 0x3a3531, rough: 0.45 },
 };
-const EDGES = { facade: 0x6d675f, shelf: 0x2a2520, spacer: 0x2a2520, carcass: 0x2a2520, plinth: 0x2a2520, front: 0x2a2520, board: 0x2f5d8a,
-                mirror_frame: 0x111111, dbox: 0x8b7f72 };
-const LED_ON = 0xffd36b, LED_OFF = 0x6d655c;
-
-const matCache = {};
-function material(kind) {
-  if (matCache[kind]) return matCache[kind];
-  let m;
-  if (kind === 'led') m = new THREE.MeshBasicMaterial({ color: LED_ON });
-  else {
-    const c = kind.startsWith('cloth') ? new THREE.Color(DATA.cloth[+kind.slice(5)]) : new THREE.Color(COLORS[kind] ?? 0x999999);
-    const metal = kind === 'handle' || kind === 'rail';
-    m = new THREE.MeshStandardMaterial({ color: c, roughness: kind === 'mirror' ? 0.08 : metal ? 0.3 : 0.85,
-                                         metalness: metal ? 0.6 : kind === 'mirror' ? 0.15 : 0 });
-  }
-  return (matCache[kind] = m);
+function specOf(kind) {
+  if (kind.startsWith('cloth')) return { color: new THREE.Color(DATA.cloth[+kind.slice(5)]), rough: 0.95, shape: 'cloth' };
+  return SPECS[kind] || { color: 0x999999 };
 }
 
 // подвижные группы
@@ -127,39 +125,35 @@ const pickable = [];
 const walls = { wall_back: [], wall_left: [], wall_right: [] };
 for (const b of DATA.boxes) {
   const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
-  const geo = new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0);
-  const mesh = new THREE.Mesh(geo, material(kind));
-  mesh.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
-  mesh.castShadow = !kind.startsWith('wall') && kind !== 'floor';
-  mesh.receiveShadow = true;
+  const mesh = KIT.build(b, specOf(kind), kind);
   let parent = scene;
   if (gid) {
     const g = groups[gid];
     parent = g.parent;
     if (g.pivot) mesh.position.sub(g.pivot.position);
-    mesh.userData.gid = gid;
-    pickable.push(mesh);
+    mesh.traverse(o => { o.userData.gid = gid; if (o.isMesh) pickable.push(o); });
   }
   parent.add(mesh);
-  if (EDGES[kind] !== undefined) {
-    const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: EDGES[kind] }));
-    e.position.copy(mesh.position);
-    parent.add(e);
-  }
   if (kind.startsWith('wall')) walls[kind].push(mesh);
   if (kind === 'door_entry') walls.wall_left.push(mesh);
 }
 
 // свет
-scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a50, 1.5));
-const sun = new THREE.DirectionalLight(0xffffff, 1.3);
-sun.position.set(900, 4200, 4200);
-sun.target.position.set(1200, 0, 800);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -2400, right: 2400, top: 2400, bottom: -2400, near: 100, far: 12000 });
-sun.shadow.bias = -0.0006;
-scene.add(sun, sun.target);
+KIT.sun(scene, new THREE.Vector3(700, 4300, 4200), new THREE.Vector3(790, 600, 300), 2600);
+// подсветка внутри отсеков: LED-профиль под антресолью, горит при открытых дверях
+const COMP = [{ x: DATA.meta.mid / 2, doors: ['door0', 'door1'] },
+              { x: (DATA.meta.mid + DATA.meta.w) / 2, doors: ['door2', 'door3'] }];
+const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
+for (const c of COMP) {
+  c.light = new THREE.PointLight(0xffd9a8, 0, 2300, 1);
+  c.light.position.set(c.x, DATA.meta.za - 60, 470);
+  scene.add(c.light);
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(DATA.meta.mid - 120, 6, 14), ledMat);
+  strip.position.set(c.x, DATA.meta.za - 19, DATA.meta.cd - 40);
+  scene.add(strip);
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+KIT.setup(renderer, scene);
 
 // ---------------------------------------------------------------- камера
 const target = new THREE.Vector3(860, 1350, 500);
@@ -325,6 +319,7 @@ function tick(now) {
       g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
     }
   }
+  for (const c of COMP) c.light.intensity = 1300 * Math.max(...c.doors.map(id => ease(groups[id].rot)));
   if (anim) {
     anim.k = Math.min(1, anim.k + dt * 1.4);
     const k = ease(anim.k), f = anim.from, t = anim.to;

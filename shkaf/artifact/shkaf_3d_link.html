@@ -55,8 +55,256 @@
 <div id="tip"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>// Набор для «красивой» отрисовки моделей мебели на three.js (r160, UMD):
+// процедурные текстуры, мягкий свет с отражениями, формы одежды/обуви/штанг.
+const KIT = (() => {
+  const rnd = (seed => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646)(12345);
+
+  function canvasTex(size, draw, srgb = true) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    draw(c.getContext('2d'), size);
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.anisotropy = 8;
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  // камень/терраццо – светлый фон с серыми вкраплениями и тонкими штрихами
+  const stone = canvasTex(1024, (g, s) => {
+    g.fillStyle = '#efedea'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < 2600; i++) {
+      const v = 120 + rnd() * 90 | 0;
+      g.fillStyle = `rgba(${v},${v - 4},${v - 8},${0.25 + rnd() * 0.5})`;
+      g.beginPath(); g.arc(rnd() * s, rnd() * s, 0.6 + rnd() * 1.8, 0, 7); g.fill();
+    }
+    g.lineCap = 'round';
+    for (let i = 0; i < 260; i++) {
+      const x = rnd() * s, y = rnd() * s, a = rnd() * 7, l = 6 + rnd() * 22;
+      const v = 90 + rnd() * 80 | 0;
+      g.strokeStyle = `rgba(${v},${v - 3},${v - 6},${0.35 + rnd() * 0.4})`;
+      g.lineWidth = 0.8 + rnd() * 1.6;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+    }
+  });
+
+  // паркет «ёлочка» (французская) – тёплый дуб
+  const parquet = canvasTex(1024, (g, s) => {
+    const cw = 512, ph = 128;
+    g.fillStyle = '#7a5a3e'; g.fillRect(0, 0, s, s);
+    for (let col = 0; col < s / cw; col++) {
+      const x0 = col * cw, sl = col % 2 ? cw : -cw;
+      for (let y = -2 * cw; y < s + 2 * cw; y += ph) {
+        const k = rnd() * 22 - 11;
+        g.fillStyle = `rgb(${172 + k | 0},${132 + k * 0.8 | 0},${94 + k * 0.6 | 0})`;
+        g.beginPath();
+        g.moveTo(x0, y); g.lineTo(x0 + cw, y + sl); g.lineTo(x0 + cw, y + sl + ph - 3); g.lineTo(x0, y + ph - 3);
+        g.closePath(); g.fill();
+        for (let f = 0; f < 10; f++) {                      // волокна дерева
+          const t = rnd() * (ph - 8) + 3;
+          g.strokeStyle = `rgba(95,62,35,${0.05 + rnd() * 0.08})`;
+          g.lineWidth = 1 + rnd() * 2;
+          g.beginPath(); g.moveTo(x0, y + t); g.lineTo(x0 + cw, y + sl + t); g.stroke();
+        }
+      }
+    }
+  });
+
+  // штукатурка / окрашенная стена – едва заметный шум
+  const plaster = canvasTex(512, (g, s) => {
+    g.fillStyle = '#f1eeea'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < 9000; i++) {
+      const v = 225 + rnd() * 25 | 0;
+      g.fillStyle = `rgba(${v},${v - 3},${v - 6},0.35)`;
+      g.fillRect(rnd() * s, rnd() * s, 2, 2);
+    }
+  });
+
+  // ЛДСП – мелкая текстура «текстиль/лён»
+  const board = canvasTex(512, (g, s) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < s; i += 2) {
+      g.fillStyle = `rgba(0,0,0,${0.015 + rnd() * 0.03})`; g.fillRect(0, i, s, 1);
+      g.fillStyle = `rgba(0,0,0,${0.01 + rnd() * 0.02})`; g.fillRect(i, 0, 1, s);
+    }
+  });
+
+  // ткань коробок
+  const fabric = canvasTex(256, (g, s) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < s; i += 3) {
+      g.fillStyle = 'rgba(0,0,0,0.06)'; g.fillRect(0, i, s, 1); g.fillRect(i, 0, 1, s);
+    }
+  });
+
+  const MAPS = { stone, parquet, plaster, board, fabric };
+
+  // UV в миллиметрах: текстура повторяется с шагом tile, а не растягивается по детали
+  function boxUV(geo, sx, sy, sz, tile) {
+    const uv = geo.attributes.uv;
+    const dims = [[sz, sy], [sz, sy], [sx, sz], [sx, sz], [sx, sy], [sx, sy]];
+    for (let f = 0; f < 6; f++)
+      for (let k = 0; k < 4; k++) {
+        const i = f * 4 + k;
+        uv.setXY(i, uv.getX(i) * dims[f][0] / tile, uv.getY(i) * dims[f][1] / tile);
+      }
+  }
+
+  const matCache = {};
+  function material(key, spec) {
+    if (matCache[key]) return matCache[key];
+    let m;
+    if (spec.basic) m = new THREE.MeshBasicMaterial({ color: spec.color });
+    else {
+      m = new THREE.MeshStandardMaterial({
+        color: spec.color, roughness: spec.rough ?? 0.8, metalness: spec.metal ?? 0,
+        envMapIntensity: spec.env ?? 1,
+      });
+      if (spec.map) m.map = MAPS[spec.map];
+      if (spec.emissive) { m.emissive = new THREE.Color(spec.emissive); m.emissiveIntensity = spec.emissiveIntensity ?? 1; }
+    }
+    return (matCache[key] = m);
+  }
+
+  // силуэт вещи на плечиках: плечи, рукава-«крылья», чуть расширенный низ
+  function garment(width, height, thick) {
+    const w = width / 2, h = height;
+    const sh = new THREE.Shape();
+    sh.moveTo(-0.16 * w, 0);
+    sh.quadraticCurveTo(0, -0.05 * w, 0.16 * w, 0);
+    sh.lineTo(0.92 * w, -0.08 * w);
+    sh.quadraticCurveTo(w, -0.12 * w, 0.96 * w, -0.2 * w);
+    sh.lineTo(0.86 * w, -h + 0.05 * w);
+    sh.quadraticCurveTo(0.86 * w, -h, 0.8 * w, -h);
+    sh.lineTo(-0.8 * w, -h);
+    sh.quadraticCurveTo(-0.86 * w, -h, -0.86 * w, -h + 0.05 * w);
+    sh.lineTo(-0.96 * w, -0.2 * w);
+    sh.quadraticCurveTo(-w, -0.12 * w, -0.92 * w, -0.08 * w);
+    sh.closePath();
+    const bev = Math.min(8, thick / 3);
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: Math.max(2, thick - 2 * bev), bevelEnabled: true,
+      bevelThickness: bev, bevelSize: bev, bevelSegments: 2, curveSegments: 6 });
+    geo.translate(0, h / 2, -(thick - 2 * bev) / 2);
+    return geo;
+  }
+
+  // плечики: крючок + перекладина
+  function hanger(width) {
+    const g = new THREE.Group();
+    const m = material('hanger', { color: 0x2b2826, rough: 0.4, metal: 0.3 });
+    const bar = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, width * 0.95, 8), m);
+    bar.rotation.x = Math.PI / 2;
+    const hook = new THREE.Mesh(new THREE.TorusGeometry(22, 3, 6, 12, Math.PI * 1.3), m);
+    hook.position.y = 40;
+    hook.rotation.y = Math.PI / 2;
+    g.add(bar, hook);
+    return g;
+  }
+
+  // главная функция: деталь [x0,x1,y0,y1,z0,z1] -> объект сцены
+  function build(b, spec, key) {
+    const [x0, x1, y0, y1, z0, z1] = b;
+    const sx = x1 - x0, sy = z1 - z0, sz = y1 - y0;          // размеры в осях three (X, Y, Z)
+    const pos = new THREE.Vector3((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+    const mat = material(key, spec);
+    let obj;
+    if (spec.shape === 'cloth') {
+      const alongX = sx < sz;                                // толщина вещи вдоль X → штанга вдоль X
+      const geo = garment(alongX ? sz : sx, sy, alongX ? sx : sz);
+      if (alongX) geo.rotateY(Math.PI / 2);
+      obj = new THREE.Group();
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.castShadow = mesh.receiveShadow = true;
+      const hg = hanger(alongX ? sz : sx);
+      hg.position.y = sy / 2 + 6;
+      if (!alongX) hg.rotation.y = Math.PI / 2;
+      obj.add(mesh, hg);
+      obj.userData.mesh = mesh;
+    } else if (spec.shape === 'shoe') {
+      const geo = new THREE.CapsuleGeometry(0.5, 1, 4, 12);
+      geo.rotateX(Math.PI / 2);
+      geo.scale(sx, sy * 1.1, sz / 2);
+      obj = new THREE.Mesh(geo, mat);
+      pos.y -= sy * 0.05;
+    } else if (spec.shape === 'rod') {
+      const len = Math.max(sx, sz), r = Math.min(sx, sz, sy) / 2 + 2;
+      const geo = new THREE.CylinderGeometry(r, r, len, 20);
+      if (sx >= sz) geo.rotateZ(Math.PI / 2); else geo.rotateX(Math.PI / 2);
+      obj = new THREE.Mesh(geo, mat);
+    } else if (spec.shape === 'bar') {                        // ручка-рейлинг на двух опорах
+      obj = new THREE.Group();
+      const dims = [sx, sy, sz], long = dims.indexOf(Math.max(...dims));
+      const rest = [0, 1, 2].filter(i => i !== long);
+      const out = dims[rest[0]] >= dims[rest[1]] ? rest[0] : rest[1];     // ось «от фасада»
+      const r = Math.min(dims[rest[0]], dims[rest[1]]) / 2;
+      const axisRot = i => (i === 0 ? ['z', Math.PI / 2] : i === 2 ? ['x', Math.PI / 2] : null);
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.8, r * 0.8, dims[long], 16), mat);
+      const ar = axisRot(long); if (ar) rod.rotation[ar[0]] = ar[1];
+      rod.position.setComponent(out, dims[out] / 2 - r);
+      obj.add(rod);
+      for (const sgn of [-1, 1]) {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.45, r * 0.45, dims[out], 10), mat);
+        const lr = axisRot(out); if (lr) leg.rotation[lr[0]] = lr[1];
+        leg.position.setComponent(long, sgn * (dims[long] / 2 - Math.min(40, dims[long] * 0.15)));
+        obj.add(leg);
+      }
+      obj.children.forEach(c => { c.castShadow = true; });
+    } else {
+      const geo = new THREE.BoxGeometry(sx, sy, sz);
+      if (spec.map) boxUV(geo, sx, sy, sz, spec.tile ?? 600);
+      obj = new THREE.Mesh(geo, mat);
+    }
+    obj.position.copy(pos);
+    if (obj.isMesh) { obj.castShadow = spec.shadow !== false; obj.receiveShadow = true; }
+    return obj;
+  }
+
+  // свет: мягкое окружение (отражения) + основной источник с тенями
+  function setup(renderer, scene) {
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // окружение – светлая «студия» с несколькими софтбоксами
+    const env = new THREE.Scene();
+    const room = new THREE.Mesh(new THREE.BoxGeometry(20, 12, 20),
+      new THREE.MeshBasicMaterial({ color: 0x8f8a84, side: THREE.BackSide }));
+    env.add(room);
+    const panel = (w, h, x, y, z, ry, c) => {
+      const p = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide }));
+      p.position.set(x, y, z); p.rotation.y = ry; p.lookAt(0, 0, 0);
+      env.add(p);
+    };
+    panel(8, 4, 0, 5.5, 0, 0, 0xffffff);
+    panel(6, 6, 9, 2, 3, 0, 0xfff3e2);
+    panel(6, 6, -9, 2, -4, 0, 0xe8eeff);
+    panel(10, 5, 0, 2, 9.5, 0, 0xffffff);
+    const pm = new THREE.PMREMGenerator(renderer);
+    scene.environment = pm.fromScene(env, 0.04).texture;
+    pm.dispose();
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xb59a80, 0.35));
+  }
+
+  function sun(scene, pos, target, size) {
+    const s = new THREE.DirectionalLight(0xfff6ea, 1.6);
+    s.position.copy(pos);
+    s.target.position.copy(target);
+    s.castShadow = true;
+    s.shadow.mapSize.set(2048, 2048);
+    Object.assign(s.shadow.camera, { left: -size, right: size, top: size, bottom: -size, near: 100, far: 15000 });
+    s.shadow.bias = -0.0004;
+    s.shadow.normalBias = 2;
+    s.shadow.radius = 4;
+    scene.add(s, s.target);
+    return s;
+  }
+
+  return { build, setup, sun, material, MAPS };
+})();
+</script>
 <script>
-const DATA = {"boxes":[[-120,2915,-100,0,0,2580,"wall_back"],[-120,-20,0,815,0,2580,"wall_left"],[-120,-20,815,1790,2060,2580,"wall_left"],[-120,-20,1790,1975,0,2580,"wall_left"],[-120,-60,815,1790,0,2060,"door_entry"],[1600,1700,0,600,0,2580,"wall_right"],[-120,2915,-100,2100,-30,0,"floor"],[-20,0,482,600,300,2580,"facade"],[1580,1600,482,600,300,2580,"facade"],[0,16,0,582,300,2580,"carcass"],[782,798,0,582,300,2580,"carcass"],[1564,1580,0,582,300,2580,"carcass"],[0,1580,0,582,300,316,"carcass"],[0,1580,0,582,2564,2580,"carcass"],[0,1580,0,4,300,2580,"back"],[16,782,0,580,2064,2080,"carcass"],[56,376,80,480,2080,2340,"box"],[416,742,100,480,2080,2300,"box2"],[16,782,281,301,1990,2010,"rail"],[798,1564,0,580,2064,2080,"carcass"],[838,1158,80,480,2080,2340,"box"],[1198,1524,100,480,2080,2300,"box2"],[798,1564,281,301,1990,2010,"rail"],[46,74,71,511,600,1970,"cloth0"],[116,144,71,511,670,1970,"cloth5"],[186,214,71,511,740,1970,"cloth2"],[256,284,71,511,600,1970,"cloth7"],[326,354,71,511,670,1970,"cloth4"],[396,424,71,511,740,1970,"cloth1"],[466,494,71,511,600,1970,"cloth6"],[536,564,71,511,670,1970,"cloth3"],[606,634,71,511,740,1970,"cloth0"],[676,704,71,511,600,1970,"cloth5"],[828,856,71,511,1050,1970,"cloth0"],[898,926,71,511,1120,1970,"cloth5"],[968,996,71,511,1190,1970,"cloth2"],[1038,1066,71,511,1050,1970,"cloth7"],[1108,1136,71,511,1120,1970,"cloth4"],[1178,1206,71,511,1190,1970,"cloth1"],[1248,1276,71,511,1050,1970,"cloth6"],[1318,1346,71,511,1120,1970,"cloth3"],[1388,1416,71,511,1190,1970,"cloth0"],[1458,1486,71,511,1050,1970,"cloth5"],[798,823,0,582,316,990,"spacer"],[1539,1564,0,582,316,990,"spacer"],[836,1526,40,540,330,346,"shelf","shoe0"],[836,1526,520,540,346,390,"shelf","shoe0"],[861,946,120,420,346,446,"shoe","shoe0"],[956,1041,120,420,346,446,"shoe","shoe0"],[1091,1176,120,420,346,446,"shoe","shoe0"],[1186,1271,120,420,346,446,"shoe","shoe0"],[1321,1406,120,420,346,446,"shoe","shoe0"],[1416,1501,120,420,346,446,"shoe","shoe0"],[836,1526,40,540,510,526,"shelf","shoe1"],[836,1526,520,540,526,570,"shelf","shoe1"],[861,946,120,420,526,626,"shoe","shoe1"],[956,1041,120,420,526,626,"shoe","shoe1"],[1091,1176,120,420,526,626,"shoe","shoe1"],[1186,1271,120,420,526,626,"shoe","shoe1"],[1321,1406,120,420,526,626,"shoe","shoe1"],[1416,1501,120,420,526,626,"shoe","shoe1"],[836,1526,40,540,690,706,"shelf","shoe2"],[836,1526,520,540,706,750,"shelf","shoe2"],[861,946,120,420,706,806,"shoe","shoe2"],[956,1041,120,420,706,806,"shoe","shoe2"],[1091,1176,120,420,706,806,"shoe","shoe2"],[1186,1271,120,420,706,806,"shoe","shoe2"],[1321,1406,120,420,706,806,"shoe","shoe2"],[1416,1501,120,420,706,806,"shoe","shoe2"],[836,1526,40,540,870,886,"shelf","shoe3"],[836,1526,520,540,886,930,"shelf","shoe3"],[861,946,120,420,886,986,"shoe","shoe3"],[956,1041,120,420,886,986,"shoe","shoe3"],[1091,1176,120,420,886,986,"shoe","shoe3"],[1186,1271,120,420,886,986,"shoe","shoe3"],[1321,1406,120,420,886,986,"shoe","shoe3"],[1416,1501,120,420,886,986,"shoe","shoe3"],[1,394,582,600,302,2576,"facade","door0"],[349,369,600,630,500,1400,"handle","door0"],[396,789,582,600,302,2576,"facade","door1"],[421,441,600,630,500,1400,"handle","door1"],[791,1184,582,600,302,2576,"facade","door2"],[1139,1159,600,630,500,1400,"handle","door2"],[1186,1579,582,600,302,2576,"facade","door3"],[1211,1231,600,630,500,1400,"handle","door3"]],"groups":{"shoe0":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe1":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe2":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe3":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"door0":{"type":"hinge","pivot":[0,600],"angle":-88},"door1":{"type":"hinge","pivot":[790.0,600],"angle":85},"door2":{"type":"hinge","pivot":[790.0,600],"angle":-85},"door3":{"type":"hinge","pivot":[1580,600],"angle":88}},"cloth":["#e9e5df","#cfc8bf","#b9b2aa","#8d8680","#f3f1ec","#a39383","#6f6a66","#d8cdbf"]};
+const DATA = {"boxes":[[-120,2915,-100,0,0,2580,"wall_back"],[-120,-20,0,815,0,2580,"wall_left"],[-120,-20,815,1790,2060,2580,"wall_left"],[-120,-20,1790,1975,0,2580,"wall_left"],[-120,-60,815,1790,0,2060,"door_entry"],[1600,1700,0,600,0,2580,"wall_right"],[-120,2915,-100,2100,-30,0,"floor"],[-20,0,482,600,300,2580,"facade"],[1580,1600,482,600,300,2580,"facade"],[0,16,0,582,300,2580,"carcass"],[782,798,0,582,300,2580,"carcass"],[1564,1580,0,582,300,2580,"carcass"],[0,1580,0,582,300,316,"carcass"],[0,1580,0,582,2564,2580,"carcass"],[0,1580,0,4,300,2580,"back"],[16,782,0,580,2064,2080,"carcass"],[56,376,80,480,2080,2340,"box"],[416,742,100,480,2080,2300,"box2"],[16,782,281,301,1990,2010,"rail"],[798,1564,0,580,2064,2080,"carcass"],[838,1158,80,480,2080,2340,"box"],[1198,1524,100,480,2080,2300,"box2"],[798,1564,281,301,1990,2010,"rail"],[46,74,71,511,600,1970,"cloth0"],[116,144,71,511,670,1970,"cloth5"],[186,214,71,511,740,1970,"cloth2"],[256,284,71,511,600,1970,"cloth7"],[326,354,71,511,670,1970,"cloth4"],[396,424,71,511,740,1970,"cloth1"],[466,494,71,511,600,1970,"cloth6"],[536,564,71,511,670,1970,"cloth3"],[606,634,71,511,740,1970,"cloth0"],[676,704,71,511,600,1970,"cloth5"],[828,856,71,511,1050,1970,"cloth0"],[898,926,71,511,1120,1970,"cloth5"],[968,996,71,511,1190,1970,"cloth2"],[1038,1066,71,511,1050,1970,"cloth7"],[1108,1136,71,511,1120,1970,"cloth4"],[1178,1206,71,511,1190,1970,"cloth1"],[1248,1276,71,511,1050,1970,"cloth6"],[1318,1346,71,511,1120,1970,"cloth3"],[1388,1416,71,511,1190,1970,"cloth0"],[1458,1486,71,511,1050,1970,"cloth5"],[798,823,0,582,316,990,"spacer"],[1539,1564,0,582,316,990,"spacer"],[836,1526,40,540,330,346,"shelf","shoe0"],[836,1526,520,540,346,390,"shelf","shoe0"],[861,946,120,420,346,446,"shoe","shoe0"],[956,1041,120,420,346,446,"shoe","shoe0"],[1091,1176,120,420,346,446,"shoe","shoe0"],[1186,1271,120,420,346,446,"shoe","shoe0"],[1321,1406,120,420,346,446,"shoe","shoe0"],[1416,1501,120,420,346,446,"shoe","shoe0"],[836,1526,40,540,510,526,"shelf","shoe1"],[836,1526,520,540,526,570,"shelf","shoe1"],[861,946,120,420,526,626,"shoe","shoe1"],[956,1041,120,420,526,626,"shoe","shoe1"],[1091,1176,120,420,526,626,"shoe","shoe1"],[1186,1271,120,420,526,626,"shoe","shoe1"],[1321,1406,120,420,526,626,"shoe","shoe1"],[1416,1501,120,420,526,626,"shoe","shoe1"],[836,1526,40,540,690,706,"shelf","shoe2"],[836,1526,520,540,706,750,"shelf","shoe2"],[861,946,120,420,706,806,"shoe","shoe2"],[956,1041,120,420,706,806,"shoe","shoe2"],[1091,1176,120,420,706,806,"shoe","shoe2"],[1186,1271,120,420,706,806,"shoe","shoe2"],[1321,1406,120,420,706,806,"shoe","shoe2"],[1416,1501,120,420,706,806,"shoe","shoe2"],[836,1526,40,540,870,886,"shelf","shoe3"],[836,1526,520,540,886,930,"shelf","shoe3"],[861,946,120,420,886,986,"shoe","shoe3"],[956,1041,120,420,886,986,"shoe","shoe3"],[1091,1176,120,420,886,986,"shoe","shoe3"],[1186,1271,120,420,886,986,"shoe","shoe3"],[1321,1406,120,420,886,986,"shoe","shoe3"],[1416,1501,120,420,886,986,"shoe","shoe3"],[1,394,582,600,302,2576,"facade","door0"],[349,369,600,630,500,1400,"handle","door0"],[396,789,582,600,302,2576,"facade","door1"],[421,441,600,630,500,1400,"handle","door1"],[791,1184,582,600,302,2576,"facade","door2"],[1139,1159,600,630,500,1400,"handle","door2"],[1186,1579,582,600,302,2576,"facade","door3"],[1211,1231,600,630,500,1400,"handle","door3"]],"groups":{"shoe0":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe1":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe2":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"shoe3":{"type":"slide","dir":[0,1],"travel":400,"needs":["door2","door3"]},"door0":{"type":"hinge","pivot":[0,600],"angle":-88},"door1":{"type":"hinge","pivot":[790.0,600],"angle":85},"door2":{"type":"hinge","pivot":[790.0,600],"angle":-85},"door3":{"type":"hinge","pivot":[1580,600],"angle":88}},"cloth":["#e9e5df","#cfc8bf","#b9b2aa","#8d8680","#f3f1ec","#a39383","#6f6a66","#d8cdbf"],"meta":{"mid":790.0,"w":1580,"za":2080,"cd":582}};
 
 // ---------------------------------------------------------------- сцена
 const host = document.getElementById('view');
@@ -75,30 +323,27 @@ host.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, 1, 20, 40000);
 
-const COLORS = {
-  carcass: 0x8a7e72, plinth: 0x5e554d, front: 0x9c8f82, handle: 0xc9a227, rail: 0xc9a227,
-  dbox: 0xd8cfc4, dbottom: 0xe8e1d8,
-  facade: 0xeceae6, back: 0xd9d4cc, spacer: 0xb9a892, shelf: 0x9c8f82, box2: 0x8c7f73,
-  door_entry: 0x4a4541, board: 0xbcd3ea, iron: 0x2f5d8a, socket: 0xffffff, mirror_frame: 0x3a3d40, mirror: 0xe3edf3,
-  wall_back: 0xe8e4df, wall_left: 0xe8e4df, wall_right: 0xe8e4df, floor: 0xa8774f,
-  box: 0x6b625a, shoe: 0x3d3733, bag0: 0x7a5236, bag1: 0x2e2b29, bag2: 0xc9a27a,
+// внешний вид деталей по типу
+const SPECS = {
+  carcass: { color: 0xece8e2, map: 'board', tile: 400, rough: 0.7 },
+  shelf:   { color: 0xece8e2, map: 'board', tile: 400, rough: 0.7 },
+  spacer:  { color: 0xe2ddd5, map: 'board', tile: 400, rough: 0.7 },
+  back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
+  facade:  { color: 0xffffff, map: 'stone', tile: 760, rough: 0.32, env: 0.9 },
+  handle:  { color: 0x1c1a19, rough: 0.35, metal: 0.7, shape: 'bar' },
+  rail:    { color: 0xdedede, rough: 0.16, metal: 1, shape: 'rod' },
+  box:     { color: 0xcdc3b6, map: 'fabric', tile: 160, rough: 0.95 },
+  box2:    { color: 0x8a7f74, map: 'fabric', tile: 160, rough: 0.95 },
+  shoe:    { color: 0x2e2926, rough: 0.42, shape: 'shoe' },
+  wall_back:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_left:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_right: { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  floor:   { color: 0xffffff, map: 'parquet', tile: 1200, rough: 0.5, shadow: false },
+  door_entry: { color: 0x3a3531, rough: 0.45 },
 };
-const EDGES = { facade: 0x6d675f, shelf: 0x2a2520, spacer: 0x2a2520, carcass: 0x2a2520, plinth: 0x2a2520, front: 0x2a2520, board: 0x2f5d8a,
-                mirror_frame: 0x111111, dbox: 0x8b7f72 };
-const LED_ON = 0xffd36b, LED_OFF = 0x6d655c;
-
-const matCache = {};
-function material(kind) {
-  if (matCache[kind]) return matCache[kind];
-  let m;
-  if (kind === 'led') m = new THREE.MeshBasicMaterial({ color: LED_ON });
-  else {
-    const c = kind.startsWith('cloth') ? new THREE.Color(DATA.cloth[+kind.slice(5)]) : new THREE.Color(COLORS[kind] ?? 0x999999);
-    const metal = kind === 'handle' || kind === 'rail';
-    m = new THREE.MeshStandardMaterial({ color: c, roughness: kind === 'mirror' ? 0.08 : metal ? 0.3 : 0.85,
-                                         metalness: metal ? 0.6 : kind === 'mirror' ? 0.15 : 0 });
-  }
-  return (matCache[kind] = m);
+function specOf(kind) {
+  if (kind.startsWith('cloth')) return { color: new THREE.Color(DATA.cloth[+kind.slice(5)]), rough: 0.95, shape: 'cloth' };
+  return SPECS[kind] || { color: 0x999999 };
 }
 
 // подвижные группы
@@ -120,39 +365,35 @@ const pickable = [];
 const walls = { wall_back: [], wall_left: [], wall_right: [] };
 for (const b of DATA.boxes) {
   const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
-  const geo = new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0);
-  const mesh = new THREE.Mesh(geo, material(kind));
-  mesh.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
-  mesh.castShadow = !kind.startsWith('wall') && kind !== 'floor';
-  mesh.receiveShadow = true;
+  const mesh = KIT.build(b, specOf(kind), kind);
   let parent = scene;
   if (gid) {
     const g = groups[gid];
     parent = g.parent;
     if (g.pivot) mesh.position.sub(g.pivot.position);
-    mesh.userData.gid = gid;
-    pickable.push(mesh);
+    mesh.traverse(o => { o.userData.gid = gid; if (o.isMesh) pickable.push(o); });
   }
   parent.add(mesh);
-  if (EDGES[kind] !== undefined) {
-    const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: EDGES[kind] }));
-    e.position.copy(mesh.position);
-    parent.add(e);
-  }
   if (kind.startsWith('wall')) walls[kind].push(mesh);
   if (kind === 'door_entry') walls.wall_left.push(mesh);
 }
 
 // свет
-scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a50, 1.5));
-const sun = new THREE.DirectionalLight(0xffffff, 1.3);
-sun.position.set(900, 4200, 4200);
-sun.target.position.set(1200, 0, 800);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -2400, right: 2400, top: 2400, bottom: -2400, near: 100, far: 12000 });
-sun.shadow.bias = -0.0006;
-scene.add(sun, sun.target);
+KIT.sun(scene, new THREE.Vector3(700, 4300, 4200), new THREE.Vector3(790, 600, 300), 2600);
+// подсветка внутри отсеков: LED-профиль под антресолью, горит при открытых дверях
+const COMP = [{ x: DATA.meta.mid / 2, doors: ['door0', 'door1'] },
+              { x: (DATA.meta.mid + DATA.meta.w) / 2, doors: ['door2', 'door3'] }];
+const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
+for (const c of COMP) {
+  c.light = new THREE.PointLight(0xffd9a8, 0, 2300, 1);
+  c.light.position.set(c.x, DATA.meta.za - 60, 470);
+  scene.add(c.light);
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(DATA.meta.mid - 120, 6, 14), ledMat);
+  strip.position.set(c.x, DATA.meta.za - 19, DATA.meta.cd - 40);
+  scene.add(strip);
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+KIT.setup(renderer, scene);
 
 // ---------------------------------------------------------------- камера
 const target = new THREE.Vector3(860, 1350, 500);
@@ -318,6 +559,7 @@ function tick(now) {
       g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
     }
   }
+  for (const c of COMP) c.light.intensity = 1300 * Math.max(...c.doors.map(id => ease(groups[id].rot)));
   if (anim) {
     anim.k = Math.min(1, anim.k + dt * 1.4);
     const k = ease(anim.k), f = anim.from, t = anim.to;

@@ -3,7 +3,7 @@
 
 Оси: x – вдоль стены 2–7 (0 = угол «2»), y – от стены в комнату, z – вверх от пола.
 """
-from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, RAIL, MID, SHOE, SPACER, DOOR_GAP)
+from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, RAIL, MID, SHOE, SPACER, DOOR_GAP)  # noqa: F401
 
 boxes = []
 groups = {}

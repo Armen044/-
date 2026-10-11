@@ -7,12 +7,15 @@ import model
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 model.build()
-data = {"boxes": model.boxes, "groups": model.groups, "cloth": model.CLOTH}
+data = {"boxes": model.boxes, "groups": model.groups, "cloth": model.CLOTH,
+        "meta": {"mid": model.MID, "w": model.W, "za": model.ZA, "cd": model.CD}}
 with open(os.path.join(HERE, "template.html"), encoding="utf-8") as f:
     html = f.read()
 with open(os.path.join(HERE, "..", "garderobnaya", "vendor", "three.min.js"), encoding="utf-8") as f:
     three = f.read()
-html = html.replace("/*__DATA__*/", json.dumps(data, separators=(",", ":")))
+with open(os.path.join(HERE, "kit.js"), encoding="utf-8") as f:
+    kit = f.read()
+html = html.replace("/*__DATA__*/", json.dumps(data, separators=(",", ":"))).replace("/*__KIT__*/", kit)
 
 full = html.replace("/*__THREE__*/", three)
 with open(os.path.join(HERE, "shkaf_3d.html"), "w", encoding="utf-8") as f:
