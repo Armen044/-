@@ -19,3 +19,15 @@ out = os.path.join(HERE, "garderobnaya_3d.html")
 with open(out, "w", encoding="utf-8") as f:
     f.write(html)
 print(out, len(html) // 1024, "KB")
+
+# версия для публикации ссылкой: без обёртки документа, three.js с CDN
+page = html.replace("<script>" + three + "</script>",
+                    '<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>')
+for tag in ("<!doctype html>", '<html lang="ru">', "</html>", "<head>", "</head>", "<body>", "</body>"):
+    page = page.replace(tag + "\n", "").replace(tag, "")
+page = "\n".join(l for l in page.split("\n") if not l.startswith("<meta "))
+out2 = os.path.join(HERE, "artifact", "garderobnaya_3d_link.html")
+os.makedirs(os.path.dirname(out2), exist_ok=True)
+with open(out2, "w", encoding="utf-8") as f:
+    f.write(page)
+print(out2, len(page) // 1024, "KB")
