@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Чертёж подвесного шкафа в прихожей (стена 2–7), лист А3, масштаб 1:20.
 
-Шкаф 1620 × 600 × 2280 мм, висит на 300 мм от чистого пола, до потолка 2580.
+Шкаф 1680 × 600 × 2280 мм (+ фальш-планки 20 мм с двух сторон, ниша 1720), висит на 300 мм от чистого пола, до потолка 2580.
 Антресоль 500 мм, ниже штанга; во втором отсеке – выдвижные полки для обуви.
 """
 import os
@@ -16,7 +16,9 @@ from generate import e, text, line, rect, dim_h, dim_v, leader  # noqa: E402
 S = 1 / 20
 T = 16                  # ЛДСП корпуса
 DT = 18                 # толщина фасада
-W = 1620                # ширина шкафа
+W = 1680                # ширина шкафа
+FILL = 20               # фальш-планки слева и справа
+NICHE = W + 2 * FILL    # ниша между стенами 1–2 и 3–4 = 1720
 DEPTH = 600             # глубина с фасадами
 CD = DEPTH - DT         # глубина корпуса = 582
 CEIL = 2580             # высота помещения (чистый пол – потолок)
@@ -30,7 +32,7 @@ MID = W / 2             # средняя стойка
 SHOE = [330, 510, 690, 870]    # выдвижные полки для обуви (низ полки)
 SPACER = 25             # проставки под петли для выдвижных полок
 DOOR_GAP = 2
-WALL = [1620, 100, 100, 900, 115]   # развёртка стены 2–7 по исходному чертежу
+WALL = [FILL, W, FILL, 100, 900, 115]   # развёртка стены 2–7 (сумма 2835)
 CUT = "#7d6c5b"
 FACADE = "#ece9e4"
 WOOD = "#cdbba6"
@@ -78,7 +80,12 @@ def view_wall(ox, fy):
     line(v.X(d0 + 900), v.Z(0), v.X(d0 + 450), v.Z(2070), w=0.15, color="#999", dash="1.2 0.8")
     text(v.X(d0 + 450), v.Z(1000), "дверной проём", size=1.9, fill="#666")
     # простенок 3/4 – 5/6
-    rect(v.X(1720), v.Z(CEIL), 100 * S, CEIL * S, fill="url(#hatch)", sw=0.2)
+    rect(v.X(NICHE), v.Z(CEIL), 100 * S, CEIL * S, fill="url(#hatch)", sw=0.2)
+    # фальш-планки
+    for x in (0, FILL + W):
+        v.box(x, x + FILL, ZB, ZT, fill="#d8d3cc", sw=0.25)
+    wall_v = v
+    v = V(v.X(FILL), fy)                  # дальше – координаты от левого края шкафа
     # шкаф – фасады
     for i in range(4):
         x0, x1 = i * W / 4 + DOOR_GAP / 2, (i + 1) * W / 4 - DOOR_GAP / 2
@@ -97,6 +104,7 @@ def view_wall(ox, fy):
         line(v.X(hinge), v.Z(ZT - 4), v.X(far), v.Z((ZB + ZT) / 2), w=0.12, color="#888", dash="1 0.8")
     # пространство под шкафом
     text(v.X(W / 2), v.Z(ZB / 2) + 0.8, "свободно 300 (под шкафом)", size=1.9, fill="#555")
+    v = wall_v
     # размеры
     y1, y2 = v.Z(0) + 10, v.Z(0) + 16
     x = 0
@@ -108,8 +116,8 @@ def view_wall(ox, fy):
     dim_v(v.Z(CEIL), v.Z(ZB), xl, str(H), ext_from=v.X(0), size=2.2)
     dim_v(v.Z(ZB), v.Z(0), xl, str(ZB), ext_from=v.X(0), size=2.2)
     dim_v(v.Z(CEIL), v.Z(0), xl - 6, str(CEIL), size=2.2)
-    text(v.X(1670), v.Z(1300), "зазор 100", size=1.7, rot=-90, fill="#555")
-    for x, s in ((0, "2"), (1720, "3/4"), (1820, "5/6"), (total, "7")):
+    leader(v.X(NICHE - 10), v.Z(1700), v.X(NICHE + 260), v.Z(2350), "фальш-планка 20\n(слева и справа)", size=1.8)
+    for x, s in ((0, "2"), (NICHE, "3/4"), (NICHE + 100, "5/6"), (total, "7")):
         text(v.X(x), v.Z(CEIL + 100) - 2, s, size=2.6, weight="bold", fill="#c0392b")
     return v
 
@@ -150,11 +158,11 @@ def view_inside(ox, fy):
         text(v.X(xr0) + 1.2, y - 0.8, "штанга", size=1.6, anchor="start", fill="#444")
     # размеры
     yb = v.Z(0) + 10
-    dim_h(v.X(0), v.X(MID), yb, "810", ext_from=v.Z(ZB) + 1)
-    dim_h(v.X(MID), v.X(W), yb, "810", ext_from=v.Z(ZB) + 1)
+    dim_h(v.X(0), v.X(MID), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
+    dim_h(v.X(MID), v.X(W), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
     dim_h(v.X(0), v.X(W), yb + 6, str(W))
     dim_h(v.X(MID + T / 2 + SPACER + 13), v.X(W - T - SPACER - 13), v.Z(SHOE[-1] + 260),
-          "≈710", size=1.7)
+          "≈740", size=1.7)
     leader(v.X(MID + 60), v.Z(SHOE[1] + 30), v.X(MID - 260), v.Z(SHOE[0] + 120),
            "выдвижные\nполки для обуви ×4", anchor="end", size=1.8)
     xr = v.X(W) + 5
@@ -224,9 +232,12 @@ def view_plan(ox, oy):
     def P(x, y):
         return ox + x * S, oy + y * S
     text(ox + 910 * S, oy - 9, "ПЛАН", size=3.4, weight="bold")
-    rect(*P(-100, -100), 1920 * S, 100 * S, fill="url(#hatch)", sw=0.25)       # стена 2–7
-    rect(*P(-100, 0), 100 * S, 1100 * S, fill="url(#hatch)", sw=0.25)          # стена 1–2
-    rect(*P(1720, 0), 100 * S, 600 * S, fill="url(#hatch)", sw=0.25)           # стена 3–4
+    rect(*P(-FILL - 100, -100), (NICHE + 200) * S, 100 * S, fill="url(#hatch)", sw=0.25)   # стена 2–7
+    rect(*P(-FILL - 100, 0), 100 * S, 1100 * S, fill="url(#hatch)", sw=0.25)              # стена 1–2
+    rect(*P(W + FILL, 0), 100 * S, 600 * S, fill="url(#hatch)", sw=0.25)                  # стена 3–4
+    for x in (-FILL, W):                                                                  # фальш-планки
+        a, b = P(x, CD - 100)
+        rect(a, b, FILL * S, (DEPTH - CD + 100) * S, fill="#d8d3cc", sw=0.25)
     a, b = P(0, 0)
     rect(a, b, W * S, CD * S, fill="#f4efe8", sw=0.3)
     line(*P(MID, 0), *P(MID, CD), w=0.35)
@@ -247,28 +258,30 @@ def view_plan(ox, oy):
         e(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="2" fill="#fff" stroke="#111" stroke-width="0.25"/>')
         text(cx, cy + 0.8, s, size=2, weight="bold")
     # линия разреза 1–1
-    cx = P(1215, 0)[0]
+    cx = P(3 * W / 4, 0)[0]
     line(cx, oy - 7, cx, oy + 950 * S, w=0.3, color="#1f4e8c", dash="5 1 1 1")
     text(cx + 2.5, oy - 6, "1", size=2.6, weight="bold", fill="#1f4e8c")
     text(cx + 2.5, oy + 950 * S + 1.5, "1", size=2.6, weight="bold", fill="#1f4e8c")
     dim_h(*[P(0, 0)[0], P(W, 0)[0]], oy + 1050 * S, str(W), size=2.0)
-    dim_h(P(W, 0)[0], P(1720, 0)[0], oy + 1050 * S, "100", size=1.7)
-    dim_v(oy, oy + DEPTH * S, ox + 1820 * S + 4, str(DEPTH), ext_from=ox + 1820 * S, size=2.0)
-    text(*P(1670, 300), "зазор", size=1.6, rot=-90, fill="#555")
+    dim_h(P(-FILL, 0)[0], P(0, 0)[0], oy + 1050 * S, "20", size=1.5)
+    dim_h(P(W, 0)[0], P(W + FILL, 0)[0], oy + 1050 * S, "20", size=1.5)
+    dim_h(P(-FILL, 0)[0], P(W + FILL, 0)[0], oy + 1050 * S + 5, f"{NICHE} ниша", size=2.0)
+    xr = P(W + FILL + 100, 0)[0]
+    dim_v(oy, oy + DEPTH * S, xr + 4, str(DEPTH), ext_from=xr, size=2.0)
 
 
 def notes(x, y):
     text(x, y, "ПРИМЕЧАНИЯ", size=3.0, weight="bold", anchor="start")
     rows = [
         "Шкаф подвесной: низ на 300 мм от чистого пола, верх до потолка (2580).",
-        "Габарит 1620 × 600 × 2280 мм; корпус ЛДСП 16, глубина корпуса 582,",
-        "      фасады 18 мм, 4 распашные двери ≈403 × 2274, по 5 петель на дверь.",
+        "Габарит 1680 × 600 × 2280 мм; корпус ЛДСП 16, глубина корпуса 582,",
+        "      фасады 18 мм, 4 распашные двери ≈418 × 2274, по 5 петель на дверь.",
         "Крепление к стене — навесы / монтажная шина, задняя стенка ХДФ.",
-        "Отсеки 1 и 2 (по 810): антресоль 500 мм, ниже штанга на Н=2000.",
+        "Отсеки 1 и 2 (по 840): антресоль 500 мм, ниже штанга на Н=2000.",
         "Отсек 1 — длинная одежда (под штангой ≈1680).",
         "Отсек 2 — короткая одежда + 4 выдвижные полки для обуви с бортиком,",
         "      направляющие полного выдвижения 500 мм; проставки 25 мм под петли.",
-        "Справа зазор 100 до стены 3–4 (как на исходном чертеже).",
+        "Ниша 1720: шкаф 1680 + фальш-планки 20 мм слева и справа (в цвет фасадов).",
         "Розетки на стене 2–7 (Н=250 и Н=1950, 200 от края шкафа) попадают",
         "      под шкаф и внутрь отсека 2 — уточнить перенос или вырез в задней стенке.",
         "Размеры уточнить по месту после чистовой отделки.",
@@ -284,7 +297,7 @@ def title_block():
     line(bx + 80, by + 13, bx + 80, by + bh, w=0.3)
     text(bx + bw / 2, by + 6, "ШКАФ В ПРИХОЖЕЙ", size=3.8, weight="bold")
     text(bx + bw / 2, by + 10.5, "подвесной, стена 2–7", size=2.3)
-    text(bx + 3, by + 19, "1620 × 600 × 2280 мм", size=2.4, anchor="start")
+    text(bx + 3, by + 19, "1680 × 600 × 2280 мм", size=2.4, anchor="start")
     text(bx + 3, by + 25, "низ шкафа +300 от пола", size=2.4, anchor="start")
     text(bx + 3, by + 31, "Размеры в мм", size=2.4, anchor="start")
     text(bx + 100, by + 20, "Масштаб", size=2.2)

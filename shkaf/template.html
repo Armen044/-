@@ -48,7 +48,7 @@
 <header>
   <div class="card">
     <h1>Шкаф в прихожей</h1>
-    <div class="sub">1620 × 600 × 2280 мм · подвесной, 300 мм от пола</div>
+    <div class="sub">1680 × 600 × 2280 мм + фальш-планки 20 · подвесной, 300 мм от пола</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
     правая кнопка или два пальца — сдвиг. Нажмите на дверь или полку для обуви.</div>
@@ -173,7 +173,7 @@ function placeCamera() {
   // стены, которые оказались между камерой и комнатой, скрываем
   walls.wall_back.forEach(m => (m.visible = camera.position.z > 0));
   walls.wall_left.forEach(m => (m.visible = camera.position.x > 0));
-  walls.wall_right.forEach(m => (m.visible = camera.position.x < 1820));
+  walls.wall_right.forEach(m => (m.visible = camera.position.x < 1800));
 }
 let anim = null;      // плавный переход к заданному виду
 function flyTo(r, theta, phi, t) {

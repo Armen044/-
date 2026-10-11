@@ -3,7 +3,7 @@
 
 Оси: x – вдоль стены 2–7 (0 = угол «2»), y – от стены в комнату, z – вверх от пола.
 """
-from sheet import (T, DT, W, CD, DEPTH, CEIL, ZB, ZT, ZA, RAIL, MID, SHOE, SPACER, DOOR_GAP)
+from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, RAIL, MID, SHOE, SPACER, DOOR_GAP)
 
 boxes = []
 groups = {}
@@ -37,13 +37,16 @@ def clothes(x0, x1, length):
 
 def build():
     # помещение: стена 2–7, стена 1–2 с входной дверью, простенок 3–4, пол
-    box(-100, 2935, -100, 0, 0, CEIL, "wall_back")
-    box(-100, 0, 0, 815, 0, CEIL, "wall_left")
-    box(-100, 0, 815, 1790, 2060, CEIL, "wall_left")          # над входной дверью
-    box(-100, 0, 1790, 1975, 0, CEIL, "wall_left")
-    box(-100, -40, 815, 1790, 0, 2060, "door_entry")
-    box(1720, 1820, 0, 600, 0, CEIL, "wall_right")
-    box(-100, 2935, -100, 2100, -30, 0, "floor")
+    L = -FILL                                                  # стена 1–2 (x шкафа отсчитывается от его левого края)
+    box(L - 100, L + 2935, -100, 0, 0, CEIL, "wall_back")
+    box(L - 100, L, 0, 815, 0, CEIL, "wall_left")
+    box(L - 100, L, 815, 1790, 2060, CEIL, "wall_left")       # над входной дверью
+    box(L - 100, L, 1790, 1975, 0, CEIL, "wall_left")
+    box(L - 100, L - 40, 815, 1790, 0, 2060, "door_entry")
+    box(W + FILL, W + FILL + 100, 0, 600, 0, CEIL, "wall_right")
+    box(L - 100, L + 2935, -100, 2100, -30, 0, "floor")
+    for x in (-FILL, W):                                       # фальш-планки 20 мм
+        box(x, x + FILL, CD - 100, DEPTH, ZB, ZT, "facade")
 
     # корпус
     for x in (0, MID - T / 2, W - T):
