@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" font-family="DejaVu Sans, Arial, sans-serif">
-<defs><pattern id="hatch" width="1.2" height="1.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="1.2" stroke="#777" stroke-width="0.25"/></pattern><pattern id="wall" width="1.6" height="1.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.6" height="1.6" fill="#e3e3e3"/><line x1="0" y1="0" x2="0" y2="1.6" stroke="#666" stroke-width="0.3"/></pattern><pattern id="drw" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="2" height="2" fill="#efe6da"/><line x1="0" y1="0" x2="0" y2="2" stroke="#b39b7f" stroke-width="0.25"/></pattern></defs>
+<defs><marker id="arr" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4,2 L0,4 z" fill="#33373b"/></marker><pattern id="hatch" width="1.2" height="1.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="1.2" stroke="#777" stroke-width="0.25"/></pattern><pattern id="wall" width="1.6" height="1.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.6" height="1.6" fill="#e3e3e3"/><line x1="0" y1="0" x2="0" y2="1.6" stroke="#666" stroke-width="0.3"/></pattern><pattern id="drw" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="2" height="2" fill="#efe6da"/><line x1="0" y1="0" x2="0" y2="2" stroke="#b39b7f" stroke-width="0.25"/></pattern></defs>
 <rect x="0.00" y="0.00" width="594.00" height="420.00" fill="#fff" stroke="none" stroke-width="0.25" />
 <rect x="10.00" y="5.00" width="579.00" height="410.00" fill="none" stroke="#111" stroke-width="0.6" />
 <rect x="40.00" y="206.67" width="76.00" height="5.33" fill="url(#hatch)" stroke="#111" stroke-width="0.2" />
@@ -7,28 +7,33 @@
 <rect x="40.00" y="36.00" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="40.00" y="36.00" width="1.07" height="170.67" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="77.47" y="36.00" width="1.07" height="170.67" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<rect x="47.47" y="65.33" width="1.07" height="140.27" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="40.00" y="64.27" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="40.30" y1="65.93" x2="115.70" y2="65.93" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
 <rect x="77.47" y="36.00" width="1.07" height="29.33" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<rect x="41.22" y="192.42" width="36.10" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
-<line x1="51.08" y1="196.93" x2="67.46" y2="196.93" stroke="#c9a227" stroke-width="0.5"/>
-<text x="59.27" y="202.60" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
-<rect x="41.22" y="179.08" width="36.10" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
-<line x1="51.08" y1="183.60" x2="67.46" y2="183.60" stroke="#c9a227" stroke-width="0.5"/>
-<text x="59.27" y="189.27" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
-<rect x="41.22" y="165.75" width="36.10" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
-<line x1="51.08" y1="170.27" x2="67.46" y2="170.27" stroke="#c9a227" stroke-width="0.5"/>
-<text x="59.27" y="175.93" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
-<rect x="41.22" y="152.42" width="36.10" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
-<line x1="51.08" y1="156.93" x2="67.46" y2="156.93" stroke="#c9a227" stroke-width="0.5"/>
-<text x="59.27" y="162.60" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
-<rect x="41.07" y="151.20" width="36.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<rect x="41.07" y="128.93" width="36.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<line x1="41.37" y1="130.60" x2="77.17" y2="130.60" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
-<rect x="41.07" y="107.60" width="36.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<line x1="41.37" y1="109.27" x2="77.17" y2="109.27" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
-<rect x="41.07" y="86.27" width="36.40" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
-<line x1="41.37" y1="87.93" x2="77.17" y2="87.93" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
+<rect x="42.60" y="88.33" width="3.33" height="93.67" fill="#cfdde6" stroke="#33373b" stroke-width="0.35" />
+<rect x="42.30" y="85.87" width="3.93" height="1.60" fill="#33373b" stroke="none" stroke-width="0.25" />
+<rect x="42.30" y="182.87" width="3.93" height="1.60" fill="#33373b" stroke="none" stroke-width="0.25" />
+<text x="44.97" y="135.17" font-size="1.7" text-anchor="middle" font-weight="bold" fill="#33373b" transform="rotate(-90 44.97 135.17)">ЗЕРКАЛО (торец)</text>
+<rect x="48.68" y="192.42" width="28.63" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
+<line x1="56.49" y1="196.93" x2="69.51" y2="196.93" stroke="#c9a227" stroke-width="0.5"/>
+<text x="63.00" y="202.60" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
+<rect x="48.68" y="179.08" width="28.63" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
+<line x1="56.49" y1="183.60" x2="69.51" y2="183.60" stroke="#c9a227" stroke-width="0.5"/>
+<text x="63.00" y="189.27" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
+<rect x="48.68" y="165.75" width="28.63" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
+<line x1="56.49" y1="170.27" x2="69.51" y2="170.27" stroke="#c9a227" stroke-width="0.5"/>
+<text x="63.00" y="175.93" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
+<rect x="48.68" y="152.42" width="28.63" height="13.03" fill="#a89580" stroke="#333" stroke-width="0.2" />
+<line x1="56.49" y1="156.93" x2="69.51" y2="156.93" stroke="#c9a227" stroke-width="0.5"/>
+<text x="63.00" y="162.60" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#fff">выкатной ящик</text>
+<rect x="48.53" y="151.20" width="28.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<rect x="48.53" y="128.93" width="28.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<line x1="48.83" y1="130.60" x2="77.17" y2="130.60" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
+<rect x="48.53" y="107.60" width="28.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<line x1="48.83" y1="109.27" x2="77.17" y2="109.27" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
+<rect x="48.53" y="86.27" width="28.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<line x1="48.83" y1="87.93" x2="77.17" y2="87.93" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
 <path d="M86.03,70.00 l-3.37,1.60 l6.74,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
 <rect x="82.65" y="71.60" width="6.74" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M93.52,70.00 l-3.37,1.60 l6.74,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
@@ -187,11 +192,17 @@
 <text x="322.00" y="216.00" font-size="2.0" text-anchor="start" font-weight="normal" fill="#555">← угол</text>
 <text x="398.00" y="216.00" font-size="2.0" text-anchor="end" font-weight="normal" fill="#555">вход →</text>
 <line x1="40.00" y1="213.00" x2="40.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
-<line x1="78.00" y1="213.00" x2="78.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
-<line x1="38.50" y1="222.00" x2="79.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
+<line x1="48.00" y1="213.00" x2="48.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
+<line x1="38.50" y1="222.00" x2="49.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
 <line x1="39.10" y1="222.90" x2="40.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
+<line x1="47.10" y1="222.90" x2="48.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
+<text x="44.00" y="221.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">120</text>
+<line x1="48.00" y1="213.00" x2="48.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
+<line x1="78.00" y1="213.00" x2="78.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
+<line x1="46.50" y1="222.00" x2="79.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
+<line x1="47.10" y1="222.90" x2="48.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
 <line x1="77.10" y1="222.90" x2="78.90" y2="221.10" stroke="#111" stroke-width="0.35"/>
-<text x="59.00" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">570</text>
+<text x="63.00" y="221.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">450</text>
 <line x1="78.00" y1="213.00" x2="78.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
 <line x1="116.00" y1="213.00" x2="116.00" y2="223.50" stroke="#111" stroke-width="0.15"/>
 <line x1="76.50" y1="222.00" x2="117.50" y2="222.00" stroke="#111" stroke-width="0.18"/>
@@ -282,6 +293,14 @@
 <line x1="27.10" y1="36.90" x2="28.90" y2="35.10" stroke="#111" stroke-width="0.35"/>
 <line x1="27.10" y1="212.90" x2="28.90" y2="211.10" stroke="#111" stroke-width="0.35"/>
 <text x="27.20" y="124.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 27.20 124.00)">2640</text>
+<line x1="42.67" y1="86.83" x2="42.67" y2="183.50" stroke="#111" stroke-width="0.18"/>
+<line x1="41.77" y1="89.23" x2="43.57" y2="87.43" stroke="#111" stroke-width="0.35"/>
+<line x1="41.77" y1="182.90" x2="43.57" y2="181.10" stroke="#111" stroke-width="0.35"/>
+<text x="41.87" y="135.17" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 41.87 135.17)">1405</text>
+<line x1="42.67" y1="180.50" x2="42.67" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="41.77" y1="182.90" x2="43.57" y2="181.10" stroke="#111" stroke-width="0.35"/>
+<line x1="41.77" y1="212.90" x2="43.57" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="41.87" y="197.00" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 41.87 197.00)">450</text>
 <line x1="142.00" y1="140.00" x2="134.50" y2="140.00" stroke="#111" stroke-width="0.15"/>
 <line x1="142.00" y1="212.00" x2="134.50" y2="212.00" stroke="#111" stroke-width="0.15"/>
 <line x1="136.00" y1="138.50" x2="136.00" y2="213.50" stroke="#111" stroke-width="0.18"/>
@@ -360,12 +379,14 @@
 <circle cx="272.00" cy="65.93" r="0.45" fill="#111"/>
 <text x="246.80" y="51.57" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">LED-лента в алюм. профиле</text>
 <text x="246.80" y="54.17" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">с рассеивателем (под антресолью)</text>
-<line x1="59.00" y1="130.60" x2="42.67" y2="115.33" stroke="#111" stroke-width="0.18"/>
-<circle cx="59.00" cy="130.60" r="0.45" fill="#111"/>
-<text x="43.47" y="116.23" font-size="1.9" text-anchor="start" font-weight="normal" fill="#111">LED-лента по</text>
-<text x="43.47" y="118.73" font-size="1.9" text-anchor="start" font-weight="normal" fill="#111">переднему краю полок</text>
-<circle cx="59.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="59.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">Л1</text>
+<line x1="63.00" y1="130.60" x2="50.00" y2="115.33" stroke="#111" stroke-width="0.18"/>
+<circle cx="63.00" cy="130.60" r="0.45" fill="#111"/>
+<text x="50.80" y="116.23" font-size="1.9" text-anchor="start" font-weight="normal" fill="#111">LED-лента по</text>
+<text x="50.80" y="118.73" font-size="1.9" text-anchor="start" font-weight="normal" fill="#111">переднему краю полок</text>
+<circle cx="44.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="44.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">Зр</text>
+<circle cx="63.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="63.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">Л1</text>
 <circle cx="97.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
 <text x="97.00" y="46.90" font-size="2.3" text-anchor="middle" font-weight="bold" fill="#111">Л2</text>
 <circle cx="172.00" cy="46.00" r="2.4" fill="#fff" stroke="#111" stroke-width="0.25"/>
@@ -386,17 +407,25 @@
 <rect x="255.00" y="265.33" width="6.67" height="129.33" fill="url(#wall)" stroke="#111" stroke-width="0.3" />
 <rect x="88.33" y="388.00" width="60.00" height="6.67" fill="url(#wall)" stroke="#111" stroke-width="0.3" />
 <rect x="201.67" y="388.00" width="60.00" height="6.67" fill="url(#wall)" stroke="#111" stroke-width="0.3" />
-<line x1="148.33" y1="388.00" x2="148.33" y2="334.67" stroke="#555" stroke-width="0.3"/>
-<path d="M148.33,334.67 A53.33,53.33 0 0 1 201.67,388.00" fill="none" stroke="#555" stroke-width="0.2" stroke-dasharray="1 0.8"/>
-<text x="175.00" y="398.67" font-size="2.6" text-anchor="middle" font-weight="bold" fill="#111">ВХОД</text>
+<rect x="145.67" y="394.97" width="58.67" height="2.67" fill="#fff" stroke="#555" stroke-width="0.3" />
+<line x1="168.33" y1="398.87" x2="141.67" y2="398.87" stroke="#555" stroke-width="0.25"/>
+<path d="M141.67,398.87 l1.6,-0.7 l0,1.4 z" fill="#555"/>
+<text x="185.00" y="399.67" font-size="2.6" text-anchor="middle" font-weight="bold" fill="#111">ВХОД</text>
 <rect x="95.00" y="272.00" width="160.00" height="40.00" fill="#f4efe8" stroke="#111" stroke-width="0.3" />
 <rect x="95.00" y="312.00" width="40.00" height="76.00" fill="#f4efe8" stroke="#111" stroke-width="0.3" />
 <rect x="215.00" y="312.00" width="40.00" height="76.00" fill="#f4efe8" stroke="#111" stroke-width="0.3" />
 <rect x="155.00" y="272.00" width="40.00" height="40.00" fill="url(#drw)" stroke="#111" stroke-width="0.3" />
-<rect x="95.00" y="350.00" width="40.00" height="38.00" fill="url(#drw)" stroke="#111" stroke-width="0.3" />
+<rect x="95.00" y="350.00" width="40.00" height="30.00" fill="url(#drw)" stroke="#111" stroke-width="0.3" />
 <line x1="155.00" y1="272.00" x2="155.00" y2="312.00" stroke="#111" stroke-width="0.4"/>
 <line x1="195.00" y1="272.00" x2="195.00" y2="312.00" stroke="#111" stroke-width="0.4"/>
 <line x1="95.00" y1="350.00" x2="135.00" y2="350.00" stroke="#111" stroke-width="0.4"/>
+<line x1="95.00" y1="380.00" x2="135.00" y2="380.00" stroke="#111" stroke-width="0.4"/>
+<rect x="97.67" y="382.07" width="32.00" height="3.33" fill="#cfdde6" stroke="#33373b" stroke-width="0.3" />
+<rect x="136.33" y="382.07" width="32.00" height="3.33" fill="none" stroke="#33373b" stroke-width="0.25" stroke-dasharray="1.2 0.8" />
+<rect x="150.67" y="367.73" width="3.33" height="32.00" fill="none" stroke="#33373b" stroke-width="0.25" stroke-dasharray="0.6 0.6" />
+<path d="M158.33,383.73 A6,6 0 0 0 152.33,377.73" fill="none" stroke="#33373b" stroke-width="0.25" marker-end="url(#arr)"/>
+<line x1="130.67" y1="386.13" x2="167.33" y2="386.13" stroke="#33373b" stroke-width="0.25"/>
+<path d="M167.33,386.13 l-1.6,-0.7 l0,1.4 z" fill="#33373b"/>
 <line x1="215.00" y1="374.67" x2="255.00" y2="374.67" stroke="#111" stroke-width="0.4"/>
 <line x1="95.00" y1="312.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="215.00" y1="312.00" x2="255.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
@@ -416,8 +445,8 @@
 <text x="175.00" y="292.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">З2</text>
 <circle cx="215.00" cy="300.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
 <text x="215.00" y="300.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">З3</text>
-<circle cx="115.00" cy="369.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
-<text x="115.00" y="369.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">Л1</text>
+<circle cx="115.00" cy="365.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
+<text x="115.00" y="365.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">Л1</text>
 <circle cx="115.00" cy="339.00" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
 <text x="115.00" y="339.80" font-size="2.1" text-anchor="middle" font-weight="bold" fill="#111">Л2</text>
 <circle cx="235.00" cy="351.33" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>
@@ -481,11 +510,17 @@
 <line x1="82.93" y1="350.90" x2="84.73" y2="349.10" stroke="#111" stroke-width="0.35"/>
 <text x="83.03" y="331.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 83.03 331.00)">570</text>
 <line x1="88.33" y1="350.00" x2="82.33" y2="350.00" stroke="#111" stroke-width="0.15"/>
-<line x1="88.33" y1="388.00" x2="82.33" y2="388.00" stroke="#111" stroke-width="0.15"/>
-<line x1="83.83" y1="348.50" x2="83.83" y2="389.50" stroke="#111" stroke-width="0.18"/>
+<line x1="88.33" y1="380.00" x2="82.33" y2="380.00" stroke="#111" stroke-width="0.15"/>
+<line x1="83.83" y1="348.50" x2="83.83" y2="381.50" stroke="#111" stroke-width="0.18"/>
 <line x1="82.93" y1="350.90" x2="84.73" y2="349.10" stroke="#111" stroke-width="0.35"/>
+<line x1="82.93" y1="380.90" x2="84.73" y2="379.10" stroke="#111" stroke-width="0.35"/>
+<text x="83.03" y="365.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 83.03 365.00)">450</text>
+<line x1="88.33" y1="380.00" x2="82.33" y2="380.00" stroke="#111" stroke-width="0.15"/>
+<line x1="88.33" y1="388.00" x2="82.33" y2="388.00" stroke="#111" stroke-width="0.15"/>
+<line x1="83.83" y1="378.50" x2="83.83" y2="389.50" stroke="#111" stroke-width="0.18"/>
+<line x1="82.93" y1="380.90" x2="84.73" y2="379.10" stroke="#111" stroke-width="0.35"/>
 <line x1="82.93" y1="388.90" x2="84.73" y2="387.10" stroke="#111" stroke-width="0.35"/>
-<text x="83.03" y="369.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 83.03 369.00)">570</text>
+<text x="83.03" y="384.00" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 83.03 384.00)">120</text>
 <line x1="261.67" y1="272.00" x2="273.17" y2="272.00" stroke="#111" stroke-width="0.15"/>
 <line x1="261.67" y1="388.00" x2="273.17" y2="388.00" stroke="#111" stroke-width="0.15"/>
 <line x1="271.67" y1="270.50" x2="271.67" y2="389.50" stroke="#111" stroke-width="0.18"/>
@@ -514,6 +549,12 @@
 <circle cx="213.67" cy="381.33" r="0.45" fill="#111"/>
 <text x="280.47" y="394.90" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша гладильной доски</text>
 <text x="280.47" y="397.80" font-size="2.3" text-anchor="start" font-weight="normal" fill="#111">200 × 600 (П2), доска стоит боком</text>
+<line x1="115.00" y1="384.00" x2="68.33" y2="380.00" stroke="#111" stroke-width="0.18"/>
+<circle cx="115.00" cy="384.00" r="0.45" fill="#111"/>
+<text x="67.53" y="380.90" font-size="2.0" text-anchor="end" font-weight="normal" fill="#111">Ниша зеркала 120 × 600 (Зр):</text>
+<text x="67.53" y="383.50" font-size="2.0" text-anchor="end" font-weight="normal" fill="#111">выдвижное поворотное зеркало</text>
+<text x="67.53" y="386.10" font-size="2.0" text-anchor="end" font-weight="normal" fill="#111">Lexy 480×50×1405, антрацит.</text>
+<text x="67.53" y="388.70" font-size="2.0" text-anchor="end" font-weight="normal" fill="#111">Выдвинуть на 480 и повернуть</text>
 <line x1="175.00" y1="264.33" x2="175.00" y2="395.67" stroke="#1f4e8c" stroke-width="0.35" stroke-dasharray="6 1.2 1 1.2"/>
 <line x1="175.00" y1="264.33" x2="180.00" y2="264.33" stroke="#1f4e8c" stroke-width="0.5"/>
 <path d="M180.00,264.33 l-2.20,1.20 l0.00,-2.40 z" fill="#1f4e8c"/>
@@ -544,31 +585,36 @@
 <rect x="428.60" y="147.60" width="2.80" height="2.80" fill="#fff" stroke="#c0392b" stroke-width="0.3" />
 <circle cx="430" cy="149" r="0.7" fill="none" stroke="#c0392b" stroke-width="0.25"/>
 <text x="438.00" y="149.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Розетка 220 В (для утюга/отпаривателя)</text>
-<text x="425.00" y="165.00" font-size="3.2" text-anchor="start" font-weight="bold" fill="#111">СЕКЦИИ</text>
-<text x="425.00" y="171.00" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">Л1</text>
-<text x="433.00" y="171.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">570</text>
-<text x="443.00" y="171.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">4 выкатных ящика + 3 полки с LED (сложенные вещи)</text>
-<text x="425.00" y="175.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">Л2</text>
-<text x="433.00" y="175.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">570</text>
-<text x="443.00" y="175.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2 яруса штанг (короткая одежда), открыта в угол</text>
-<text x="425.00" y="180.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З1</text>
-<text x="433.00" y="180.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">900</text>
-<text x="443.00" y="180.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2 яруса штанг (рубашки, юбки, брюки), угловая зона</text>
-<text x="425.00" y="184.80" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З2</text>
-<text x="433.00" y="184.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">600</text>
-<text x="443.00" y="184.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">4 выкатных ящика + 3 полки с LED (сумки)</text>
-<text x="425.00" y="189.40" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З3</text>
-<text x="433.00" y="189.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">900</text>
-<text x="443.00" y="189.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда (пальто, платья), угловая зона</text>
-<text x="425.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П1</text>
-<text x="433.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">940</text>
-<text x="443.00" y="194.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + полка для обуви Н=350, открыта в угол</text>
-<text x="425.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П2</text>
-<text x="433.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">200</text>
-<text x="443.00" y="198.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560</text>
-<text x="425.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">—</text>
-<text x="433.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2400</text>
-<text x="443.00" y="203.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Антресоль Н=424 по всему периметру, LED снизу</text>
+<rect x="425.00" y="153.80" width="10.00" height="2.40" fill="#cfdde6" stroke="#33373b" stroke-width="0.3" />
+<text x="438.00" y="155.90" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Зеркало выдвижное поворотное Lexy 480×50×1405, антрацит</text>
+<text x="425.00" y="170.00" font-size="3.2" text-anchor="start" font-weight="bold" fill="#111">СЕКЦИИ</text>
+<text x="425.00" y="176.00" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">Зр</text>
+<text x="433.00" y="176.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">120</text>
+<text x="443.00" y="176.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Ниша зеркала Lexy (выдвижное поворотное), напротив доски П2</text>
+<text x="425.00" y="180.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">Л1</text>
+<text x="433.00" y="180.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">450</text>
+<text x="443.00" y="180.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">4 выкатных ящика + 3 полки с LED (сложенные вещи)</text>
+<text x="425.00" y="185.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">Л2</text>
+<text x="433.00" y="185.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">570</text>
+<text x="443.00" y="185.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2 яруса штанг (короткая одежда), открыта в угол</text>
+<text x="425.00" y="189.80" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З1</text>
+<text x="433.00" y="189.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">900</text>
+<text x="443.00" y="189.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2 яруса штанг (рубашки, юбки, брюки), угловая зона</text>
+<text x="425.00" y="194.40" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З2</text>
+<text x="433.00" y="194.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">600</text>
+<text x="443.00" y="194.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">4 выкатных ящика + 3 полки с LED (сумки)</text>
+<text x="425.00" y="199.00" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">З3</text>
+<text x="433.00" y="199.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">900</text>
+<text x="443.00" y="199.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда (пальто, платья), угловая зона</text>
+<text x="425.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П1</text>
+<text x="433.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">940</text>
+<text x="443.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + полка для обуви Н=350, открыта в угол</text>
+<text x="425.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П2</text>
+<text x="433.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">200</text>
+<text x="443.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560</text>
+<text x="425.00" y="212.80" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">—</text>
+<text x="433.00" y="212.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2400</text>
+<text x="443.00" y="212.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Антресоль Н=424 по всему периметру, LED снизу</text>
 <text x="425.00" y="40.00" font-size="3.2" text-anchor="start" font-weight="bold" fill="#111">ИСХОДНЫЕ ДАННЫЕ</text>
 <text x="425.00" y="46.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Комната: ширина 2400 × глубина 1740 (стены слева/справа) × высота 2640</text>
 <text x="425.00" y="50.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Планировка П-образная, глубина гардеробной (корпусов) — 600 мм</text>
@@ -577,8 +623,8 @@
 <text x="425.00" y="64.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Цоколь 80 мм, ящики — фасады 200 мм, ручки-скобы латунь</text>
 <text x="425.00" y="69.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Антресоль с низа 2200 до потолка 2640, верхняя штанга Н=2130</text>
 <text x="425.00" y="73.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">LED: лента 24 В, 4000 K, блок питания в антресоли, датчик открытия двери</text>
-<text x="425.00" y="78.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Гладильная доска справа у входа (П2); при необходимости</text>
-<text x="425.00" y="82.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">      ниша П2 переносится зеркально на левую сторону</text>
+<text x="425.00" y="78.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Гладильная доска справа у входа (П2), напротив — выдвижное зеркало (Зр)</text>
+<text x="425.00" y="82.80" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Дверь — раздвижная (или распашная наружу), чтобы не мешать зеркалу</text>
 <text x="425.00" y="87.40" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Размеры уточнить по месту после замера и чистовой отделки стен</text>
 <rect x="405.00" y="362.00" width="180.00" height="46.00" fill="none" stroke="#111" stroke-width="0.5" />
 <line x1="405.00" y1="376.00" x2="585.00" y2="376.00" stroke="#111" stroke-width="0.3"/>

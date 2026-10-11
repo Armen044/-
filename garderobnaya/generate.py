@@ -159,6 +159,7 @@ class View:
 
 def defs():
     e('<defs>'
+      '<marker id="arr" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4,2 L0,4 z" fill="#33373b"/></marker>'
       '<pattern id="hatch" width="1.2" height="1.2" patternUnits="userSpaceOnUse" '
       'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="1.2" stroke="#777" stroke-width="0.25"/></pattern>'
       '<pattern id="wall" width="1.6" height="1.6" patternUnits="userSpaceOnUse" '
@@ -176,8 +177,12 @@ def defs():
 FLOOR_Y = 212
 SIDE = D - DEPTH        # 1140 – длина боковых секций
 
-L1 = 570                # левая: ящики + полки (у входа)
-L2 = SIDE - L1          # левая: 2 яруса штанг (к углу)
+LM = 120                # левая: ниша выдвижного зеркала (у входа, напротив доски)
+L1 = 450                # левая: ящики + полки
+L1E = LM + L1           # граница Л1/Л2 от входа = 570
+L2 = SIDE - L1E         # левая: 2 яруса штанг (к углу)
+MIR_D, MIR_T, MIR_H = 480, 50, 1405   # зеркало Lexy 480×50×1405 (глубина × толщина × высота)
+MIR_Z = 450             # низ зеркала от пола
 R1 = 940                # правая: длинная одежда (от угла)
 R2 = SIDE - R1          # правая: узкая ниша гладильной доски (у входа) = 200
 B1, B2, B3 = 900, 600, 900
@@ -186,20 +191,28 @@ B1, B2, B3 = 900, 600, 900
 def elevation_left(ox):
     v = View(ox, FLOOR_Y, SIDE)
     # x=0 – вход, x=SIDE – угол (стык с задней секцией)
-    v.carcass([0, L1 - T / 2])
+    v.carcass([0, L1E - T / 2])
+    v.panel_v(LM - T / 2, PLINTH + T, ANT)
     # антресоль
     v.panel_h(0, SIDE, ANT)
     v.led(0, SIDE, ANT - 9)
-    v.panel_v(L1 - T / 2, ANT, H)
-    # L1 – ящики + полки
-    v.drawers(T, L1 - T / 2)
+    v.panel_v(L1E - T / 2, ANT, H)
+    # ЗР – ниша выдвижного поворотного зеркала (видно торцом)
+    cx = (v.X(T) + v.X(LM - T / 2)) / 2
+    mw = MIR_T * S
+    rect(cx - mw / 2, v.Z(MIR_Z + MIR_H), mw, MIR_H * S, fill="#cfdde6", stroke="#33373b", sw=0.35)
+    for z in (MIR_Z + MIR_H + 25, MIR_Z - 25):       # механизм (верх/низ)
+        rect(cx - mw / 2 - 0.3, v.Z(z) - 0.8, mw + 0.6, 1.6, fill="#33373b", stroke="none")
+    text(cx + 0.7, v.Z(MIR_Z + MIR_H / 2), "ЗЕРКАЛО (торец)", size=1.7, rot=-90, fill="#33373b", weight="bold")
+    # Л1 – ящики + полки
+    v.drawers(LM + T / 2, L1E - T / 2)
     for z in (1230, 1550, 1870):
-        v.shelf(T, L1 - T / 2, z)
-    # L2 – две штанги, открыто в угол
-    v.hangers(L1 + T / 2, SIDE, RAIL, 900)
-    v.hangers(L1 + T / 2, SIDE, RAIL_LOW, 850)
-    v.rail(L1 + T / 2, SIDE, RAIL)
-    v.rail(L1 + T / 2, SIDE, RAIL_LOW)
+        v.shelf(LM + T / 2, L1E - T / 2, z)
+    # Л2 – две штанги, открыто в угол
+    v.hangers(L1E + T / 2, SIDE, RAIL, 900)
+    v.hangers(L1E + T / 2, SIDE, RAIL_LOW, 850)
+    v.rail(L1E + T / 2, SIDE, RAIL)
+    v.rail(L1E + T / 2, SIDE, RAIL_LOW)
     line(v.X(SIDE), v.Z(H - T), v.X(SIDE), v.Z(PLINTH + T), w=0.3, dash="1.5 1")
     v.frame()
     return v
@@ -300,8 +313,9 @@ def build_elevations():
     # --- горизонтальные размеры -----------------------------------------
     y1, y2 = FLOOR_Y + 10, FLOOR_Y + 17
     # левая
-    dim_h(vl.X(0), vl.X(L1), y1, str(L1), ext_from=FLOOR_Y + 1)
-    dim_h(vl.X(L1), vl.X(SIDE), y1, str(L2), ext_from=FLOOR_Y + 1)
+    dim_h(vl.X(0), vl.X(LM), y1, str(LM), ext_from=FLOOR_Y + 1, size=2.0)
+    dim_h(vl.X(LM), vl.X(L1E), y1, str(L1), ext_from=FLOOR_Y + 1)
+    dim_h(vl.X(L1E), vl.X(SIDE), y1, str(L2), ext_from=FLOOR_Y + 1)
     dim_h(vl.X(0), vl.X(SIDE), y2, f"{SIDE} (+600 угол = {D})")
     # задняя
     dim_h(vb.X(0), vb.X(B1), y1, str(B1), ext_from=FLOOR_Y + 1)
@@ -318,6 +332,9 @@ def build_elevations():
 
     # --- вертикальные размеры ------------------------------------------
     dims_vertical_common(vl, vl.X(0) - 6, "left")
+    mx = vl.X(T) + 1.6
+    dim_v(vl.Z(MIR_Z + MIR_H), vl.Z(MIR_Z), mx, str(MIR_H), size=1.6)
+    dim_v(vl.Z(MIR_Z), vl.Z(0), mx, str(MIR_Z), size=1.6)
     # задняя: штанги + полки
     ex = vb.X(0) - 6
     dim_v(vb.Z(RAIL_LOW), vb.Z(0), ex, str(RAIL_LOW), ext_from=vb.X(0))
@@ -337,10 +354,10 @@ def build_elevations():
     # --- выноски -------------------------------------------------------
     leader(vb.X(B1 + B2 + 450), vb.Z(ANT - 9), vb.X(B1 + B2 + 60), vb.Z(2420),
            "LED-лента в алюм. профиле\nс рассеивателем (под антресолью)", size=2.0)
-    leader(vl.X(L1 / 2), vl.Z(1230 - 9), vl.X(40), vl.Z(1450),
+    leader(vl.X(LM + L1 / 2), vl.Z(1230 - 9), vl.X(LM + 30), vl.Z(1450),
            "LED-лента по\nпереднему краю полок", size=1.9)
     # обозначения секций
-    for v, x, s in ((vl, L1 / 2, "Л1"), (vl, L1 + L2 / 2, "Л2"),
+    for v, x, s in ((vl, LM / 2, "Зр"), (vl, LM + L1 / 2, "Л1"), (vl, L1E + L2 / 2, "Л2"),
                     (vb, B1 / 2, "З1"), (vb, B1 + B2 / 2, "З2"), (vb, B1 + B2 + B3 / 2, "З3"),
                     (vr, R1 / 2, "П1"), (vr, R1 + R2 / 2, "П2")):
         cx, cy = v.X(x), v.Z(H - 150)
@@ -375,13 +392,12 @@ def build_plan():
     rect(x0, yf, (door0 + WT) * S, WT * S, fill="url(#wall)", sw=0.3)
     rect(ox + door1 * S, yf, (W - door1 + WT) * S, WT * S, fill="url(#wall)", sw=0.3)
     # дверь
-    dx, dy = ox + door0 * S, yf + WT * S
-    r = 800 * S
-    dy = yf
-    line(dx, dy, dx, dy - r, w=0.3, color="#555")
-    e(f'<path d="M{dx:.2f},{dy - r:.2f} A{r:.2f},{r:.2f} 0 0 1 {dx + r:.2f},{dy:.2f}" '
-      f'fill="none" stroke="#555" stroke-width="0.2" stroke-dasharray="1 0.8"/>')
-    text(ox + 1200 * S, yf + WT * S + 4, "ВХОД", size=2.6, weight="bold")
+    # раздвижная дверь по наружной стороне стены (не мешает зеркалу и доске)
+    dyo = yf + WT * S
+    rect(ox + (door0 - 40) * S, dyo + 0.3, (door1 - door0 + 80) * S, 40 * S, fill="#fff", stroke="#555", sw=0.3)
+    line(ox + 1100 * S, dyo + 4.2, ox + 700 * S, dyo + 4.2, w=0.25, color="#555")
+    e(f'<path d="M{ox + 700 * S:.2f},{dyo + 4.2:.2f} l1.6,-0.7 l0,1.4 z" fill="#555"/>')
+    text(ox + 1350 * S, yf + WT * S + 5, "ВХОД", size=2.6, weight="bold")
 
     # корпуса
     def box(x, y, w, h, fill="#f4efe8"):
@@ -393,11 +409,27 @@ def build_plan():
     box(W - DEPTH, DEPTH, DEPTH, SIDE)
     # ящики
     box(B1, 0, B2, DEPTH, fill="url(#drw)")
-    box(0, D - L1, DEPTH, L1, fill="url(#drw)")
+    box(0, D - L1E, DEPTH, L1, fill="url(#drw)")
     # перегородки
     for xx in (B1, B1 + B2):
         line(*P(xx, 0), *P(xx, DEPTH), w=0.4)
-    line(*P(0, D - L1), *P(DEPTH, D - L1), w=0.4)
+    line(*P(0, D - L1E), *P(DEPTH, D - L1E), w=0.4)
+    line(*P(0, D - LM), *P(DEPTH, D - LM), w=0.4)
+    # зеркало: в нише (сплошное) и выдвинутое/повёрнутое (пунктир)
+    ym = D - LM / 2 - T / 4
+    a, b = P(40, ym - MIR_T / 2)
+    rect(a, b, MIR_D * S, MIR_T * S, fill="#cfdde6", stroke="#33373b", sw=0.3)
+    a, b = P(DEPTH + 20, ym - MIR_T / 2)
+    rect(a, b, MIR_D * S, MIR_T * S, fill="none", stroke="#33373b", sw=0.25, dash="1.2 0.8")
+    cxm, cym = P(DEPTH + 20 + MIR_D / 2, ym)
+    rect(cxm - MIR_T * S / 2, cym - MIR_D * S / 2, MIR_T * S, MIR_D * S, fill="none",
+         stroke="#33373b", sw=0.25, dash="0.6 0.6")
+    e(f'<path d="M{cxm + 6:.2f},{cym:.2f} A6,6 0 0 0 {cxm:.2f},{cym - 6:.2f}" fill="none" '
+      f'stroke="#33373b" stroke-width="0.25" marker-end="url(#arr)"/>')
+    a1, _ = P(40 + MIR_D, ym)
+    a2, _ = P(DEPTH + 20 + MIR_D, ym)
+    line(a1 + 1, cym + 2.4, a2 - 1, cym + 2.4, w=0.25, color="#33373b")
+    e(f'<path d="M{a2 - 1:.2f},{cym + 2.4:.2f} l-1.6,-0.7 l0,1.4 z" fill="#33373b"/>')
     line(*P(W - DEPTH, DEPTH + R1), *P(W, DEPTH + R1), w=0.4)
     # угловые зоны / открыто
     line(*P(0, DEPTH), *P(DEPTH, DEPTH), w=0.3, color="#c0392b", dash="1.5 1")
@@ -406,7 +438,7 @@ def build_plan():
     line(*P(W - DEPTH, 0), *P(W - DEPTH, DEPTH), w=0.15, color="#c0392b", dash="1.5 1")
     # штанги
     for a, b in ((P(T, 300), P(B1, 300)), (P(B1 + B2, 300), P(W - T, 300)),
-                 (P(300, DEPTH + 20), P(300, D - L1)), (P(W - 300, DEPTH + 20), P(W - 300, DEPTH + R1))):
+                 (P(300, DEPTH + 20), P(300, D - L1E)), (P(W - 300, DEPTH + 20), P(W - 300, DEPTH + R1))):
         line(*a, *b, w=0.5, color="#555", dash="2 0.8")
     # гладильная доска в нише (вид сверху – узкий прямоугольник)
     a, b = P(W - DEPTH + 110, DEPTH + R1 + 65)
@@ -419,7 +451,7 @@ def build_plan():
 
     # подписи секций
     for x, y, s in ((B1 / 2 + 150, 420, "З1"), (B1 + B2 / 2, 300, "З2"), (B1 + B2 + B3 / 2 - 150, 420, "З3"),
-                    (300, D - L1 / 2, "Л1"), (300, DEPTH + L2 / 2 + 120, "Л2"),
+                    (300, D - LM - L1 / 2, "Л1"), (300, DEPTH + L2 / 2 + 120, "Л2"),
                     (W - 300, DEPTH + R1 / 2 + 120, "П1"), (W - DEPTH + 45, DEPTH + R1 + 45, "П2")):
         cx, cy = P(x, y)
         e(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>')
@@ -441,8 +473,9 @@ def build_plan():
     xl = ox - WT * S
     dim_v(oy, oy + D * S, xl - 10, str(D), ext_from=xl)
     dim_v(oy, oy + DEPTH * S, xl - 4.5, "600", ext_from=xl)
-    dim_v(oy + DEPTH * S, oy + (D - L1) * S, xl - 4.5, str(L2), ext_from=xl)
-    dim_v(oy + (D - L1) * S, oy + D * S, xl - 4.5, str(L1), ext_from=xl)
+    dim_v(oy + DEPTH * S, oy + (D - L1E) * S, xl - 4.5, str(L2), ext_from=xl)
+    dim_v(oy + (D - L1E) * S, oy + (D - LM) * S, xl - 4.5, str(L1), ext_from=xl)
+    dim_v(oy + (D - LM) * S, oy + D * S, xl - 4.5, str(LM), ext_from=xl, size=1.8)
     xr2 = ox + (W + WT) * S
     dim_v(oy, oy + D * S, xr2 + 10, str(D), ext_from=xr2)
     dim_v(oy, oy + DEPTH * S, xr2 + 4.5, "600", ext_from=xr2)
@@ -452,6 +485,8 @@ def build_plan():
     a, b = P(B1 + B2 + 150, 0)
     leader(*P(W - DEPTH - 20, D - 100), xr2 + 18, oy + D * S + 6,
            "Узкая ниша гладильной доски\n200 × 600 (П2), доска стоит боком")
+    leader(*P(300, D - LM / 2), ox - WT * S - 20, oy + D * S - 8,
+           "Ниша зеркала 120 × 600 (Зр):\nвыдвижное поворотное зеркало\nLexy 480×50×1405, антрацит.\nВыдвинуть на 480 и повернуть", anchor="end", size=2.0)
 
 
     # линии разрезов (см. лист 2)
@@ -481,6 +516,7 @@ def build_notes():
         ("board", "Гладильная доска (хранение боком, ребром к проходу)"),
         ("corner", "Граница угловой зоны / открыто в угол"),
         ("sock", "Розетка 220 В (для утюга/отпаривателя)"),
+        ("mirror", "Зеркало выдвижное поворотное Lexy 480×50×1405, антрацит"),
     ]
     for i, (k, s) in enumerate(rows):
         yy = y + 7 + i * 6
@@ -499,12 +535,15 @@ def build_notes():
         elif k == "sock":
             rect(x + 3.6, yy - 1.4, 2.8, 2.8, fill="#fff", stroke="#c0392b", sw=0.3)
             e(f'<circle cx="{x + 5}" cy="{yy}" r="0.7" fill="none" stroke="#c0392b" stroke-width="0.25"/>')
+        elif k == "mirror":
+            rect(x, yy - 1.2, 10, 2.4, fill="#cfdde6", stroke="#33373b", sw=0.3)
         text(x + 13, yy + 0.9, s, size=2.4, anchor="start")
 
-    y = 165
+    y = 170
     text(x, y, "СЕКЦИИ", size=3.2, weight="bold", anchor="start")
     secs = [
-        ("Л1", "570", "4 выкатных ящика + 3 полки с LED (сложенные вещи)"),
+        ("Зр", "120", "Ниша зеркала Lexy (выдвижное поворотное), напротив доски П2"),
+        ("Л1", "450", "4 выкатных ящика + 3 полки с LED (сложенные вещи)"),
         ("Л2", "570", "2 яруса штанг (короткая одежда), открыта в угол"),
         ("З1", "900", "2 яруса штанг (рубашки, юбки, брюки), угловая зона"),
         ("З2", "600", "4 выкатных ящика + 3 полки с LED (сумки)"),
@@ -530,8 +569,8 @@ def build_notes():
         "Цоколь 80 мм, ящики — фасады 200 мм, ручки-скобы латунь",
         "Антресоль с низа 2200 до потолка 2640, верхняя штанга Н=2130",
         "LED: лента 24 В, 4000 K, блок питания в антресоли, датчик открытия двери",
-        "Гладильная доска справа у входа (П2); при необходимости",
-        "      ниша П2 переносится зеркально на левую сторону",
+        "Гладильная доска справа у входа (П2), напротив — выдвижное зеркало (Зр)",
+        "Дверь — раздвижная (или распашная наружу), чтобы не мешать зеркалу",
         "Размеры уточнить по месту после замера и чистовой отделки стен",
     ]
     for i, s in enumerate(info):

@@ -9,6 +9,7 @@ import os
 import generate as g
 from generate import (S, T, H, D, DEPTH, PLINTH, ANT, RAIL, R1, R2, SIDE,
                       DRAWER_TOP, BOARD_L, BOARD_W, LED, e, text, line, rect,
+                      MIR_D, MIR_T, MIR_H, MIR_Z, LM,
                       dim_h, dim_v, leader)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -190,18 +191,76 @@ def notes():
     x, y = 312, 262
     text(x, y, "ПРИМЕЧАНИЯ К ЛИСТУ 2", size=3.2, weight="bold", anchor="start")
     rows = [
-        "Ниша гладильной доски П2 — узкая: модуль 200 мм, внутри 176 мм (ЛДСП 16).",
-        "Доска хранится вертикально, БОКОМ (ребром к проходу), толщина в сложенном",
-        "      виде ≤ 70–80 мм; длина доски до 1350 мм, ширина до 400 мм.",
-        "Держатели доски — 2 шт. на стене (Н≈500 и 1250), утюг на полке Н=1560 (стоя на пятке).",
-        "Розетка 220 В в нише на Н≈1720, над полкой утюга.",
-        "Секция П1 расширена до 940 мм за счёт сужения ниши.",
-        "LED: лента 24 В в алюм. профиле, под антресолью и по переднему краю полок.",
-        "Ящики: направляющие полного выдвижения 500 мм с доводчиком, фасады 200 мм.",
-        "3D-виды — иллюстрация компоновки; одежда и предметы показаны условно.",
+        "Ниша доски П2 — узкая: модуль 200, внутри 176 мм (ЛДСП 16).",
+        "Доска стоит вертикально БОКОМ (ребром к проходу);",
+        "      сложенная ≤ 70–80 мм, длина ≤ 1350, ширина ≤ 400 мм.",
+        "Держатели доски Н≈500 и 1250, утюг на полке Н=1560.",
+        "Розетка 220 В в нише на Н≈1720. П1 расширена до 940 мм.",
+        "Зеркало Lexy 480×50×1405 (антрацит) — в нише Зр 120 мм",
+        "      слева у входа, напротив доски. Низ зеркала Н=450.",
+        "      Крепление и мин. размеры ниши — по паспорту изделия.",
+        "Дверь — раздвижная или наружу: не мешает зеркалу.",
+        "LED 24 В в профиле: под антресолью и по краю полок.",
+        "Ящики: направляющие 500 мм, доводчик, фасады 200 мм.",
+        "3D-виды — иллюстрация; вещи показаны условно.",
     ]
     for i, s in enumerate(rows):
         text(x, y + 6 + i * 4.6, s, size=2.35, anchor="start")
+
+
+def mirror_detail(ox, fy):
+    """Узел В: выдвижное поворотное зеркало (вид сбоку и схема в плане), 1:30."""
+    k = 1 / 30
+
+    def X(h):
+        return ox + h * k
+
+    def Z(z):
+        return fy - z * k
+
+    text(X(300) + 22, Z(H) - 7, "УЗЕЛ В — ЗЕРКАЛО Lexy", size=3.0, weight="bold")
+    text(X(300) + 22, Z(H) - 3, "выдвижное поворотное, 480×50×1405, 1:30", size=2.0)
+    # вид сбоку
+    rect(X(-100), Z(H), 100 * k, H * k, fill="url(#wall)", sw=0.25)
+    line(X(-100), Z(0), X(DEPTH + 520), Z(0), w=0.4)
+    for z in (PLINTH, ANT, H - T):
+        rect(X(0), Z(z + T), DEPTH * k, T * k, fill=CUT, stroke="#111", sw=0.15)
+    rect(X(40), Z(MIR_Z + MIR_H), MIR_D * k, MIR_H * k, fill="#cfdde6", stroke="#33373b", sw=0.4)
+    for i in range(3):
+        zz = MIR_Z + 300 + i * 350
+        line(X(110), Z(zz), X(260), Z(zz + 250), w=0.2, color="#fff")
+    for z in (MIR_Z + MIR_H + 20, MIR_Z - 20):
+        rect(X(20), Z(z) - 0.4, (MIR_D + 40) * k, 0.8, fill="#33373b", stroke="none")
+    rect(X(DEPTH + 20), Z(MIR_Z + MIR_H), MIR_D * k, MIR_H * k, fill="none", stroke="#33373b", sw=0.25,
+         dash="1 0.7")
+    text(X(DEPTH + 260), Z(MIR_Z + MIR_H / 2), "выдвинуто", size=1.8, rot=-90, fill="#33373b")
+    dim_h(X(40), X(40 + MIR_D), Z(H) + 7, "480", size=1.8)
+    dim_h(X(0), X(DEPTH), fy + 5, "600", ext_from=fy + 0.5, size=1.8)
+    dim_v(Z(MIR_Z + MIR_H), Z(MIR_Z), X(-100) - 3, "1405", ext_from=X(40), size=1.8)
+    dim_v(Z(MIR_Z), Z(0), X(-100) - 3, "450", size=1.8)
+    # схема в плане: 1 – в нише, 2 – выдвинуто, 3 – повёрнуто
+    px, py = X(DEPTH + 520) + 6, Z(1500)
+    text(px, py - 10, "в плане:", size=1.9, anchor="start", weight="bold")
+
+    def P(x, y):
+        return px + x * k, py + y * k
+
+    rect(*P(-100, -60), 100 * k, (LM + 120) * k, fill="url(#wall)", sw=0.2)
+    for y in (0, LM):
+        line(*P(0, y), *P(DEPTH, y), w=0.35)
+    a, b = P(40, (LM - MIR_T) / 2)
+    rect(a, b, MIR_D * k, MIR_T * k, fill="#cfdde6", stroke="#33373b", sw=0.3)
+    a, b = P(DEPTH + 40, (LM - MIR_T) / 2)
+    rect(a, b, MIR_D * k, MIR_T * k, fill="none", stroke="#33373b", sw=0.25, dash="0.8 0.6")
+    cx, cy = P(DEPTH + 40 + MIR_D / 2, LM / 2)
+    rect(cx - MIR_T * k / 2, cy - MIR_D * k / 2, MIR_T * k, MIR_D * k, fill="none", stroke="#33373b",
+         sw=0.25, dash="0.4 0.4")
+    for (x, y, n) in ((280, LM / 2, "1"), (DEPTH + 120, LM / 2, "2"), (DEPTH + 340, -150, "3")):
+        cxn, cyn = P(x, y)
+        e(f'<circle cx="{cxn:.2f}" cy="{cyn:.2f}" r="1.3" fill="#fff" stroke="#33373b" stroke-width="0.2"/>')
+        text(cxn, cyn + 0.6, n, size=1.6, weight="bold")
+    for i, t in enumerate(("1 — хранится в нише", "2 — выдвинуть на 480", "3 — повернуть к себе")):
+        text(px, py + 14 + i * 3.2, t, size=1.8, anchor="start")
 
 
 def title_block():
@@ -211,9 +270,9 @@ def title_block():
     line(bx, by + 30, bx + bw, by + 30, w=0.3)
     line(bx + 120, by + 14, bx + 120, by + bh, w=0.3)
     text(bx + bw / 2, by + 6.5, "ГАРДЕРОБНАЯ КОМНАТА", size=4.2, weight="bold")
-    text(bx + bw / 2, by + 11.5, "Вид сбоку (разрезы А–А, Б–Б), объёмные виды", size=2.6)
+    text(bx + bw / 2, by + 11.5, "Вид сбоку (разрезы А–А, Б–Б), узел зеркала, 3D-виды", size=2.6)
     text(bx + 3, by + 20, "Габариты: 2400 × 1740 × 2640 мм", size=2.6, anchor="start")
-    text(bx + 3, by + 26, "Ниша гладильной доски: 200 × 600 мм", size=2.6, anchor="start")
+    text(bx + 3, by + 26, "Ниша доски 200 × 600, ниша зеркала 120 × 600", size=2.6, anchor="start")
     text(bx + 3, by + 36, "Все размеры в миллиметрах", size=2.6, anchor="start")
     text(bx + 3, by + 42, "Разрезы — масштаб 1:15, 3D — без масштаба", size=2.6, anchor="start")
     text(bx + 150, by + 20.5, "Масштаб", size=2.4)
@@ -229,10 +288,11 @@ def main():
     g.defs()
     rect(0, 0, 594, 420, fill="#fff", stroke="none")
     rect(10, 5, 579, 410, sw=0.6)
-    image(15, 10, 280, 198, os.path.join(HERE, "3d_front.png"), "3D — ВИД ОТ ВХОДА")
+    image(15, 10, 280, 198, os.path.join(HERE, "3d_front.png"), "3D — ВИД ОТ ВХОДА (зеркало выдвинуто)")
     image(15, 212, 280, 198, os.path.join(HERE, "3d_axo.png"), "3D — АКСОНОМЕТРИЯ (сверху, со стороны входа)")
     section_a(338)
     section_b(500)
+    mirror_detail(462, 352)
     notes()
     title_block()
     e('</svg>')

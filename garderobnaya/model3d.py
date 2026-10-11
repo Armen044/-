@@ -8,7 +8,8 @@ import json
 import os
 
 from generate import (T, H, W, D, DEPTH, PLINTH, ANT, RAIL, RAIL_LOW, B1, B2,
-                      L1, R1, SIDE, BOARD_L, BOARD_W, BOARD_T)
+                      L1, L1E, LM, R1, SIDE, BOARD_L, BOARD_W, BOARD_T,
+                      MIR_D, MIR_T, MIR_H, MIR_Z)
 
 boxes = []
 CLOTH = ["#e9e5df", "#cfc8bf", "#b9b2aa", "#8d8680", "#f3f1ec", "#a39383", "#6f6a66", "#d8cdbf"]
@@ -107,21 +108,30 @@ def build():
 
     # ---------------- левый ряд (x 0…600) ------------------------------
     ye = D                                  # торец у входа
-    yp = D - L1                             # перегородка Л1/Л2
+    yp = D - L1E                            # перегородка Л1/Л2
+    ym = D - LM                             # перегородка ниши зеркала / Л1
     box(0, DEPTH, ye - T, ye, PLINTH, H, "carcass")
     box(0, DEPTH, yp - T / 2, yp + T / 2, PLINTH, H, "carcass")
     for z in (PLINTH, ANT, H - T):
         box(0, DEPTH, DEPTH, D, z, z + T, "carcass")
     box(DEPTH - 50, DEPTH - 34, DEPTH, D, 0, PLINTH, "plinth")
     box(DEPTH - 22, DEPTH - 4, DEPTH, D - T, ANT - 10, ANT, "led")
+    box(0, DEPTH, ym - T / 2, ym + T / 2, PLINTH, ANT, "carcass")
+    # Зр – выдвижное поворотное зеркало (в нише, видно торцом)
+    yc = (ym + T / 2 + ye - T) / 2
+    # на 3D зеркало показано выдвинутым в проход (рабочее положение)
+    mx = DEPTH + 20
+    box(mx, mx + MIR_D, yc - MIR_T / 2, yc + MIR_T / 2, MIR_Z, MIR_Z + MIR_H, "mirror_frame")
+    box(mx + 20, mx + MIR_D - 20, yc + MIR_T / 2, yc + MIR_T / 2 + 3, MIR_Z + 20, MIR_Z + MIR_H - 20, "mirror")
+    box(DEPTH - 40, mx + 20, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")
     # Л1 – ящики + полки
-    y0, y1 = yp + T / 2, ye - T
+    y0, y1 = yp + T / 2, ym - T / 2
     drawers_side(y0, y1, DEPTH, +1)
     box(0, DEPTH, y0, y1, PLINTH + T + 800, PLINTH + 2 * T + 800, "carcass")
     for z in (1230, 1550, 1870):
         shelf_side(y0, y1, 0, DEPTH - 20, z)
-        for k in range(3):                  # стопки вещей
-            box(150, 480, y0 + 30 + k * 170, y0 + 180 + k * 170, z + T, z + T + 140 + k * 15, "cloth%d" % (k + 2))
+        for k in range(2):                  # стопки вещей
+            box(150, 480, y0 + 40 + k * 200, y0 + 200 + k * 200, z + T, z + T + 140 + k * 15, "cloth%d" % (k + 2))
     # Л2 – два яруса (открыто в угол)
     y0, y1 = DEPTH, yp - T / 2
     for z in (RAIL, RAIL_LOW):
