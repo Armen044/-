@@ -3,7 +3,7 @@
 
 Оси: x – вдоль стены 2–7 (0 = угол «2»), y – от стены в комнату, z – вверх от пола.
 """
-from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, RAIL, MID, SHOE, SPACER, DOOR_GAP)  # noqa: F401
+from sheet import (T, DT, W, FILL, CD, DEPTH, CEIL, ZB, ZT, ZA, SHELF, RAIL, CLOTH_L, MID, SHOE, SPACER, DOOR_GAP)  # noqa: F401
 
 boxes = []
 groups = {}
@@ -58,24 +58,27 @@ def build():
         box(x0, x1, 0, CD - 2, ZA - T, ZA, "carcass")            # полка антресоли
         box(x0 + 40, x0 + 360, 80, 480, ZA, ZA + 260, "box")
         box(x0 + 400, x1 - 40, 100, 480, ZA, ZA + 220, "box2")
+        box(x0, x1, 0, CD - 2, SHELF - T, SHELF, "carcass")      # полка 400 под антресолью
+        box(x0 + 40, x0 + 330, 100, 470, SHELF, SHELF + 230, "box")
+        box(x0 + 370, x1 - 40, 120, 470, SHELF, SHELF + 160, "box2")
         box(x0, x1, CD / 2 - 10, CD / 2 + 10, RAIL - 10, RAIL + 10, "rail")
-    clothes(T, MID - T / 2, 1400)
-    clothes(MID + T / 2, W - T, 950)
+        clothes(x0, x1, CLOTH_L)
 
-    # выдвижные полки для обуви (отсек 2) + проставки под петли
-    x0, x1 = MID + T / 2, W - T
-    for xs in (x0, x1 - SPACER):
-        box(xs, xs + SPACER, 0, CD, ZB + T, SHOE[-1] + 120, "spacer")
-    sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
-    for i, z in enumerate(SHOE):
-        group("shoe%d" % i, type="slide", dir=[0, 1], travel=400, needs=["door2", "door3"])
-        box(sx0, sx1, 40, 540, z, z + T, "shelf")
-        box(sx0, sx1, 520, 540, z + T, z + 60, "shelf")           # бортик
-        for k in range(3):
-            bx = sx0 + 25 + k * 230
-            box(bx, bx + 85, 120, 420, z + T, z + T + 100, "shoe")
-            box(bx + 95, bx + 180, 120, 420, z + T, z + T + 100, "shoe")
-        end()
+    # выдвижная полка для обуви внизу каждого отсека + проставки под петли
+    for c, (x0, x1) in enumerate(((T, MID - T / 2), (MID + T / 2, W - T))):
+        for xs in (x0, x1 - SPACER):
+            box(xs, xs + SPACER, 0, CD, ZB + T, SHOE[-1] + 160, "spacer")
+        sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
+        for i, z in enumerate(SHOE):
+            group("shoe%d_%d" % (c, i), type="slide", dir=[0, 1], travel=400,
+                  needs=["door%d" % (2 * c), "door%d" % (2 * c + 1)])
+            box(sx0, sx1, 40, 540, z, z + T, "shelf")
+            box(sx0, sx1, 520, 540, z + T, z + 60, "shelf")       # бортик
+            for k in range(3):
+                bx = sx0 + 25 + k * 230
+                box(bx, bx + 85, 120, 420, z + T, z + T + 100, "shoe")
+                box(bx + 95, bx + 180, 120, 420, z + T, z + T + 100, "shoe")
+            end()
 
     # фасады: 4 распашные двери, ручки у стыка створок
     dw = W / 4

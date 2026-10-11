@@ -146,10 +146,10 @@ const COMP = [{ x: DATA.meta.mid / 2, doors: ['door0', 'door1'] },
 const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
 for (const c of COMP) {
   c.light = new THREE.PointLight(0xffd9a8, 0, 2300, 1);
-  c.light.position.set(c.x, DATA.meta.za - 60, 470);
+  c.light.position.set(c.x, DATA.meta.shelf - 60, 470);
   scene.add(c.light);
   const strip = new THREE.Mesh(new THREE.BoxGeometry(DATA.meta.mid - 120, 6, 14), ledMat);
-  strip.position.set(c.x, DATA.meta.za - 19, DATA.meta.cd - 40);
+  strip.position.set(c.x, DATA.meta.shelf - 19, DATA.meta.cd - 40);
   scene.add(strip);
 }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));

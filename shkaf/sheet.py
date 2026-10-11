@@ -2,7 +2,7 @@
 """Чертёж подвесного шкафа в прихожей (стена 2–7), лист А3, масштаб 1:20.
 
 Шкаф 1580 × 600 × 2280 мм + фальш-планки 20 мм с двух сторон = 1620, висит на 300 мм от чистого пола, до потолка 2580.
-Антресоль 500 мм, ниже штанга; во втором отсеке – выдвижные полки для обуви.
+Антресоль 500 мм, под ней полка 400 мм, ниже штанга; внизу в каждом отсеке выдвижная полка для обуви.
 """
 import os
 import random
@@ -27,9 +27,11 @@ ZT = CEIL               # верх шкафа – до потолка
 H = ZT - ZB             # высота шкафа = 2280
 ANT = 500               # антресоль
 ZA = ZT - ANT           # верх полки антресоли = 2080
-RAIL = 2000             # штанга
+SHELF = ZA - 400        # верх полки под антресолью = 1680 (отделение 400)
+RAIL = SHELF - T - 64   # штанга = 1600 (на 400 ниже прежней)
 MID = W / 2             # средняя стойка
-SHOE = [330, 510, 690, 870]    # выдвижные полки для обуви (низ полки)
+SHOE = [330]            # выдвижная полка для обуви внизу каждого отсека (низ полки)
+CLOTH_L = 1050          # длина одежды под штангой
 SPACER = 25             # проставки под петли для выдвижных полок
 DOOR_GAP = 2
 WALL = [FILL, W, FILL, 200, 900, 115]   # развёртка стены 2–7 (сумма 2835)
@@ -137,21 +139,20 @@ def view_inside(ox, fy):
     for x0, x1 in ((T, MID - T / 2), (MID + T / 2, W - T)):
         v.box(x0, x1, ZA - T, ZA)                       # полка антресоли
         rect(v.X(x0 + 60), v.Z(ZA + 280), (x1 - x0 - 120) * S, 280 * S, fill="#e7ddd0", stroke="#aaa", sw=0.12)
-    # отсек 1 – длинная одежда
-    x0, x1 = T, MID - T / 2
-    hangers(v, x0, x1, RAIL, 1400)
-    # отсек 2 – одежда + выдвижные полки для обуви
-    x0, x1 = MID + T / 2, W - T
-    hangers(v, x0, x1, RAIL, 950)
-    for xs in (x0, x1 - SPACER):                        # проставки под петли
-        v.box(xs, xs + SPACER, ZB + T, SHOE[-1] + 120, fill="#d9cbb8", sw=0.15)
-    for z in SHOE:
-        sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
-        v.box(sx0, sx1, z, z + T, fill="#a89580", sw=0.2)
-        v.box(sx0, sx1, z + T, z + 60, fill="none", sw=0.15)            # бортик
-        for k in range(3):                                              # пары обуви
-            bx = sx0 + 30 + k * 230
-            rect(v.X(bx), v.Z(z + T + 110), 190 * S, 110 * S, fill="#4a4440", stroke="none")
+    for x0, x1 in ((T, MID - T / 2), (MID + T / 2, W - T)):
+        v.box(x0, x1, SHELF - T, SHELF)                 # полка под антресолью (400)
+        rect(v.X(x0 + 50), v.Z(SHELF + 230), 300 * S, 230 * S, fill="#e7ddd0", stroke="#aaa", sw=0.12)
+        rect(v.X(x0 + 400), v.Z(SHELF + 160), (x1 - x0 - 450) * S, 160 * S, fill="#d8ccbc", stroke="#aaa", sw=0.12)
+        hangers(v, x0, x1, RAIL, CLOTH_L)
+        for xs in (x0, x1 - SPACER):                    # проставки под петли
+            v.box(xs, xs + SPACER, ZB + T, SHOE[-1] + 160, fill="#d9cbb8", sw=0.15)
+        for z in SHOE:                                  # выдвижная полка для обуви
+            sx0, sx1 = x0 + SPACER + 13, x1 - SPACER - 13
+            v.box(sx0, sx1, z, z + T, fill="#a89580", sw=0.2)
+            v.box(sx0, sx1, z + T, z + 60, fill="none", sw=0.15)        # бортик
+            for k in range(3):                                          # пары обуви
+                bx = sx0 + 30 + k * 230
+                rect(v.X(bx), v.Z(z + T + 110), 190 * S, 110 * S, fill="#4a4440", stroke="none")
     for xr0, xr1 in ((T, MID - T / 2), (MID + T / 2, W - T)):
         y = v.Z(RAIL)
         line(v.X(xr0) + 0.3, y, v.X(xr1) - 0.3, y, w=0.6, color="#555")
@@ -161,20 +162,21 @@ def view_inside(ox, fy):
     dim_h(v.X(0), v.X(MID), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
     dim_h(v.X(MID), v.X(W), yb, str(round(MID)), ext_from=v.Z(ZB) + 1)
     dim_h(v.X(0), v.X(W), yb + 6, str(W))
-    dim_h(v.X(MID + T / 2 + SPACER + 13), v.X(W - T - SPACER - 13), v.Z(SHOE[-1] + 260),
+    dim_h(v.X(MID + T / 2 + SPACER + 13), v.X(W - T - SPACER - 13), v.Z(SHOE[-1] + 200),
           "≈690", size=1.7)
-    leader(v.X(MID + 60), v.Z(SHOE[1] + 30), v.X(MID - 260), v.Z(SHOE[0] + 120),
-           "выдвижные\nполки для обуви ×4", anchor="end", size=1.8)
+    leader(v.X(MID / 2), v.Z(SHOE[0] + 30), v.X(MID / 2 + 120), v.Z(ZB - 110),
+           "выдвижная полка для обуви (по одной в каждом отсеке)", size=1.8)
     xr = v.X(W) + 5
-    zs = [0, ZB, RAIL, ZA, ZT]
+    zs = [0, ZB, RAIL, SHELF, ZA, ZT]
     for a, b in zip(zs, zs[1:]):
         dim_v(v.Z(b), v.Z(a), xr, str(b - a), ext_from=v.X(W), size=2.0)
     dim_v(v.Z(ZT), v.Z(ZA), xr + 6, f"{ANT} антресоль", size=1.9)
+    dim_v(v.Z(ZA), v.Z(SHELF), xr + 6, "400 полка", size=1.9)
     dim_v(v.Z(RAIL), v.Z(0), xr + 12, str(RAIL), size=2.0)
     xl = v.X(0) - 5
-    zs = [ZB] + SHOE + [SHOE[-1] + 180]
+    zs = [ZB] + SHOE
     for a, b in zip(zs, zs[1:]):
-        dim_v(v.Z(b), v.Z(a), xl, str(b - a), ext_from=v.X(0), size=1.7)
+        dim_v(v.Z(b), v.Z(a), xl, str(b - a), ext_from=v.X(0), size=1.5)
     dim_v(v.Z(ZB), v.Z(0), xl, str(ZB), ext_from=v.X(0), size=1.8)
     for x, s in ((MID / 2, "1"), (MID + MID / 2, "2")):
         cx, cy = v.X(x), v.Z(ZT - 150)
@@ -192,7 +194,7 @@ def view_section(ox, fy):
     rect(v.X(-100), v.Z(CEIL + 100), (DEPTH + 520) * S, 100 * S, fill="url(#hatch)", sw=0.25)
     rect(v.X(-100), v.Z(0), (DEPTH + 520) * S, 80 * S, fill="url(#hatch)", sw=0.25)
     # корпус в разрезе
-    for z in (ZB, ZA - T, ZT - T):
+    for z in (ZB, ZA - T, SHELF - T, ZT - T):
         v.box(0, CD, z, z + T, fill=CUT)
     v.box(0, 4, ZB, ZT, fill="#777")                     # задняя стенка ХДФ
     v.box(CD, DEPTH, ZB + 2, ZT - 4, fill=FACADE, sw=0.3)  # фасад
@@ -201,9 +203,9 @@ def view_section(ox, fy):
     v.box(4, 24, ZT - 120, ZT - 40, fill="#555")
     # штанга
     e(f'<circle cx="{v.X(CD / 2):.2f}" cy="{v.Z(RAIL):.2f}" r="0.8" fill="#555"/>')
-    rect(v.X(CD / 2 - 220), v.Z(RAIL) + 1.2, 440 * S, 950 * S - 1.2, fill="#ece8e3", stroke="#b5aca2", sw=0.12)
-    # выдвижные полки: одна выдвинута
-    for i, z in enumerate(SHOE):
+    rect(v.X(CD / 2 - 220), v.Z(RAIL) + 1.2, 440 * S, CLOTH_L * S - 1.2, fill="#ece8e3", stroke="#b5aca2", sw=0.12)
+    # выдвижная полка: на месте и в выдвинутом положении (пунктир)
+    for i, z in enumerate(SHOE * 2):
         off = 400 if i == 1 else 0
         dash = "1 0.7" if off else None
         v.box(40 + off, 540 + off, z, z + T, fill="none" if off else "#a89580", sw=0.25, dash=dash)
@@ -219,10 +221,10 @@ def view_section(ox, fy):
     dim_h(v.X(CD), v.X(DEPTH), yb, str(DT), ext_from=v.Z(ZB) + 1, size=1.7)
     dim_h(v.X(0), v.X(DEPTH), yb + 6, str(DEPTH))
     dim_h(v.X(40), v.X(540), v.Z(SHOE[0]) + 3, "500", size=1.7)
-    dim_h(v.X(540), v.X(940), v.Z(SHOE[1] + 60) - 2, "ход 400", size=1.7)
+    dim_h(v.X(540), v.X(940), v.Z(SHOE[0] + 60) - 2, "ход 400", size=1.7)
     leader(v.X(14), v.Z(ZT - 80), v.X(150), v.Z(ZT - 260), "навес / монтажная\nшина к стене", size=1.8)
     leader(v.X(CD / 2), v.Z(RAIL), v.X(150), v.Z(RAIL - 160), "штанга", size=1.8)
-    leader(v.X(300), v.Z(SHOE[2] + 8), v.X(660), v.Z(SHOE[2] + 260),
+    leader(v.X(300), v.Z(SHOE[0] + 8), v.X(660), v.Z(SHOE[0] + 400),
            "направляющие\nполного выдвижения", size=1.8)
     return v
 
@@ -277,9 +279,9 @@ def notes(x, y):
         "Корпус 1580 × 600 × 2280 мм; корпус ЛДСП 16, глубина корпуса 582,",
         "      фасады 18 мм, 4 распашные двери ≈393 × 2274, по 5 петель на дверь.",
         "Крепление к стене — навесы / монтажная шина, задняя стенка ХДФ.",
-        "Отсеки 1 и 2 (по 790): антресоль 500 мм, ниже штанга на Н=2000.",
-        "Отсек 1 — длинная одежда (под штангой ≈1680).",
-        "Отсек 2 — короткая одежда + 4 выдвижные полки для обуви с бортиком,",
+        "Отсеки 1 и 2 (по 790): антресоль 500, под ней полка (отделение 400),",
+        "      штанга на Н=1600 (опущена на 400), под штангой ≈1100 до полки обуви.",
+        "Внизу в каждом отсеке — выдвижная полка для обуви с бортиком,",
         "      направляющие полного выдвижения 500 мм; проставки 25 мм под петли.",
         "Общий габарит 1620 = фальш-планка 20 + корпус 1580 + фальш-планка 20.",
         "Розетки на стене 2–7 (Н=250 и Н=1950, 200 от края шкафа) попадают",
