@@ -14,3 +14,9 @@ node render3d.js         # 3d_front.png, 3d_axo.png
 python3 sheet2.py        # лист 2 (SVG)
 node render.js           # PNG + общий PDF
 ```
+
+## Интерактивная 3D-модель
+
+`garderobnaya_3d.html` — один файл, открывается в любом браузере (и на телефоне) без интернета:
+вращение, масштаб, выдвижение ящиков, зеркала и гладильной доски, подсветка.
+Сборка: `python3 build_interactive.py` (проверка: `node test_interactive.js`).

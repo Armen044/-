@@ -12,11 +12,40 @@ from generate import (T, H, W, D, DEPTH, PLINTH, ANT, RAIL, RAIL_LOW, B1, B2,
                       MIR_D, MIR_T, MIR_H, MIR_Z)
 
 boxes = []
+groups = {}             # подвижные части для интерактивной модели
+cur = [None]            # текущая группа, к которой добавляются детали
 CLOTH = ["#e9e5df", "#cfc8bf", "#b9b2aa", "#8d8680", "#f3f1ec", "#a39383", "#6f6a66", "#d8cdbf"]
 
 
 def box(x0, x1, y0, y1, z0, z1, kind):
-    boxes.append([round(x0), round(x1), round(y0), round(y1), round(z0), round(z1), kind])
+    b = [round(x0), round(x1), round(y0), round(y1), round(z0), round(z1), kind]
+    if cur[0]:
+        b.append(cur[0])
+    boxes.append(b)
+
+
+def group(gid, **meta):
+    groups[gid] = meta
+    cur[0] = gid
+
+
+def end_group():
+    cur[0] = None
+
+
+def drawer_body(x0, x1, y0, y1, z0, z1, axis):
+    """Корпус ящика (боковины, дно, задняя стенка); axis – ось выдвижения."""
+    t = 12
+    if axis == "y":
+        box(x0, x0 + t, y0, y1, z0, z1, "dbox")
+        box(x1 - t, x1, y0, y1, z0, z1, "dbox")
+        box(x0, x1, y0, y0 + t, z0, z1, "dbox")
+        box(x0, x1, y0, y1, z0, z0 + 8, "dbottom")
+    else:
+        box(x0, x1, y0, y0 + t, z0, z1, "dbox")
+        box(x0, x1, y1 - t, y1, z0, z1, "dbox")
+        box(x0, x0 + t, y0, y1, z0, z1, "dbox")
+        box(x0, x1, y0, y1, z0, z0 + 8, "dbottom")
 
 
 def clothes_x(x0, x1, yc, ztop, length, step=75):
@@ -40,9 +69,12 @@ def clothes_y(y0, y1, xc, ztop, length, step=75):
 def drawers_back(x0, x1):
     for i in range(4):
         zb = PLINTH + T + i * 200
+        group("drw_b%d" % i, type="drawer", dir=[0, 1], travel=450)
         box(x0 + 2, x1 - 2, DEPTH - 18, DEPTH, zb + 2, zb + 198, "front")
         cx = (x0 + x1) / 2
         box(cx - 90, cx + 90, DEPTH, DEPTH + 12, zb + 125, zb + 137, "handle")
+        drawer_body(x0 + 13, x1 - 13, DEPTH - 18 - 500, DEPTH - 18, zb + 25, zb + 165, "y")
+        end_group()
     box(x0, x1, 0, DEPTH, PLINTH + T + 800, PLINTH + 2 * T + 800, "carcass")
 
 
@@ -50,11 +82,15 @@ def drawers_side(y0, y1, xf, sign):
     """Ящики в боковой секции; xf – плоскость фасада, sign – направление в проход."""
     for i in range(4):
         zb = PLINTH + T + i * 200
+        group("drw_s%d_%d" % (int(y0), i), type="drawer", dir=[sign, 0], travel=450)
         xa, xb = sorted((xf, xf - sign * 18))
         box(xa, xb, y0 + 2, y1 - 2, zb + 2, zb + 198, "front")
         cy = (y0 + y1) / 2
         xa, xb = sorted((xf, xf + sign * 12))
         box(xa, xb, cy - 90, cy + 90, zb + 125, zb + 137, "handle")
+        xa, xb = sorted((xf - sign * 18, xf - sign * 518))
+        drawer_body(xa, xb, y0 + 13, y1 - 13, zb + 25, zb + 165, "x")
+        end_group()
 
 
 def shelf_back(x0, x1, z):
@@ -69,7 +105,7 @@ def shelf_side(y0, y1, xs, xf, z, led=True):
         box(xa, xa + 18, y0, y1, z - 10, z, "led")
 
 
-def build():
+def build(interactive=False):
     # стены и пол
     box(-100, W + 100, -100, 0, 0, H, "wall_back")
     box(-100, 0, -100, D, 0, H, "wall_left")
@@ -119,11 +155,18 @@ def build():
     box(0, DEPTH, ym - T / 2, ym + T / 2, PLINTH, ANT, "carcass")
     # Зр – выдвижное поворотное зеркало (в нише, видно торцом)
     yc = (ym + T / 2 + ye - T) / 2
-    # на 3D зеркало показано выдвинутым в проход (рабочее положение)
-    mx = DEPTH + 20
+    # на статичном 3D зеркало выдвинуто в проход; в интерактивной модели – в нише
+    mx = 40 if interactive else DEPTH + 20
+    if interactive:
+        # выдвигается на 600 по x, затем поворачивается вокруг внутреннего края
+        group("mirror", type="mirror", dir=[1, 0], travel=DEPTH, pivot=[mx, yc])
     box(mx, mx + MIR_D, yc - MIR_T / 2, yc + MIR_T / 2, MIR_Z, MIR_Z + MIR_H, "mirror_frame")
     box(mx + 20, mx + MIR_D - 20, yc + MIR_T / 2, yc + MIR_T / 2 + 3, MIR_Z + 20, MIR_Z + MIR_H - 20, "mirror")
-    box(DEPTH - 40, mx + 20, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")
+    if interactive:
+        end_group()
+        box(20, DEPTH, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")   # направляющая
+    else:
+        box(DEPTH - 40, mx + 20, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")
     # Л1 – ящики + полки
     y0, y1 = yp + T / 2, ym - T / 2
     drawers_side(y0, y1, DEPTH, +1)
@@ -163,8 +206,11 @@ def build():
         box(xf, W, y0, y1, z, z + T, "carcass")
     box(xf + 4, xf + 22, y0, y1, 1870, 1880, "led")
     yc = (y0 + y1) / 2
+    if interactive:
+        group("board", type="board", dir=[-1, 0], travel=520)
     box(xf + 110, xf + 110 + BOARD_W, yc - BOARD_T / 2, yc + BOARD_T / 2,
         PLINTH + T + 10, PLINTH + T + 10 + BOARD_L, "board")
+    end_group()
     box(xf + 200, xf + 420, yc - 55, yc + 55, 1576, 1700, "iron")
     box(W - 20, W, yc - 40, yc + 40, 1680, 1760, "socket")
 
