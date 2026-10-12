@@ -5,7 +5,7 @@
 """
 from sheet import (T, DT, W, X1, X2, C1, C3, DEPTH, CD, PL, B0, ZA, A_SHELF, ZTOP, H, CEIL, PANEL,
                    L_SHELVES, M_SHELVES, R_SHELF, RAIL_UP, RAIL_LOW, DOOR_Z, DOOR_GAP, DOORS,
-                   DESK_TOP, DESK_T, DESK_X, DESK_Y, PED_Y, PED_H, DRW, DRW_GAP)
+                   DESK_TOP, DESK_T, DESK_X, DESK_Y, PED_Y, PED_H, DRW, DRW_GAP, LOW_DOOR)
 
 boxes = []
 groups = {}
@@ -79,12 +79,18 @@ def build():
             box(a, a + 12, DEPTH - 6, DEPTH + 1, *DOOR_Z, "profile")
         end()
 
-    # антресоль: рейчатые фасады HIWOOD (4 створки по 600)
+    # фасад под столом (левая секция, ниже столешницы), петли слева
+    group("door_low", type="hinge", pivot=[0, DEPTH], angle=-85)
+    box(1, X1 - 1, CD, DEPTH, *LOW_DOOR, "facade")
+    box(X1 - 14, X1 - 2, DEPTH - 6, DEPTH + 1, LOW_DOOR[0], LOW_DOOR[1], "profile")
+    end()
+
+    # антресоль: фасады цвета нижних с фрезеровкой «волна» (4 створки по 600)
     for i in range(4):
         x0, x1 = i * 600, (i + 1) * 600
         hx, ang = (x0, -85) if i % 2 == 0 else (x1, 85)
         group("top%d" % i, type="hinge", pivot=[hx, DEPTH], angle=ang)
-        box(x0 + 1, x1 - 1, CD, DEPTH, PANEL[0] + 2, PANEL[1] - 2, "flutes")
+        box(x0 + 1, x1 - 1, CD, DEPTH, PANEL[0] + 2, PANEL[1] - 2, "wave")
         end()
 
     # стол: столешница из торца левой секции и тумба с 4 ящиками

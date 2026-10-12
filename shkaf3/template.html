@@ -48,7 +48,7 @@
 <header>
   <div class="card">
     <h1>Шкаф со столом</h1>
-    <div class="sub">2400 × 600 × 2583 · панель HIWOOD LV129 · стол 1200 × 600</div>
+    <div class="sub">2400 × 600 × 2583 · стол 1200 × 600 · верхние фасады «волна»</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
     правая кнопка или два пальца — сдвиг. Нажмите на дверь, фасад антресоли или ящик стола.</div>
@@ -97,7 +97,7 @@ const SPECS = {
   back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
   facade:  { color: 0xffffff, map: 'stone', tile: 700, rough: 0.35, env: 0.8 },
   profile: { color: 0x1b1a19, rough: 0.35, metal: 0.6 },
-  flutes:  { color: 0x6a645f, map: 'flutes', tile: 30, rough: 0.6 },
+  wave:    { color: 0xffffff, map: 'wave', tile: 600, rough: 0.4, env: 0.8 },
   woodshelf: { color: 0xd2a571, map: 'board', tile: 300, rough: 0.55 },
   walnut:  { color: 0x6b4630, map: 'board', tile: 250, rough: 0.45 },
   carcass_s: { color: 0xe6e1da, map: 'board', tile: 400, rough: 0.7 },
@@ -112,14 +112,23 @@ const SPECS = {
   floor:   { color: 0xffffff, map: 'parquet', tile: 1200, rough: 0.5, shadow: false },
   door_entry: { color: 0x3a3531, rough: 0.45 },
 };
-// рейки HIWOOD: вертикальные ламели с тенью
-KIT.MAPS.flutes = (() => {
-  const c = document.createElement('canvas'); c.width = 64; c.height = 8;
+// верхние фасады: светлые, фрезеровка «волна» – вертикальные волнистые пазы (шаг 60 мм на 600 мм)
+KIT.MAPS.wave = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 1024;
   const g = c.getContext('2d');
-  const gr = g.createLinearGradient(0, 0, 64, 0);
-  gr.addColorStop(0, '#1c1a19'); gr.addColorStop(0.12, '#6f6862'); gr.addColorStop(0.5, '#8a837c');
-  gr.addColorStop(0.88, '#5d5752'); gr.addColorStop(1, '#1c1a19');
-  g.fillStyle = gr; g.fillRect(0, 0, 64, 8);
+  g.drawImage(KIT.MAPS.stone.image, 0, 0, 1024, 1024);
+  const step = 1024 / 10, amp = 20;
+  for (let k = 0; k < 10; k++) {
+    const x0 = k * step + step / 2;
+    for (const [dx, col, w] of [[-3, 'rgba(90,82,76,0.55)', 5], [3, 'rgba(255,255,255,0.7)', 3]]) {
+      g.strokeStyle = col; g.lineWidth = w; g.beginPath();
+      for (let y = 0; y <= 1024; y += 8) {
+        const x = x0 + dx + amp * Math.sin(y / 1024 * Math.PI * 6);
+        y ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.stroke();
+    }
+  }
   const tx = new THREE.CanvasTexture(c);
   tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
   return tx;

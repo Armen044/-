@@ -71,6 +71,7 @@ CORPUS = "#e4dfd8"
 WOOD = "#c79a64"
 WALNUT = "#5a3d2b"
 FLUTE = "#3b3836"
+LOW_DOOR = (20, 735)                 # фасад под столом (левая секция), петли слева
 
 
 class V:
@@ -97,12 +98,20 @@ def hangers(v, x0, x1, z, length):
         rect(cx - hw / 2, v.Z(z) + 1.2, hw, length * S - 1.2, fill="#ece8e3", stroke="#b5aca2", sw=0.12)
 
 
-def flutes(v, x0, x1, z0, z1):
-    v.box(x0, x1, z0, z1, fill=FLUTE, sw=0.3)
-    x = x0 + 15
-    while x < x1:
-        line(v.X(x), v.Z(z1) + 0.2, v.X(x), v.Z(z0) - 0.2, w=0.18, color="#6d6864")
-        x += 30
+def waves(v, x0, x1, z0, z1):
+    """Верхние фасады: цвет как у нижних, фрезеровка «волна» (вертикальные волнистые пазы)."""
+    for k in range(4):
+        a, b = x0 + k * 600 + 1, x0 + (k + 1) * 600 - 1
+        v.box(a, b, z0 + 2, z1 - 2, fill=FACADE, sw=0.3)
+        x = a + 30
+        while x < b - 10:
+            pts = []
+            z = z0 + 10
+            while z <= z1 - 10:
+                pts.append(f"{v.X(x + 12 * math.sin((z - z0) / 110 * math.pi)):.2f},{v.Z(z):.2f}")
+                z += 10
+            e(f'<polyline points="{" ".join(pts)}" fill="none" stroke="#a49c95" stroke-width="0.22"/>')
+            x += 60
 
 
 def led(v, x, z0, z1):
@@ -151,9 +160,10 @@ def view_facade(ox, fy):
         far = x1 if hinge == x0 else x0
         line(v.X(hinge), v.Z(DOOR_Z[0]), v.X(far), v.Z(sum(DOOR_Z) / 2), w=0.12, color="#999", dash="1 0.8")
         line(v.X(hinge), v.Z(DOOR_Z[1]), v.X(far), v.Z(sum(DOOR_Z) / 2), w=0.12, color="#999", dash="1 0.8")
-    flutes(v, 0, W, *PANEL)
-    # стол в торец: столешница и боковина тумбы
+    waves(v, 0, W, *PANEL)
+    # стол в торец: столешница и боковина тумбы; за ней – фасад под столом (пунктир)
     v.box(0, C1, 0, PED_H, fill="#e9e5e0", sw=0.3)
+    v.box(2, C1 - 2, *LOW_DOOR, fill="none", sw=0.3, dash="1.2 0.8")
     v.box(0, C1, DESK_TOP - DESK_T, DESK_TOP, fill=WALNUT, sw=0.3)
     yb = v.Z(0) + 9
     for a, b in ((0, X1), (X1, X2), (X2, W)):
@@ -165,7 +175,8 @@ def view_facade(ox, fy):
     dim_v(v.Z(CEIL), v.Z(0), xl - 6, str(CEIL))
     xr = v.X(W) + 5
     dim_v(v.Z(DOOR_Z[1]), v.Z(DOOR_Z[0]), xr, "1965", ext_from=v.X(W), size=1.9)
-    leader(v.X(W * 0.6), v.Z(2350), v.X(W + 150), v.Z(2550), "декоративная панель\nHIWOOD LV129 Long NP", size=1.8)
+    leader(v.X(W * 0.6), v.Z(2350), v.X(W + 150), v.Z(2550), "верхние фасады: цвет как у нижних,\nфрезеровка «волна»", size=1.8)
+    leader(v.X(150), v.Z(300), v.X(-250), v.Z(450), "фасад под столом\n(за тумбой, пунктир)", anchor="end", size=1.8)
     leader(v.X(X2), v.Z(1300), v.X(W + 150), v.Z(1500), "профиль-ручка\nна стыке дверей", size=1.8)
     leader(v.X(300), v.Z(DESK_TOP - 10), v.X(-250), v.Z(1050), "стол 1200 × 600\n(в торец)", anchor="end", size=1.8)
     return v
@@ -220,7 +231,8 @@ def view_side(ox, fy):
     rect(v.X(-100), v.Z(CEIL + 100), 100 * S, (CEIL + 180) * S, fill="url(#hatch)", sw=0.25)
     line(v.X(-100), v.Z(0), v.X(L + 200), v.Z(0), w=0.45)
     v.box(0, CD, PL, H, fill="#ece7e1", sw=0.3)                         # боковина шкафа
-    v.box(0, DEPTH, *PANEL, fill=FLUTE, sw=0.3)
+    v.box(CD, DEPTH, *PANEL, fill=FACADE, sw=0.3)
+    v.box(0, CD, 2000, H, fill="#ece7e1", sw=0.3)
     v.box(CD, DEPTH, *DOOR_Z, fill=FACADE, sw=0.3)
     v.box(DESK_Y[0], DESK_Y[1], DESK_TOP - DESK_T, DESK_TOP, fill=WALNUT, sw=0.3)
     v.box(PED_Y[0], PED_Y[1], 0, PED_H, fill="#e9e5e0", sw=0.3)
@@ -260,6 +272,10 @@ def view_plan(ox, oy):
           f'fill="none" stroke="#777" stroke-width="0.18" stroke-dasharray="1 0.7"/>')
     a, b = P(DESK_X[0], DESK_Y[0])
     rect(a, b, C1 * S, 1200 * S, fill="#8a6a55", sw=0.3)
+    hx, hy = P(0, DEPTH)
+    r = C1 * S
+    e(f'<path d="M{hx:.2f},{hy + r:.2f} A{r:.2f},{r:.2f} 0 0 0 {hx + r:.2f},{hy:.2f}" fill="none" stroke="#fff" '
+      f'stroke-width="0.2" stroke-dasharray="1 0.7"/>')
     a, b = P(DESK_X[0], PED_Y[0])
     rect(a, b, C1 * S, 400 * S, fill="none", sw=0.25, dash="1.2 0.8")
     text(*P(300, DESK_Y[0] + 400), "стол", size=2.2, fill="#fff", weight="bold")
@@ -275,12 +291,13 @@ def view_plan(ox, oy):
 def notes(x, y):
     text(x, y, "ПРИМЕЧАНИЯ", size=3.0, weight="bold", anchor="start")
     rows = [
-        f"Шкаф {W} × {DEPTH} × {H}, цоколь 50; над ним декоративная рейчатая панель",
-        "      HIWOOD LV129 Long NP высотой 660 по всей ширине (до потолка 2660).",
+        f"Шкаф {W} × {DEPTH} × {H}, цоколь 50; антресоль закрыта 4 фасадами по 600,",
+        "      высота 660 (до потолка 2660): цвет как у нижних, фрезеровка «волна».",
         "Секции: 600 открытые полки с LED (снизу 311 / 311, выше 300 × 3 и 315),",
         "      600 полки за дверью (≈306), 1200 две штанги (зоны 958 / ≈902).",
         "Антресоль 600: два отделения по 276, справа — с вертикальной подсветкой.",
         "Двери: 3 распашные по 600, высота 1965, профиль-ручка на стыках.",
+        "Под столом — фасад на левую секцию (600 × 715), петли слева, открывание под стол.",
         "Стол: столешница 1200 × 600 × 26 (орех), высота 765,66, выходит из шкафа",
         "      в торец левой секции; тумба 4 ящика по 167,87 (ширина 400* — принято).",
         "Материалы фасадов/корпуса уточнить; фасады показаны в светлом камне.",
@@ -298,7 +315,7 @@ def title_block():
     text(bx + bw / 2, by + 6, "ШКАФ СО СТОЛОМ", size=3.8, weight="bold")
     text(bx + bw / 2, by + 10.5, "стена 25–26, по эскизам заказчика", size=2.3)
     text(bx + 3, by + 19, f"шкаф {W} × {DEPTH} × {H}, стол 1200 × 600", size=2.3, anchor="start")
-    text(bx + 3, by + 25, "панель HIWOOD LV129, столешница орех", size=2.3, anchor="start")
+    text(bx + 3, by + 25, "фасады: низ гладкие, верх «волна»", size=2.3, anchor="start")
     text(bx + 3, by + 31, "Размеры в мм", size=2.3, anchor="start")
     text(bx + 100, by + 20, "Масштаб", size=2.2)
     text(bx + 100, by + 26, "1:20", size=3.4, weight="bold")
