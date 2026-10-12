@@ -14,7 +14,7 @@ const { chromium } = require('/opt/node-tools/node_modules/playwright');
   await p.click('#bDoors');
   await p.waitForTimeout(2000);
   await p.screenshot({ path: out + '/k2.png' });
-  await p.click('#bShoes'); await p.click('#bSide');
+  await p.click('#bShoes'); await p.click('#bLid'); await p.click('#bSide');
   await p.waitForTimeout(2500);
   await p.screenshot({ path: out + '/k3.png' });
   await p.click('#bDoors');

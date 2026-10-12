@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Чертёж распашного шкафа с ящиками (по эскизу заказчика), лист А3, масштаб 1:20.
+"""Чертёж распашного шкафа с ящиками и тумбы (по эскизу заказчика), лист А2, масштаб 1:20.
 
 Высоты взяты с эскиза: антресоль 450, полки с шагом 300, блок ящиков 803 (4 × 170,75),
 справа два яруса штанг (зоны 784 и 951, штанга на Н=1800). Цоколь 80, ЛДСП 16.
@@ -45,7 +45,7 @@ RAIL_LOW = R_MID - 47   # нижняя штанга = 1000
 
 # ящики (внутренние, за распашными дверями)
 DR_H = 170.75
-DR_GAP = 11.25
+DR_GAP = 30              # зазор между фасадами ящиков = место ручки
 DR_SET = 30             # отступ фасадов ящиков от переднего края корпуса
 DR_Z = [B0 + 30 + i * (DR_H + DR_GAP) for i in range(4)]
 
@@ -53,17 +53,23 @@ DR_Z = [B0 + 30 + i * (DR_H + DR_GAP) for i in range(4)]
 DOOR_GAP = 3
 SPLIT = ZA + T / 2      # стык нижних и антресольных дверей
 GROOVE = (230, 2420)    # фрезеровка-ручка на кромках: от – до (по высоте)
-GROOVE_W = 30           # зазор между фасадами на стыках = место ручки
-HGAP = GROOVE_W
-MILL = 12               # ширина розовой фрезеровки на кромке фасада
-PINK = "#eba3b3"
-DOOR_W = (W - 3 * HGAP) / 4      # ширина створки = 377,5
+GROOVE_W = 30           # ширина фрезерованного паза-ручки на стыке
+MILL = GROOVE_W / 2     # часть паза на каждой створке
+PINK = "#eba3b3"        # фрезеровка – розовая эмаль
 
 
 def door_x(i):
-    """Края i-й створки (зазор 30 на каждом из трёх стыков)."""
-    x0 = i * (DOOR_W + HGAP)
-    return x0, x0 + DOOR_W
+    """Края i-й створки (зазор между створками 3 мм)."""
+    return i * W / 4 + DOOR_GAP / 2, (i + 1) * W / 4 - DOOR_GAP / 2
+
+
+# тумба слева с откидной вверх крышкой и фальш-планки
+FILL = 20               # фальш-планки: слева у тумбы и справа у шкафа
+TB_W = 1565             # ширина тумбы без фальш-планки
+TB_H = 500              # высота тумбы
+TB_D = DEPTH            # глубина тумбы (ПРИНЯТО = глубине шкафа, уточнить)
+TB_LID = 18             # крышка
+TB_X0 = -TB_W           # левый край тумбы (тумба вплотную к шкафу)
 
 CUT = "#7d6c5b"
 FACADE = "#d9cfc9"
@@ -98,52 +104,72 @@ def led(v, x, z0, z1):
     rect(v.X(x) - 0.35, v.Z(z1), 0.7, (z1 - z0) * S, fill="#f0a800", stroke="none")
 
 
-def handle_gap(v, xa, xb, z0, z1):
-    """Стык створок: зазор 30 (виден корпус) и розовая фрезеровка на кромках со скруглённым верхом."""
-    v.box(xa, xb, PL + 2, H - 2, fill="#8f857d", sw=0.15)
-    ga, gb = GROOVE
-    w = (xb - xa) + 2 * MILL
+def groove(v, x, z0, z1, w=GROOVE_W):
+    """Фрезерованный паз-ручка на стыке створок (розовая эмаль), верх скруглён."""
     r = w * S / 2
-    x0 = v.X(xa - MILL)
-    e(f'<path d="M{x0:.2f},{v.Z(ga):.2f} L{x0:.2f},{v.Z(gb) + r:.2f} A{r:.2f},{r:.2f} 0 0 1 {x0 + 2 * r:.2f},{v.Z(gb) + r:.2f} '
-      f'L{x0 + 2 * r:.2f},{v.Z(ga):.2f} z" fill="{PINK}" stroke="#b5737f" stroke-width="0.2"/>')
-    v.box(xa, xb, ga, gb - (xb - xa) / 2, fill="#8f857d", sw=0.1)
+    x0 = v.X(x) - r
+    e(f'<path d="M{x0:.2f},{v.Z(z0):.2f} L{x0:.2f},{v.Z(z1) + r:.2f} A{r:.2f},{r:.2f} 0 0 1 {x0 + 2 * r:.2f},{v.Z(z1) + r:.2f} '
+      f'L{x0 + 2 * r:.2f},{v.Z(z0):.2f} z" fill="{PINK}" stroke="#b5737f" stroke-width="0.2"/>')
+
+
+def draw_tumba(v):
+    """Тумба на фасаде: цоколь, две передние панели, крышка; фальш-планка слева."""
+    v.box(TB_X0 + 50, -50, 0, PL, fill="#a99d93")
+    half = TB_W / 2
+    for k in range(2):
+        x0, x1 = TB_X0 + k * half + 1.5, TB_X0 + (k + 1) * half - 1.5
+        v.box(x0, x1, PL + 2, TB_H - TB_LID - 2, fill=FACADE, sw=0.3)
+        v.box(x0, x1, TB_H - TB_LID, TB_H, fill="#cbbfb8", sw=0.3)          # крышка
+    v.box(TB_X0 - FILL, TB_X0, 0, TB_H, fill="#cbbfb8", sw=0.25)             # фальш-планка
+    v.box(W, W + FILL, PL, H, fill="#cbbfb8", sw=0.25)                       # фальш-планка справа
 
 
 # ---------------------------------------------------------------------------
 def view_facade(ox, fy):
     v = V(ox, fy)
-    text(v.X(W / 2), v.Z(H) - 13, "ФАСАД", size=3.4, weight="bold")
-    text(v.X(W / 2), v.Z(H) - 9, "двери закрыты", size=2.1)
-    line(v.X(-150), v.Z(0), v.X(W + 150), v.Z(0), w=0.45)
-    v.box(50, W - 50, 0, PL, fill="#a99d93")                     # цоколь
+    x_l, x_r = TB_X0 - FILL, W + FILL
+    text(v.X((x_l + x_r) / 2), v.Z(H) - 13, "ФАСАД", size=3.4, weight="bold")
+    text(v.X((x_l + x_r) / 2), v.Z(H) - 9, "тумба, шкаф, фальш-планки 20", size=2.1)
+    line(v.X(x_l - 150), v.Z(0), v.X(x_r + 150), v.Z(0), w=0.45)
+    draw_tumba(v)
+    v.box(50, W - 50, 0, PL, fill="#a99d93")                     # цоколь шкафа
     dw = W / 4
     for i in range(4):
         x0, x1 = door_x(i)
         v.box(x0, x1, PL + 2, SPLIT - DOOR_GAP / 2, fill=FACADE, sw=0.3)
         v.box(x0, x1, SPLIT + DOOR_GAP / 2, H - 2, fill=FACADE, sw=0.3)
     for k in (1, 2, 3):
-        handle_gap(v, door_x(k - 1)[1], door_x(k)[0], *GROOVE)
+        groove(v, k * dw, *GROOVE)
     # раскрытие (условно): створки 1 и 3 – петли слева, 2 и 4 – справа
-    for i, (hinge, far) in enumerate(((0, door_x(0)[1]), (door_x(1)[1], door_x(1)[0]),
-                                      (door_x(2)[0], door_x(2)[1]), (W, door_x(3)[0]))):
+    for hinge, far in ((0, dw), (2 * dw, dw), (2 * dw, 3 * dw), (W, 3 * dw)):
         for z0, z1 in ((PL + 2, SPLIT), (SPLIT, H - 2)):
             line(v.X(hinge), v.Z(z0), v.X(far), v.Z((z0 + z1) / 2), w=0.12, color="#999", dash="1 0.8")
             line(v.X(hinge), v.Z(z1), v.X(far), v.Z((z0 + z1) / 2), w=0.12, color="#999", dash="1 0.8")
+    # крышка тумбы открывается вверх (условно)
+    for k in range(2):
+        x0 = TB_X0 + k * TB_W / 2
+        line(v.X(x0), v.Z(TB_H), v.X(x0 + TB_W / 4), v.Z(TB_H + 260), w=0.15, color="#999", dash="1 0.8")
+        line(v.X(x0 + TB_W / 2), v.Z(TB_H), v.X(x0 + TB_W / 4), v.Z(TB_H + 260), w=0.15, color="#999", dash="1 0.8")
     yb = v.Z(0) + 9
     for i in range(4):
-        x0, x1 = door_x(i)
-        dim_h(v.X(x0), v.X(x1), yb, "377,5", ext_from=v.Z(0) + 1, size=1.7)
-        if i < 3:
-            dim_h(v.X(x1), v.X(door_x(i + 1)[0]), yb - 4, "30", ext_from=v.Z(0) + 1, size=1.5)
-    dim_h(v.X(0), v.X(W), yb + 6, f"{W}*")
-    xl = v.X(0) - 5
-    for a, b in ((0, PL), (PL, SPLIT), (SPLIT, H)):
-        dim_v(v.Z(b), v.Z(a), xl, str(round(b - a)), ext_from=v.X(0), size=2.0)
+        dim_h(v.X(i * dw), v.X((i + 1) * dw), yb, str(round(dw)), ext_from=v.Z(0) + 1, size=1.8)
+    dim_h(v.X(TB_X0), v.X(0), yb, f"{TB_W} тумба", ext_from=v.Z(0) + 1, size=1.8)
+    dim_h(v.X(TB_X0 - FILL), v.X(TB_X0), yb - 4, "20", ext_from=v.Z(0) + 1, size=1.4)
+    dim_h(v.X(W), v.X(W + FILL), yb - 4, "20", ext_from=v.Z(0) + 1, size=1.4)
+    dim_h(v.X(0), v.X(W), yb + 6, f"{W}* шкаф")
+    dim_h(v.X(x_l), v.X(x_r), yb + 12, f"{x_r - x_l}* общий")
+    xl = v.X(x_l) - 5
+    for a, b in ((0, TB_H), (TB_H, H)):
+        dim_v(v.Z(b), v.Z(a), xl, str(round(b - a)), ext_from=v.X(x_l), size=2.0)
     dim_v(v.Z(H), v.Z(0), xl - 6, str(H))
-    leader(v.X(door_x(0)[1] - MILL / 2), v.Z(1700), v.X(W + 120), v.Z(1950),
-           "зазор 30 — место ручки,\nфрезеровка кромок\n(розовая эмаль)", size=1.8)
-    leader(v.X(dw * 3.5), v.Z(1200), v.X(W + 120), v.Z(1350), "фасад МДФ,\nпокраска эмаль", size=1.8)
+    xr = v.X(x_r) + 5
+    for a, b in ((0, PL), (PL, SPLIT), (SPLIT, H)):
+        dim_v(v.Z(b), v.Z(a), xr, str(round(b - a)), ext_from=v.X(x_r), size=1.8)
+    leader(v.X(dw), v.Z(1700), v.X(TB_X0 + 200), v.Z(2350),
+           "ручка фрезерованная (паз 30),\nрозовая эмаль", size=1.8)
+    leader(v.X(dw * 3.5), v.Z(1200), v.X(TB_X0 + 200), v.Z(1700), "фасад МДФ, эмаль", size=1.8)
+    leader(v.X(TB_X0 + TB_W / 4), v.Z(TB_H - 9), v.X(TB_X0 + 200), v.Z(1100),
+           "тумба: крышка\nоткрывается вверх", size=1.8)
     return v
 
 
@@ -173,10 +199,6 @@ def view_inside(ox, fy):
     # ящики
     for zz in DR_Z:
         v.box(lx0 + 4, lx1 - 4, zz, zz + DR_H, fill="#ddd3c9", sw=0.3)
-        cx = v.X((lx0 + lx1) / 2)
-        r = 60 * S
-        e(f'<path d="M{cx - r:.2f},{v.Z(zz + DR_H):.2f} A{r:.2f},{r * 0.6:.2f} 0 0 0 {cx + r:.2f},{v.Z(zz + DR_H):.2f}" '
-          f'fill="#f6f3ef" stroke="#555" stroke-width="0.2"/>')
     # штанги и одежда справа
     for zr, ln in ((RAIL_UP, 700), (RAIL_LOW, 820)):
         hangers(v, rx0, rx1, zr, ln)
@@ -211,7 +233,10 @@ def view_inside(ox, fy):
     dim_h(v.X(MID), v.X(W), yb, str(round(MID)), ext_from=v.Z(ZB) + 1, size=2.0)
     dim_h(v.X(0), v.X(W), yb + 6, f"{W}*")
     leader(v.X(lx0 + 12), v.Z(1400), v.X(-260), v.Z(1500), "вертикальная\nподсветка\n(от открывания)", anchor="end", size=1.7)
-    leader(v.X(MID / 2 + 300), v.Z(DR_Z[1] + 80), v.X(-260), v.Z(500), "ящики 4 × 170,75\nзазор 11,25;\nвырез под ручку", anchor="end", size=1.7)
+    for zz in DR_Z[:-1]:                                         # зазоры 30 между ящиками
+        dim_v(v.Z(zz + DR_H + DR_GAP), v.Z(zz + DR_H), v.X(lx1) - 2.5, "30", size=1.3)
+    leader(v.X(MID / 2 + 300), v.Z(DR_Z[1] + DR_H + 15), v.X(-260), v.Z(500),
+           "ящики 4 × 170,75;\nзазор 30 между\nфасадами — место ручки", anchor="end", size=1.7)
     return v
 
 
@@ -246,13 +271,55 @@ def view_section(ox, fy):
     return v
 
 
+def view_tumba(ox, fy):
+    """Разрез тумбы: крышка открывается вверх (газлифт, петли у стены)."""
+    v = V(ox, fy)                       # x – глубина: 0 стена, TB_D фронт
+    text(v.X(TB_D / 2), v.Z(H) - 13, "ТУМБА — РАЗРЕЗ 2–2", size=3.4, weight="bold")
+    text(v.X(TB_D / 2), v.Z(H) - 9, "крышка открывается вверх", size=2.1)
+    rect(v.X(-100), v.Z(1400), 100 * S, 1400 * S, fill="url(#hatch)", sw=0.25)
+    line(v.X(-100), v.Z(0), v.X(TB_D + 200), v.Z(0), w=0.45)
+    v.box(0, TB_D - 50, 0, PL, fill="#a99d93")                    # цоколь
+    v.box(0, TB_D - DT, PL, PL + T, fill=CUT)                      # дно
+    v.box(0, 4, PL, TB_H - TB_LID, fill="#777")                    # задняя стенка
+    v.box(TB_D - DT, TB_D, PL + 2, TB_H - TB_LID - 2, fill=FACADE, sw=0.3)   # передняя панель
+    v.box(0, TB_D, TB_H - TB_LID, TB_H, fill="#cbbfb8", sw=0.3)    # крышка (закрыта)
+    # крышка открыта ~80°, ось у стены
+    import math
+    a = math.radians(80)
+    px, pz = 0, TB_H
+    pts = [(0, 0), (TB_D, 0), (TB_D, -TB_LID), (0, -TB_LID)]
+    poly = " ".join(f"{v.X(px + u * math.cos(a) + w * math.sin(a)):.2f},"
+                    f"{v.Z(pz + u * math.sin(a) - w * math.cos(a)):.2f}" for u, w in pts)
+    e(f'<polygon points="{poly}" fill="none" stroke="#555" stroke-width="0.25" stroke-dasharray="1 0.7"/>')
+    r = TB_D * S
+    e(f'<path d="M{v.X(TB_D):.2f},{v.Z(TB_H):.2f} A{r:.2f},{r:.2f} 0 0 0 {v.X(TB_D * math.cos(a)):.2f},{v.Z(TB_H + TB_D * math.sin(a)):.2f}" '
+      f'fill="none" stroke="#999" stroke-width="0.15" stroke-dasharray="0.8 0.6"/>')
+    line(v.X(40), v.Z(PL + 200), v.X(120), v.Z(TB_H + 200), w=0.4, color="#555")            # газлифт
+    yb = v.Z(0) + 9
+    dim_h(v.X(0), v.X(TB_D), yb, f"{TB_D}*", ext_from=v.Z(0) + 1, size=2.0)
+    xr = v.X(TB_D) + 5
+    for a0, b0 in ((0, PL), (PL, TB_H - TB_LID), (TB_H - TB_LID, TB_H)):
+        dim_v(v.Z(b0), v.Z(a0), xr, str(round(b0 - a0)), ext_from=v.X(TB_D), size=1.6)
+    dim_v(v.Z(TB_H), v.Z(0), xr + 6, str(TB_H), size=2.0)
+    leader(v.X(80), v.Z(PL + 300), v.X(-260), v.Z(PL + 120), "газлифт", anchor="end", size=1.7)
+    return v
+
+
 def view_plan(ox, oy):
     def P(x, y):
         return ox + x * S, oy + y * S
-    text(ox + W / 2 * S, oy - 8, "ПЛАН", size=3.4, weight="bold")
-    rect(*P(-100, -100), (W + 200) * S, 100 * S, fill="url(#hatch)", sw=0.25)
+    x_l, x_r = TB_X0 - FILL, W + FILL
+    text(ox + (x_l + x_r) / 2 * S, oy - 8, "ПЛАН", size=3.4, weight="bold")
+    rect(*P(x_l - 100, -100), (x_r - x_l + 200) * S, 100 * S, fill="url(#hatch)", sw=0.25)
     a, b = P(0, 0)
     rect(a, b, W * S, CD * S, fill="#f1ece6", sw=0.3)
+    a, b = P(TB_X0, 0)
+    rect(a, b, TB_W * S, TB_D * S, fill="#e6dcd4", sw=0.3)                      # тумба (крышка)
+    line(*P(TB_X0 + TB_W / 2, 0), *P(TB_X0 + TB_W / 2, TB_D), w=0.25)
+    text(*P(TB_X0 + TB_W / 2, TB_D / 2 + 30), "тумба, крышка вверх", size=1.9)
+    for x in (TB_X0 - FILL, W):                                                  # фальш-планки
+        a, b = P(x, DEPTH - 100)
+        rect(a, b, FILL * S, 100 * S, fill="#cbbfb8", sw=0.25)
     line(*P(MID, 0), *P(MID, CD), w=0.35)
     line(*P(MID + 20, CD / 2), *P(W - 20, CD / 2), w=0.4, color="#555", dash="2 0.8")
     dw = W / 4
@@ -260,8 +327,8 @@ def view_plan(ox, oy):
         x0, x1 = door_x(i)
         a, b = P(x0, CD)
         rect(a, b, (x1 - x0) * S, DT * S, fill=FACADE, stroke="#111", sw=0.25)
-    r = DOOR_W * S
-    for hinge, sgn in ((0, 1), (door_x(1)[1], -1), (door_x(2)[0], 1), (W, -1)):
+    r = dw * S
+    for hinge, sgn in ((0, 1), (MID, -1), (MID, 1), (W, -1)):
         hx, hy = P(hinge, DEPTH)
         line(hx, hy, hx, hy + r, w=0.25, color="#555")
         sweep = 0 if sgn > 0 else 1
@@ -270,23 +337,34 @@ def view_plan(ox, oy):
     cx = P(MID / 2, 0)[0]
     line(cx, oy - 6, cx, oy + 950 * S, w=0.3, color="#1f4e8c", dash="5 1 1 1")
     text(cx + 2.5, oy - 5, "1", size=2.6, weight="bold", fill="#1f4e8c")
-    dim_h(P(0, 0)[0], P(W, 0)[0], oy + 1050 * S, f"{W}*", size=2.0)
-    dim_v(oy, oy + DEPTH * S, P(W, 0)[0] + 4, f"{DEPTH}*", ext_from=P(W, 0)[0], size=2.0)
+    cx = P(TB_X0 + TB_W / 4, 0)[0]
+    line(cx, oy - 6, cx, oy + 750 * S, w=0.3, color="#1f4e8c", dash="5 1 1 1")
+    text(cx + 2.5, oy - 5, "2", size=2.6, weight="bold", fill="#1f4e8c")
+    yd = oy + 1080 * S
+    dim_h(P(x_l, 0)[0], P(TB_X0, 0)[0], yd, "20", size=1.4)
+    dim_h(P(TB_X0, 0)[0], P(0, 0)[0], yd, str(TB_W), size=2.0)
+    dim_h(P(0, 0)[0], P(W, 0)[0], yd, f"{W}*", size=2.0)
+    dim_h(P(W, 0)[0], P(x_r, 0)[0], yd, "20", size=1.4)
+    dim_h(P(x_l, 0)[0], P(x_r, 0)[0], yd + 6, f"{x_r - x_l}*", size=2.0)
+    dim_v(oy, oy + DEPTH * S, P(x_r, 0)[0] + 4, f"{DEPTH}*", ext_from=P(x_r, 0)[0], size=2.0)
 
 
 def notes(x, y):
     text(x, y, "ПРИМЕЧАНИЯ", size=3.0, weight="bold", anchor="start")
     rows = [
         "Корпус — ЛДСП Egger 16 мм, цвет «Кашемир»; цоколь 80.",
-        "Фасады — МДФ 18 мм, эмаль; 4 нижние + 4 антресольные двери по 377,5 мм.",
-        "Между фасадами на стыках зазор 30 — место ручки; кромки фрезерованы, розовая эмаль.",
+        "Фасады — МДФ 18 мм, эмаль; 4 нижние + 4 антресольные двери, зазор 3 мм.",
+        "Ручка фрезерованная: паз 30 мм на стыках створок, розовая эмаль, верх скруглён.",
         "Левый отсек: антресоль 450, 4 полки с шагом 300, блок ящиков 803:",
-        "      4 внутренних ящика, фасады 170,75, зазор 11,25, отступ 30 от края,",
-        "      вырез под ручку, направляющие полного выдвижения 500 мм.",
+        "      4 внутренних ящика, фасады 170,75, зазор между ними 30 — место ручки;",
+        "      отступ 30 от края, направляющие полного выдвижения 500 мм.",
         "Правый отсек: антресоль 450, полка 300, штанга Н=1800 (зона 784),",
         "      полка, нижняя штанга Н=1000 (зона 951).",
         "Вертикальная LED-подсветка в каждом отсеке, включение от открывания.",
-        "* Ширина 1600 и глубина 600 на эскизе не указаны — ПРИНЯТЫ, уточнить.",
+        "Тумба слева: 1565 × 500 (без фальш-планки), крышка открывается вверх",
+        "      на газлифтах, петли у стены; цоколь 80.",
+        "Фальш-планки 20 мм: слева у тумбы (Н=500) и справа у шкафа (во всю высоту).",
+        "* Ширина шкафа 1600 и глубина 600 (шкаф и тумба) не указаны — ПРИНЯТЫ, уточнить.",
         "Размеры в свету между полками — как на эскизе заказчика.",
     ]
     for i, s in enumerate(rows):
@@ -294,33 +372,34 @@ def notes(x, y):
 
 
 def title_block():
-    bx, by, bw, bh = 290, 252, 120, 38
+    bx, by, bw, bh = 455, 372, 125, 38
     rect(bx, by, bw, bh, sw=0.5)
     line(bx, by + 13, bx + bw, by + 13, w=0.3)
     line(bx + 80, by + 13, bx + 80, by + bh, w=0.3)
-    text(bx + bw / 2, by + 6, "ШКАФ С ЯЩИКАМИ", size=3.8, weight="bold")
-    text(bx + bw / 2, by + 10.5, "распашной, по эскизу заказчика", size=2.3)
-    text(bx + 3, by + 19, f"{W}* × {DEPTH}* × {H} мм", size=2.4, anchor="start")
+    text(bx + bw / 2, by + 6, "ШКАФ С ЯЩИКАМИ И ТУМБА", size=3.6, weight="bold")
+    text(bx + bw / 2, by + 10.5, "по эскизу заказчика", size=2.3)
+    text(bx + 3, by + 19, f"шкаф {W}* × {DEPTH}* × {H}, тумба {TB_W} × {TB_H}", size=2.2, anchor="start")
     text(bx + 3, by + 25, "ЛДСП Egger «Кашемир», МДФ эмаль", size=2.4, anchor="start")
     text(bx + 3, by + 31, "Размеры в мм", size=2.4, anchor="start")
     text(bx + 100, by + 20, "Масштаб", size=2.2)
     text(bx + 100, by + 26, "1:20", size=3.4, weight="bold")
-    text(bx + 100, by + 33, "Лист 1 (А3)", size=2.2)
+    text(bx + 100, by + 33, "Лист 1 (А2)", size=2.2)
 
 
 def main():
     g.out.clear()
-    e('<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297" '
+    e('<svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" '
       f'font-family="{g.FONT}">')
     g.defs()
-    rect(0, 0, 420, 297, fill="#fff", stroke="none")
-    rect(8, 5, 407, 287, sw=0.5)
-    fy = 183
-    view_facade(32, fy)
-    view_inside(200, fy)
-    view_section(330, fy)
-    view_plan(40, 222)
-    notes(150, 214)
+    rect(0, 0, 594, 420, fill="#fff", stroke="none")
+    rect(10, 5, 579, 410, sw=0.6)
+    fy = 200
+    view_facade(127, fy)
+    view_inside(300, fy)
+    view_section(430, fy)
+    view_tumba(520, fy)
+    view_plan(127, 268)
+    notes(255, 262)
     title_block()
     e('</svg>')
     with open(os.path.join(HERE, "shkaf2.svg"), "w", encoding="utf-8") as f:

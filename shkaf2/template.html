@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Шкаф с ящиками 3D</title>
+<title>Шкаф с тумбой 3D</title>
 <style>
   /* полноэкранная 3D-сцена, карточки сверху, панель кнопок снизу */
   :root { --bg: #efebe5; --panel: rgba(255,255,255,0.92); --ink: #2b2622; --muted: #6f655c;
@@ -47,15 +47,16 @@
 <div id="view"></div>
 <header>
   <div class="card">
-    <h1>Шкаф с ящиками</h1>
-    <div class="sub">1600 × 600 × 2645 мм · ЛДСП Egger «Кашемир», фасады МДФ эмаль</div>
+    <h1>Шкаф с ящиками и тумба</h1>
+    <div class="sub">шкаф 1600 × 600 × 2645 + тумба 1565 × 500 · ЛДСП Egger «Кашемир», МДФ эмаль</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
-    правая кнопка или два пальца — сдвиг. Нажмите на дверь или ящик.</div>
+    правая кнопка или два пальца — сдвиг. Нажмите на дверь, ящик или крышку тумбы.</div>
 </header>
 <nav>
   <button id="bDoors">Открыть двери</button>
   <button id="bShoes">Выдвинуть ящики</button>
+  <button id="bLid">Открыть тумбу</button>
   <button id="bFront">Вид спереди</button>
   <button id="bSide">Вид сбоку</button>
 </nav>
@@ -90,6 +91,7 @@ const SPECS = {
   plinth:  { color: 0x9d9187, rough: 0.7 },
   groove:  { color: 0xeba3b3, rough: 0.4, shadow: false },
   spacer:  { color: 0xe2ddd5, map: 'board', tile: 400, rough: 0.7 },
+  lid:     { color: 0xcbbfb8, rough: 0.35 },
   dfront:  { color: 0xd6ccc2, map: 'board', tile: 400, rough: 0.6 },
   dbox:    { color: 0xf1ede7, map: 'board', tile: 400, rough: 0.7 },
   back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
@@ -117,9 +119,10 @@ for (const [id, meta] of Object.entries(DATA.groups)) {
   const root = new THREE.Group();
   scene.add(root);
   const g = { id, meta, root, parent: root, slide: 0, slideTo: 0, rot: 0, rotTo: 0, state: 0 };
-  if (meta.type === 'hinge') {
+  if (meta.type === 'hinge' || meta.type === 'lid') {
     g.pivot = new THREE.Group();
-    g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
+    if (meta.type === 'lid') g.pivot.position.set(0, meta.pivot[1], meta.pivot[0]);   // ось вдоль стены
+    else g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
     root.add(g.pivot);
     g.parent = g.pivot;
   }
@@ -161,8 +164,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 KIT.setup(renderer, scene);
 
 // ---------------------------------------------------------------- камера
-const target = new THREE.Vector3(800, 1300, 300);
-const sph = { r: 5200, theta: 0.5, phi: 1.3 };
+const target = new THREE.Vector3(20, 1150, 300);
+const sph = { r: 6600, theta: 0.45, phi: 1.3 };
 function placeCamera() {
   const s = Math.sin(sph.phi);
   camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
@@ -253,7 +256,7 @@ function hit(e) {
   const h = ray.intersectObjects(pickable, false)[0];
   return h ? groups[h.object.userData.gid] : null;
 }
-const NAMES = { hinge: 'Дверь', slide: 'Выдвижной ящик' };
+const NAMES = { hinge: 'Дверь', slide: 'Выдвижной ящик', lid: 'Крышка тумбы' };
 const tip = document.getElementById('tip');
 function hover(e) {
   if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
@@ -276,8 +279,10 @@ function pick(e) {
 // ---------------------------------------------------------------- действия
 const doors = Object.values(groups).filter(g => g.meta.type === 'hinge');
 const shelves = Object.values(groups).filter(g => g.meta.type === 'slide');
+const lids = Object.values(groups).filter(g => g.meta.type === 'lid');
 function setOpen(g, open) {
-  if (g.meta.type === 'hinge') {
+  if (g.meta.type === 'lid') g.rotTo = open ? 1 : 0;
+  else if (g.meta.type === 'hinge') {
     g.rotTo = open ? 1 : 0;
     // закрываем дверь – сначала задвигаем полки за ней
     if (!open) shelves.forEach(s => { if (s.meta.needs.includes(g.id)) s.slideTo = 0; });
@@ -286,20 +291,25 @@ function setOpen(g, open) {
     if (open) g.meta.needs.forEach(id => (groups[id].rotTo = 1));
   }
 }
-function toggle(g) { setOpen(g, (g.meta.type === 'hinge' ? g.rotTo : g.slideTo) < 0.5); }
+function toggle(g) { setOpen(g, (g.meta.type === 'slide' ? g.slideTo : g.rotTo) < 0.5); }
 function syncButtons() {
   const anyDoor = doors.some(d => d.rotTo > 0.5), anyShelf = shelves.some(s => s.slideTo > 0.5);
   bDoors.textContent = anyDoor ? 'Закрыть двери' : 'Открыть двери';
   bDoors.classList.toggle('on', anyDoor);
   bShoes.textContent = anyShelf ? 'Задвинуть ящики' : 'Выдвинуть ящики';
   bShoes.classList.toggle('on', anyShelf);
+  const anyLid = lids.some(l => l.rotTo > 0.5);
+  bLid.textContent = anyLid ? 'Закрыть тумбу' : 'Открыть тумбу';
+  bLid.classList.toggle('on', anyLid);
 }
 const bDoors = document.getElementById('bDoors');
 const bShoes = document.getElementById('bShoes');
+const bLid = document.getElementById('bLid');
+bLid.onclick = () => { const open = !lids.some(l => l.rotTo > 0.5); lids.forEach(l => setOpen(l, open)); syncButtons(); };
 bDoors.onclick = () => { const open = !doors.some(d => d.rotTo > 0.5); doors.forEach(d => setOpen(d, open)); syncButtons(); };
 bShoes.onclick = () => { const open = !shelves.some(s => s.slideTo > 0.5); shelves.forEach(s => setOpen(s, open)); syncButtons(); };
-document.getElementById('bFront').onclick = () => flyTo(5200, 0.0, 1.45, new THREE.Vector3(800, 1320, 300));
-document.getElementById('bSide').onclick = () => flyTo(4600, -0.8, 1.35, new THREE.Vector3(800, 1250, 350));
+document.getElementById('bFront').onclick = () => flyTo(6600, 0.0, 1.45, new THREE.Vector3(20, 1250, 300));
+document.getElementById('bSide').onclick = () => flyTo(5400, -0.75, 1.25, new THREE.Vector3(-200, 900, 350));
 syncButtons();
 
 // ---------------------------------------------------------------- цикл
@@ -311,7 +321,10 @@ function tick(now) {
   last = now;
   const step = dt * 1.6;
   for (const g of Object.values(groups)) {
-    if (g.meta.type === 'hinge') {
+    if (g.meta.type === 'lid') {
+      g.rot = approach(g.rot, g.rotTo, step);
+      g.pivot.rotation.x = ease(g.rot) * g.meta.angle * Math.PI / 180;
+    } else if (g.meta.type === 'hinge') {
       // дверь не закрывается, пока за ней выдвинута полка
       const blocked = g.rotTo < g.rot && shelves.some(s => s.meta.needs.includes(g.id) && s.slide > 0);
       if (!blocked) g.rot = approach(g.rot, g.rotTo, step);

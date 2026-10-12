@@ -4,7 +4,8 @@
 Оси: x – по ширине шкафа (0 = левый край), y – от стены (0) к фасаду, z – вверх от пола.
 """
 from sheet import (T, DT, W, CD, DEPTH, PL, ZB, B0, MID, H, ZTOP, ZA, L_SHELVES, R_SHELVES,  # noqa: F401
-                   R_MID, RAIL_UP, RAIL_LOW, DR_Z, DR_H, DR_SET, DOOR_GAP, SPLIT, GROOVE, MILL, door_x)
+                   R_MID, RAIL_UP, RAIL_LOW, DR_Z, DR_H, DR_SET, DOOR_GAP, SPLIT, GROOVE, MILL, door_x,
+                   FILL, TB_W, TB_H, TB_D, TB_LID, TB_X0)
 
 boxes = []
 groups = {}
@@ -39,8 +40,30 @@ def clothes(x0, x1, rail, length):
 
 def build():
     # помещение: стена и пол
-    box(-700, W + 700, -100, 0, 0, 2900, "wall_back")
-    box(-700, W + 700, -100, 2200, -30, 0, "floor")
+    box(TB_X0 - 800, W + 800, -100, 0, 0, 2900, "wall_back")
+    box(TB_X0 - 800, W + 800, -100, 2300, -30, 0, "floor")
+
+    # фальш-планки 20 мм: справа у шкафа (во всю высоту), слева у тумбы
+    box(W, W + FILL, CD - 100, DEPTH, PL, H, "facade")
+    box(TB_X0 - FILL, TB_X0, TB_D - 100, TB_D, 0, TB_H, "facade")
+
+    # тумба слева: крышка открывается вверх (две секции)
+    box(TB_X0 + 50, -50, 0, TB_D - 60, 0, PL, "plinth")
+    half = TB_W / 2
+    for x in (TB_X0, TB_X0 + half - T / 2, -T):
+        box(x, x + T, 0, TB_D - DT, PL, TB_H - TB_LID, "carcass")
+    box(TB_X0, 0, 0, TB_D - DT, PL, PL + T, "carcass")
+    box(TB_X0, 0, 0, 4, PL, TB_H - TB_LID, "back")
+    for k in range(2):
+        x0, x1 = TB_X0 + k * half, TB_X0 + (k + 1) * half
+        box(x0 + 1.5, x1 - 1.5, TB_D - DT, TB_D, PL + 2, TB_H - TB_LID - 2, "facade")
+        for j in range(3):                                         # обувь/коробки внутри
+            bx = x0 + 60 + j * 240
+            box(bx, bx + 85, 120, 420, PL + T, PL + T + 100, "shoe")
+            box(bx + 95, bx + 180, 120, 420, PL + T, PL + T + 100, "shoe")
+        group("lid%d" % k, type="lid", pivot=[0, TB_H], angle=-80)
+        box(x0 + 1.5, x1 - 1.5, 0, TB_D, TB_H - TB_LID, TB_H, "lid")
+        end()
 
     # корпус
     box(50, W - 50, 0, CD - 50, 0, PL, "plinth")
