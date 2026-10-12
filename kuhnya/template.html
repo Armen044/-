@@ -48,7 +48,7 @@
 <header>
   <div class="card">
     <h1>Кухня с островом</h1>
-    <div class="sub">кухня 3600 + 1700 (угловая), остров 1200 × 600 · фасады под камень, столешница — искусственный камень</div>
+    <div class="sub">угловая 3150 × 1800, высота 2800 · ЛДСП Egger, Blum · остров 1200 × 600</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
     правая кнопка или два пальца — сдвиг. Нажмите на дверцу, ящик или технику — откроется.</div>
@@ -158,9 +158,10 @@ for (const [id, meta] of Object.entries(DATA.groups)) {
   const root = new THREE.Group();
   scene.add(root);
   const g = { id, meta, root, parent: root, slide: 0, slideTo: 0, rot: 0, rotTo: 0, state: 0 };
-  if (meta.type === 'hinge' || meta.type === 'lid') {
+  if (meta.type === 'hinge' || meta.type === 'lid' || meta.type === 'lidz') {
     g.pivot = new THREE.Group();
     if (meta.type === 'lid') g.pivot.position.set(0, meta.pivot[1], meta.pivot[0]);   // ось вдоль стены
+    else if (meta.type === 'lidz') g.pivot.position.set(meta.pivot[0], meta.pivot[1], 0); // ось поперёк (фасад в −x)
     else g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
     root.add(g.pivot);
     g.parent = g.pivot;
@@ -186,7 +187,7 @@ for (const b of DATA.boxes) {
 }
 
 // свет
-KIT.sun(scene, new THREE.Vector3(4200, 4300, 5200), new THREE.Vector3(1800, 900, 1200), 3800);
+KIT.sun(scene, new THREE.Vector3(-1500, 4500, 5200), new THREE.Vector3(1600, 900, 1000), 3800);
 // подсветка внутри отсеков: LED-профиль под антресолью, горит при открытых дверях
 const COMP = DATA.meta.comps;
 const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
@@ -204,8 +205,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 KIT.setup(renderer, scene);
 
 // ---------------------------------------------------------------- камера
-const target = new THREE.Vector3(1700, 1150, 1100);
-const sph = { r: 6800, theta: 0.6, phi: 1.2 };
+const target = new THREE.Vector3(1600, 1250, 1000);
+const sph = { r: 7000, theta: -0.35, phi: 1.22 };
 function placeCamera() {
   const s = Math.sin(sph.phi);
   camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
@@ -215,7 +216,7 @@ function placeCamera() {
   // стены, которые оказались между камерой и комнатой, скрываем
   walls.wall_back.forEach(m => (m.visible = camera.position.z > 0));
   walls.wall_left.forEach(m => (m.visible = camera.position.x > 0));
-  walls.wall_right.forEach(m => (m.visible = camera.position.x < 1800));
+  walls.wall_right.forEach(m => (m.visible = camera.position.x < 3150));
 }
 let anim = null;      // плавный переход к заданному виду
 function flyTo(r, theta, phi, t) {
@@ -323,7 +324,7 @@ const doors = Object.values(groups).filter(g => g.meta.type === 'hinge' && !g.me
 const drawers = shelves.filter(g => !g.meta.tech);
 const lids = tech;
 function setOpen(g, open) {
-  if (g.meta.type === 'lid') g.rotTo = open ? 1 : 0;
+  if (g.meta.type === 'lid' || g.meta.type === 'lidz') g.rotTo = open ? 1 : 0;
   else if (g.meta.type === 'hinge') {
     g.rotTo = open ? 1 : 0;
     // закрываем дверь – сначала задвигаем полки за ней
@@ -354,8 +355,8 @@ const flip = list => () => {
 bLid.onclick = flip(tech);
 bDoors.onclick = flip(doors);
 bShoes.onclick = flip(drawers);
-document.getElementById('bFront').onclick = () => flyTo(6400, 0.05, 1.4, new THREE.Vector3(1800, 1300, 700));
-document.getElementById('bSide').onclick = () => flyTo(6000, 1.05, 1.25, new THREE.Vector3(900, 1100, 1100));
+document.getElementById('bFront').onclick = () => flyTo(6600, 0.0, 1.4, new THREE.Vector3(1600, 1350, 800));
+document.getElementById('bSide').onclick = () => flyTo(6200, -1.0, 1.25, new THREE.Vector3(2200, 1150, 1100));
 syncButtons();
 
 // ---------------------------------------------------------------- цикл
@@ -367,9 +368,9 @@ function tick(now) {
   last = now;
   const step = dt * 1.6;
   for (const g of Object.values(groups)) {
-    if (g.meta.type === 'lid') {
+    if (g.meta.type === 'lid' || g.meta.type === 'lidz') {
       g.rot = approach(g.rot, g.rotTo, step);
-      g.pivot.rotation.x = ease(g.rot) * g.meta.angle * Math.PI / 180;
+      g.pivot.rotation[g.meta.type === 'lid' ? 'x' : 'z'] = ease(g.rot) * g.meta.angle * Math.PI / 180;
     } else if (g.meta.type === 'hinge') {
       // дверь не закрывается, пока за ней выдвинута полка
       const blocked = g.rotTo < g.rot && shelves.some(s => s.meta.needs.includes(g.id) && s.slide > 0);
