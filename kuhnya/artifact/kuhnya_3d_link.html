@@ -1,0 +1,641 @@
+<title>Кухня с островом 3D</title>
+<style>
+  /* полноэкранная 3D-сцена, карточки сверху, панель кнопок снизу */
+  :root { --bg: #efebe5; --panel: rgba(255,255,255,0.92); --ink: #2b2622; --muted: #6f655c;
+          --accent: #8a6a3f; --line: #d9d1c7; --on-ink: #ffffff; --tip: rgba(30,25,20,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+               font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+               overflow: hidden; -webkit-user-select: none; user-select: none; }
+  #view { position: fixed; inset: 0; touch-action: none; }
+  header { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; justify-content: space-between;
+           align-items: flex-start; gap: 12px; pointer-events: none; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
+          box-shadow: 0 4px 18px rgba(60,40,20,0.08); pointer-events: auto; }
+  h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: 0.2px; }
+  .sub { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .hint { font-size: 12.5px; color: var(--muted); line-height: 1.45; max-width: 290px; }
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; flex-wrap: wrap;
+        justify-content: center; gap: 8px; width: min(980px, calc(100% - 24px)); }
+  button { font: inherit; font-size: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; min-height: 42px;
+           box-shadow: 0 2px 10px rgba(60,40,20,0.08); }
+  button:hover { border-color: var(--accent); }
+  button.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #tip { position: fixed; pointer-events: none; padding: 5px 9px; border-radius: 7px; font-size: 12.5px;
+         background: var(--tip); color: #fff; display: none; white-space: nowrap; }
+  @media (max-width: 640px) {
+    .hint { display: none; }
+    h1 { font-size: 15px; }
+    button { font-size: 13px; padding: 9px 11px; }
+  }
+</style>
+<div id="view"></div>
+<header>
+  <div class="card">
+    <h1>Кухня с островом</h1>
+    <div class="sub">кухня 3600 + 1700 (угловая), остров 1200 × 600 · фасады под камень, столешница — искусственный камень</div>
+  </div>
+  <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
+    правая кнопка или два пальца — сдвиг. Нажмите на дверцу, ящик или технику — откроется.</div>
+</header>
+<nav>
+  <button id="bLid">Открыть технику</button>
+  <button id="bDoors">Открыть дверцы</button>
+  <button id="bShoes">Выдвинуть ящики</button>
+  <button id="bFront">Вид спереди</button>
+  <button id="bSide">Вид сбоку</button>
+</nav>
+<div id="tip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>// Набор для «красивой» отрисовки моделей мебели на three.js (r160, UMD):
+// процедурные текстуры, мягкий свет с отражениями, формы одежды/обуви/штанг.
+const KIT = (() => {
+  const rnd = (seed => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646)(12345);
+
+  function canvasTex(size, draw, srgb = true) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    draw(c.getContext('2d'), size);
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.anisotropy = 8;
+    if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  // камень/терраццо – светлый фон с серыми вкраплениями и тонкими штрихами
+  const stone = canvasTex(1024, (g, s) => {
+    g.fillStyle = '#efedea'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < 2600; i++) {
+      const v = 120 + rnd() * 90 | 0;
+      g.fillStyle = `rgba(${v},${v - 4},${v - 8},${0.25 + rnd() * 0.5})`;
+      g.beginPath(); g.arc(rnd() * s, rnd() * s, 0.6 + rnd() * 1.8, 0, 7); g.fill();
+    }
+    g.lineCap = 'round';
+    for (let i = 0; i < 260; i++) {
+      const x = rnd() * s, y = rnd() * s, a = rnd() * 7, l = 6 + rnd() * 22;
+      const v = 90 + rnd() * 80 | 0;
+      g.strokeStyle = `rgba(${v},${v - 3},${v - 6},${0.35 + rnd() * 0.4})`;
+      g.lineWidth = 0.8 + rnd() * 1.6;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+    }
+  });
+
+  // паркет «ёлочка» (французская) – тёплый дуб
+  const parquet = canvasTex(1024, (g, s) => {
+    const cw = 512, ph = 128;
+    g.fillStyle = '#7a5a3e'; g.fillRect(0, 0, s, s);
+    for (let col = 0; col < s / cw; col++) {
+      const x0 = col * cw, sl = col % 2 ? cw : -cw;
+      for (let y = -2 * cw; y < s + 2 * cw; y += ph) {
+        const k = rnd() * 22 - 11;
+        g.fillStyle = `rgb(${172 + k | 0},${132 + k * 0.8 | 0},${94 + k * 0.6 | 0})`;
+        g.beginPath();
+        g.moveTo(x0, y); g.lineTo(x0 + cw, y + sl); g.lineTo(x0 + cw, y + sl + ph - 3); g.lineTo(x0, y + ph - 3);
+        g.closePath(); g.fill();
+        for (let f = 0; f < 10; f++) {                      // волокна дерева
+          const t = rnd() * (ph - 8) + 3;
+          g.strokeStyle = `rgba(95,62,35,${0.05 + rnd() * 0.08})`;
+          g.lineWidth = 1 + rnd() * 2;
+          g.beginPath(); g.moveTo(x0, y + t); g.lineTo(x0 + cw, y + sl + t); g.stroke();
+        }
+      }
+    }
+  });
+
+  // штукатурка / окрашенная стена – едва заметный шум
+  const plaster = canvasTex(512, (g, s) => {
+    g.fillStyle = '#f1eeea'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < 9000; i++) {
+      const v = 225 + rnd() * 25 | 0;
+      g.fillStyle = `rgba(${v},${v - 3},${v - 6},0.35)`;
+      g.fillRect(rnd() * s, rnd() * s, 2, 2);
+    }
+  });
+
+  // ЛДСП – мелкая текстура «текстиль/лён»
+  const board = canvasTex(512, (g, s) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < s; i += 2) {
+      g.fillStyle = `rgba(0,0,0,${0.015 + rnd() * 0.03})`; g.fillRect(0, i, s, 1);
+      g.fillStyle = `rgba(0,0,0,${0.01 + rnd() * 0.02})`; g.fillRect(i, 0, 1, s);
+    }
+  });
+
+  // ткань коробок
+  const fabric = canvasTex(256, (g, s) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, s, s);
+    for (let i = 0; i < s; i += 3) {
+      g.fillStyle = 'rgba(0,0,0,0.06)'; g.fillRect(0, i, s, 1); g.fillRect(i, 0, 1, s);
+    }
+  });
+
+  const MAPS = { stone, parquet, plaster, board, fabric };
+
+  // UV в миллиметрах: текстура повторяется с шагом tile, а не растягивается по детали
+  function boxUV(geo, sx, sy, sz, tile) {
+    const uv = geo.attributes.uv;
+    const dims = [[sz, sy], [sz, sy], [sx, sz], [sx, sz], [sx, sy], [sx, sy]];
+    for (let f = 0; f < 6; f++)
+      for (let k = 0; k < 4; k++) {
+        const i = f * 4 + k;
+        uv.setXY(i, uv.getX(i) * dims[f][0] / tile, uv.getY(i) * dims[f][1] / tile);
+      }
+  }
+
+  const matCache = {};
+  function material(key, spec) {
+    if (matCache[key]) return matCache[key];
+    let m;
+    if (spec.basic) m = new THREE.MeshBasicMaterial({ color: spec.color });
+    else {
+      m = new THREE.MeshStandardMaterial({
+        color: spec.color, roughness: spec.rough ?? 0.8, metalness: spec.metal ?? 0,
+        envMapIntensity: spec.env ?? 1,
+      });
+      if (spec.map) m.map = MAPS[spec.map];
+      if (spec.emissive) { m.emissive = new THREE.Color(spec.emissive); m.emissiveIntensity = spec.emissiveIntensity ?? 1; }
+    }
+    return (matCache[key] = m);
+  }
+
+  // силуэт вещи на плечиках: плечи, рукава-«крылья», чуть расширенный низ
+  function garment(width, height, thick) {
+    const w = width / 2, h = height;
+    const sh = new THREE.Shape();
+    sh.moveTo(-0.16 * w, 0);
+    sh.quadraticCurveTo(0, -0.05 * w, 0.16 * w, 0);
+    sh.lineTo(0.92 * w, -0.08 * w);
+    sh.quadraticCurveTo(w, -0.12 * w, 0.96 * w, -0.2 * w);
+    sh.lineTo(0.86 * w, -h + 0.05 * w);
+    sh.quadraticCurveTo(0.86 * w, -h, 0.8 * w, -h);
+    sh.lineTo(-0.8 * w, -h);
+    sh.quadraticCurveTo(-0.86 * w, -h, -0.86 * w, -h + 0.05 * w);
+    sh.lineTo(-0.96 * w, -0.2 * w);
+    sh.quadraticCurveTo(-w, -0.12 * w, -0.92 * w, -0.08 * w);
+    sh.closePath();
+    const bev = Math.min(8, thick / 3);
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: Math.max(2, thick - 2 * bev), bevelEnabled: true,
+      bevelThickness: bev, bevelSize: bev, bevelSegments: 2, curveSegments: 6 });
+    geo.translate(0, h / 2, -(thick - 2 * bev) / 2);
+    return geo;
+  }
+
+  // плечики: крючок + перекладина
+  function hanger(width) {
+    const g = new THREE.Group();
+    const m = material('hanger', { color: 0x2b2826, rough: 0.4, metal: 0.3 });
+    const bar = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, width * 0.95, 8), m);
+    bar.rotation.x = Math.PI / 2;
+    const hook = new THREE.Mesh(new THREE.TorusGeometry(22, 3, 6, 12, Math.PI * 1.3), m);
+    hook.position.y = 40;
+    hook.rotation.y = Math.PI / 2;
+    g.add(bar, hook);
+    return g;
+  }
+
+  // главная функция: деталь [x0,x1,y0,y1,z0,z1] -> объект сцены
+  function build(b, spec, key) {
+    const [x0, x1, y0, y1, z0, z1] = b;
+    const sx = x1 - x0, sy = z1 - z0, sz = y1 - y0;          // размеры в осях three (X, Y, Z)
+    const pos = new THREE.Vector3((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+    const mat = material(key, spec);
+    let obj;
+    if (spec.shape === 'cloth') {
+      const alongX = sx < sz;                                // толщина вещи вдоль X → штанга вдоль X
+      const geo = garment(alongX ? sz : sx, sy, alongX ? sx : sz);
+      if (alongX) geo.rotateY(Math.PI / 2);
+      obj = new THREE.Group();
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.castShadow = mesh.receiveShadow = true;
+      const hg = hanger(alongX ? sz : sx);
+      hg.position.y = sy / 2 + 6;
+      if (!alongX) hg.rotation.y = Math.PI / 2;
+      obj.add(mesh, hg);
+      obj.userData.mesh = mesh;
+    } else if (spec.shape === 'shoe') {
+      const geo = new THREE.CapsuleGeometry(0.5, 1, 4, 12);
+      geo.rotateX(Math.PI / 2);
+      geo.scale(sx, sy * 1.1, sz / 2);
+      obj = new THREE.Mesh(geo, mat);
+      pos.y -= sy * 0.05;
+    } else if (spec.shape === 'rod') {
+      const len = Math.max(sx, sz), r = Math.min(sx, sz, sy) / 2 + 2;
+      const geo = new THREE.CylinderGeometry(r, r, len, 20);
+      if (sx >= sz) geo.rotateZ(Math.PI / 2); else geo.rotateX(Math.PI / 2);
+      obj = new THREE.Mesh(geo, mat);
+    } else if (spec.shape === 'bar') {                        // ручка-рейлинг на двух опорах
+      obj = new THREE.Group();
+      const dims = [sx, sy, sz], long = dims.indexOf(Math.max(...dims));
+      const rest = [0, 1, 2].filter(i => i !== long);
+      const out = dims[rest[0]] >= dims[rest[1]] ? rest[0] : rest[1];     // ось «от фасада»
+      const r = Math.min(dims[rest[0]], dims[rest[1]]) / 2;
+      const axisRot = i => (i === 0 ? ['z', Math.PI / 2] : i === 2 ? ['x', Math.PI / 2] : null);
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.8, r * 0.8, dims[long], 16), mat);
+      const ar = axisRot(long); if (ar) rod.rotation[ar[0]] = ar[1];
+      rod.position.setComponent(out, dims[out] / 2 - r);
+      obj.add(rod);
+      for (const sgn of [-1, 1]) {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.45, r * 0.45, dims[out], 10), mat);
+        const lr = axisRot(out); if (lr) leg.rotation[lr[0]] = lr[1];
+        leg.position.setComponent(long, sgn * (dims[long] / 2 - Math.min(40, dims[long] * 0.15)));
+        obj.add(leg);
+      }
+      obj.children.forEach(c => { c.castShadow = true; });
+    } else {
+      const geo = new THREE.BoxGeometry(sx, sy, sz);
+      if (spec.map) boxUV(geo, sx, sy, sz, spec.tile ?? 600);
+      obj = new THREE.Mesh(geo, mat);
+    }
+    obj.position.copy(pos);
+    if (obj.isMesh) { obj.castShadow = spec.shadow !== false; obj.receiveShadow = true; }
+    return obj;
+  }
+
+  // свет: мягкое окружение (отражения) + основной источник с тенями
+  function setup(renderer, scene) {
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // окружение – светлая «студия» с несколькими софтбоксами
+    const env = new THREE.Scene();
+    const room = new THREE.Mesh(new THREE.BoxGeometry(20, 12, 20),
+      new THREE.MeshBasicMaterial({ color: 0x8f8a84, side: THREE.BackSide }));
+    env.add(room);
+    const panel = (w, h, x, y, z, ry, c) => {
+      const p = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide }));
+      p.position.set(x, y, z); p.rotation.y = ry; p.lookAt(0, 0, 0);
+      env.add(p);
+    };
+    panel(8, 4, 0, 5.5, 0, 0, 0xffffff);
+    panel(6, 6, 9, 2, 3, 0, 0xfff3e2);
+    panel(6, 6, -9, 2, -4, 0, 0xe8eeff);
+    panel(10, 5, 0, 2, 9.5, 0, 0xffffff);
+    const pm = new THREE.PMREMGenerator(renderer);
+    scene.environment = pm.fromScene(env, 0.04).texture;
+    pm.dispose();
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xb59a80, 0.35));
+  }
+
+  function sun(scene, pos, target, size) {
+    const s = new THREE.DirectionalLight(0xfff6ea, 1.6);
+    s.position.copy(pos);
+    s.target.position.copy(target);
+    s.castShadow = true;
+    s.shadow.mapSize.set(2048, 2048);
+    Object.assign(s.shadow.camera, { left: -size, right: size, top: size, bottom: -size, near: 100, far: 15000 });
+    s.shadow.bias = -0.0004;
+    s.shadow.normalBias = 2;
+    s.shadow.radius = 4;
+    scene.add(s, s.target);
+    return s;
+  }
+
+  return { build, setup, sun, material, MAPS };
+})();
+</script>
+<script>
+const DATA = {"boxes":[[-100,7570,-100,0,0,2660,"wall_back"],[-100,0,0,2950,0,2660,"wall_left"],[-100,7570,-100,3100,-30,0,"floor"],[0,600,0,522,0,100,"plinth"],[0,16,0,582,100,860,"carcass"],[584,600,0,582,100,860,"carcass"],[0,600,0,582,100,116,"carcass"],[0,600,0,4,100,860,"back"],[600,1200,0,522,0,100,"plinth"],[600,616,0,582,100,860,"carcass"],[1184,1200,0,582,100,860,"carcass"],[600,1200,0,582,100,116,"carcass"],[600,1200,0,4,100,860,"back"],[1200,1800,0,522,0,100,"plinth"],[1200,1216,0,582,100,860,"carcass"],[1784,1800,0,582,100,860,"carcass"],[1200,1800,0,582,100,116,"carcass"],[1200,1800,0,4,100,860,"back"],[1800,2400,0,522,0,100,"plinth"],[1800,1816,0,582,100,860,"carcass"],[2384,2400,0,582,100,860,"carcass"],[1800,2400,0,582,100,116,"carcass"],[1800,2400,0,4,100,860,"back"],[2400,3000,0,522,0,100,"plinth"],[2400,2416,0,582,100,860,"carcass"],[2984,3000,0,582,100,860,"carcass"],[2400,3000,0,582,100,116,"carcass"],[2400,3000,0,4,100,860,"back"],[3000,3600,0,582,0,100,"plinth"],[3000,3016,0,582,100,2660,"carcass"],[3584,3600,0,582,100,2660,"carcass"],[3000,3600,0,582,100,116,"carcass"],[3000,3600,0,4,100,2660,"back"],[3000,3600,0,582,2644,2660,"carcass"],[3600,3620,0,600,100,2660,"front"],[0,3000,0,620,860,900,"quartz"],[0,620,620,1080,860,900,"quartz"],[0,3000,0,12,900,1500,"quartz"],[0,12,12,1080,900,1500,"quartz"],[601.5,898.5,582,600,102,858,"front","sink_l"],[901.5,1198.5,582,600,102,858,"front","sink_r"],[680,1120,80,520,720,898,"sinkbowl"],[660,1140,60,540,899,901,"steel"],[885.0,915.0,40,70,900,1200,"chrome"],[888.0,912.0,40,230,1180,1200,"chrome"],[1220,1780,20,572,120,840,"appliance"],[1201.5,1798.5,582,600,102,858,"front","dw"],[1230,1770,542,582,140,820,"steel","dw"],[1201.5,1798.5,594.6,600.6,836,856,"gola","dw"],[1240,1760,40,522,220,228,"chrome"],[1240,1760,40,522,520,528,"chrome"],[1801.5,2398.5,582,600,102,470,"front","dr_1800_600_0"],[1830,2370,102,582,122,130,"dbox","dr_1800_600_0"],[1830,1842,102,582,122,262,"dbox","dr_1800_600_0"],[2358,2370,102,582,122,262,"dbox","dr_1800_600_0"],[1830,2370,102,114,122,262,"dbox","dr_1800_600_0"],[1801.5,2398.5,594.6,600.6,448,468,"gola","dr_1800_600_0"],[1801.5,2398.5,582,600,476,858,"front","dr_1800_600_1"],[1830,2370,102,582,496,504,"dbox","dr_1800_600_1"],[1830,1842,102,582,496,636,"dbox","dr_1800_600_1"],[2358,2370,102,582,496,636,"dbox","dr_1800_600_1"],[1830,2370,102,114,496,636,"dbox","dr_1800_600_1"],[1801.5,2398.5,594.6,600.6,836,856,"gola","dr_1800_600_1"],[1805,2395,40,560,900,906,"glass"],[1865,2055,65,255,906,907,"burner"],[2165,2315,85,235,906,907,"burner"],[1885,2035,345,495,906,907,"burner"],[2145,2335,325,515,906,907,"burner"],[2401.5,2998.5,582,600,102.0,352.0,"front","dr_2400_600_0"],[2430,2970,102,582,122.0,130.0,"dbox","dr_2400_600_0"],[2430,2442,102,582,122.0,262.0,"dbox","dr_2400_600_0"],[2958,2970,102,582,122.0,262.0,"dbox","dr_2400_600_0"],[2430,2970,102,114,122.0,262.0,"dbox","dr_2400_600_0"],[2401.5,2998.5,594.6,600.6,330.0,350.0,"gola","dr_2400_600_0"],[2401.5,2998.5,582,600,355.0,605.0,"front","dr_2400_600_1"],[2430,2970,102,582,375.0,383.0,"dbox","dr_2400_600_1"],[2430,2442,102,582,375.0,515.0,"dbox","dr_2400_600_1"],[2958,2970,102,582,375.0,515.0,"dbox","dr_2400_600_1"],[2430,2970,102,114,375.0,515.0,"dbox","dr_2400_600_1"],[2401.5,2998.5,594.6,600.6,583.0,603.0,"gola","dr_2400_600_1"],[2401.5,2998.5,582,600,608.0,858.0,"front","dr_2400_600_2"],[2430,2970,102,582,628.0,636.0,"dbox","dr_2400_600_2"],[2430,2442,102,582,628.0,768.0,"dbox","dr_2400_600_2"],[2958,2970,102,582,628.0,768.0,"dbox","dr_2400_600_2"],[2430,2970,102,114,628.0,768.0,"dbox","dr_2400_600_2"],[2401.5,2998.5,594.6,600.6,836.0,856.0,"gola","dr_2400_600_2"],[3001.5,3598.5,582,600,102,742,"front","dr_3000_600_0"],[3030,3570,102,582,122,130,"dbox","dr_3000_600_0"],[3030,3042,102,582,122,262,"dbox","dr_3000_600_0"],[3558,3570,102,582,122,262,"dbox","dr_3000_600_0"],[3030,3570,102,114,122,262,"dbox","dr_3000_600_0"],[3001.5,3598.5,594.6,600.6,720,740,"gola","dr_3000_600_0"],[3020,3580,20,577,750,1345,"appliance"],[3060,3540,60,552,810,814,"chrome"],[3002,3598,578,600,750,1345,"ovenglass","oven"],[3060,3540,600,625,1295,1307,"chrome","oven"],[3020,3580,220,577,1350,1735,"appliance"],[3002,3598,578,600,1353,1732,"ovenglass","mw"],[3001.5,3598.5,582,600,1742,2656,"front","tall_top"],[0,522,600,1080,0,100,"plinth"],[0,582,600,616,100,860,"carcass"],[0,582,1064,1080,100,860,"carcass"],[0,582,600,1080,100,116,"carcass"],[0,4,600,1080,100,860,"back"],[582,600,601.5,1078.5,102.0,352.0,"front","drl_600_0"],[102,582,630,1050,122.0,130.0,"dbox","drl_600_0"],[102,582,630,642,122.0,262.0,"dbox","drl_600_0"],[102,582,1038,1050,122.0,262.0,"dbox","drl_600_0"],[594.6,600.6,601.5,1078.5,330.0,350.0,"gola","drl_600_0"],[582,600,601.5,1078.5,355.0,605.0,"front","drl_600_1"],[102,582,630,1050,375.0,383.0,"dbox","drl_600_1"],[102,582,630,642,375.0,515.0,"dbox","drl_600_1"],[102,582,1038,1050,375.0,515.0,"dbox","drl_600_1"],[594.6,600.6,601.5,1078.5,583.0,603.0,"gola","drl_600_1"],[582,600,601.5,1078.5,608.0,858.0,"front","drl_600_2"],[102,582,630,1050,628.0,636.0,"dbox","drl_600_2"],[102,582,630,642,628.0,768.0,"dbox","drl_600_2"],[102,582,1038,1050,628.0,768.0,"dbox","drl_600_2"],[594.6,600.6,601.5,1078.5,836.0,856.0,"gola","drl_600_2"],[0,522,1080,1680,0,100,"plinth"],[0,582,1080,1096,100,2660,"carcass"],[0,582,1664,1680,100,2660,"carcass"],[0,582,1080,1680,100,116,"carcass"],[0,4,1080,1680,100,2660,"back"],[0,582,1080,1680,2644,2660,"carcass"],[30,577,1105,1655,120,1870,"fridge"],[40,542,1115,1645,500,506,"glassshelf"],[40,542,1115,1645,850,856,"glassshelf"],[40,542,1115,1645,1200,1206,"glassshelf"],[40,542,1115,1645,1500,1506,"glassshelf"],[582,600,1081.5,1678.5,102,1880,"front","fridge"],[522,582,1120,1640,182,1800,"fridge","fridge"],[582,600,1081.5,1678.5,1886,2656,"front","fridge_top"],[0,600,1680,1700,100,2660,"front"],[0,3000,0,332,1500,1516,"carcass"],[0,3000,0,332,2644,2660,"carcass"],[334,350,0,332,1500,2660,"carcass"],[777,793,0,332,1500,2660,"carcass"],[1219,1235,0,332,1500,2660,"carcass"],[1661,1677,0,332,1500,2660,"carcass"],[2103,2119,0,332,1500,2660,"carcass"],[2545,2561,0,332,1500,2660,"carcass"],[2984,3000,0,332,1500,2660,"carcass"],[0,350,0,332,2080.0,2096.0,"shelf"],[1.5,348.5,332,350,1502,2656,"front","up0"],[350,793,0,332,2080.0,2096.0,"shelf"],[351.5,791.5,332,350,1502,2656,"front","up1"],[793,1235,0,332,2080.0,2096.0,"shelf"],[794.5,1233.5,332,350,1502,2656,"front","up2"],[1235,1677,0,332,2080.0,2096.0,"shelf"],[1236.5,1675.5,332,350,1502,2656,"front","up3"],[1677,2119,0,332,2080.0,2096.0,"shelf"],[1678.5,2117.5,332,350,1502,2656,"front","up4"],[2119,2561,0,332,2080.0,2096.0,"shelf"],[2120.5,2559.5,332,350,1502,2656,"front","up5"],[2561,3000,0,332,2080.0,2096.0,"shelf"],[2562.5,2998.5,332,350,1502,2656,"front","up6"],[0,332,350,1080,1500,1516,"carcass"],[0,332,350,1080,2644,2660,"carcass"],[332,350,351.5,713.5,1502,2656,"front","upl0"],[332,350,716.5,1078.5,1502,2656,"front","upl1"],[0,3000,310,325,1494,1500,"led"],[310,325,350,1080,1494,1500,"led"],[1810,2390,0,280,1440,1500,"steel"],[1810,2390,260,300,1440,1490,"front","hood"],[1550,2650,1460,1950,0,100,"plinth"],[1500,1516,1418,2000,100,860,"carcass"],[2092.0,2108.0,1418,2000,100,860,"carcass"],[2684,2700,1418,2000,100,860,"carcass"],[1500,2700,1418,2000,100,116,"carcass"],[1500,2700,1982,2000,100,860,"front"],[1480,2720,1380,2020,860,900,"quartz"],[1501.5,2098.5,1400,1418,102.0,352.0,"front","dr_1500_1400_0"],[1530,2070.0,1418,1898,122.0,130.0,"dbox","dr_1500_1400_0"],[1530,1542,1418,1898,122.0,262.0,"dbox","dr_1500_1400_0"],[2058.0,2070.0,1418,1898,122.0,262.0,"dbox","dr_1500_1400_0"],[1530,2070.0,1886,1898,122.0,262.0,"dbox","dr_1500_1400_0"],[1501.5,2098.5,1399.4,1405.4,330.0,350.0,"gola","dr_1500_1400_0"],[1501.5,2098.5,1400,1418,355.0,605.0,"front","dr_1500_1400_1"],[1530,2070.0,1418,1898,375.0,383.0,"dbox","dr_1500_1400_1"],[1530,1542,1418,1898,375.0,515.0,"dbox","dr_1500_1400_1"],[2058.0,2070.0,1418,1898,375.0,515.0,"dbox","dr_1500_1400_1"],[1530,2070.0,1886,1898,375.0,515.0,"dbox","dr_1500_1400_1"],[1501.5,2098.5,1399.4,1405.4,583.0,603.0,"gola","dr_1500_1400_1"],[1501.5,2098.5,1400,1418,608.0,858.0,"front","dr_1500_1400_2"],[1530,2070.0,1418,1898,628.0,636.0,"dbox","dr_1500_1400_2"],[1530,1542,1418,1898,628.0,768.0,"dbox","dr_1500_1400_2"],[2058.0,2070.0,1418,1898,628.0,768.0,"dbox","dr_1500_1400_2"],[1530,2070.0,1886,1898,628.0,768.0,"dbox","dr_1500_1400_2"],[1501.5,2098.5,1399.4,1405.4,836.0,856.0,"gola","dr_1500_1400_2"],[2101.5,2698.5,1400,1418,102.0,352.0,"front","dr_2100_1400_0"],[2130.0,2670,1418,1898,122.0,130.0,"dbox","dr_2100_1400_0"],[2130.0,2142.0,1418,1898,122.0,262.0,"dbox","dr_2100_1400_0"],[2658,2670,1418,1898,122.0,262.0,"dbox","dr_2100_1400_0"],[2130.0,2670,1886,1898,122.0,262.0,"dbox","dr_2100_1400_0"],[2101.5,2698.5,1399.4,1405.4,330.0,350.0,"gola","dr_2100_1400_0"],[2101.5,2698.5,1400,1418,355.0,605.0,"front","dr_2100_1400_1"],[2130.0,2670,1418,1898,375.0,383.0,"dbox","dr_2100_1400_1"],[2130.0,2142.0,1418,1898,375.0,515.0,"dbox","dr_2100_1400_1"],[2658,2670,1418,1898,375.0,515.0,"dbox","dr_2100_1400_1"],[2130.0,2670,1886,1898,375.0,515.0,"dbox","dr_2100_1400_1"],[2101.5,2698.5,1399.4,1405.4,583.0,603.0,"gola","dr_2100_1400_1"],[2101.5,2698.5,1400,1418,608.0,858.0,"front","dr_2100_1400_2"],[2130.0,2670,1418,1898,628.0,636.0,"dbox","dr_2100_1400_2"],[2130.0,2142.0,1418,1898,628.0,768.0,"dbox","dr_2100_1400_2"],[2658,2670,1418,1898,628.0,768.0,"dbox","dr_2100_1400_2"],[2130.0,2670,1886,1898,628.0,768.0,"dbox","dr_2100_1400_2"],[2101.5,2698.5,1399.4,1405.4,836.0,856.0,"gola","dr_2100_1400_2"]],"groups":{"sink_l":{"type":"hinge","pivot":[600,600],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"sink_r":{"type":"hinge","pivot":[1200,600],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"dw":{"type":"lid","pivot":[600,102],"angle":88,"name":"\u041f\u043e\u0441\u0443\u0434\u043e\u043c\u043e\u0435\u0447\u043d\u0430\u044f \u043c\u0430\u0448\u0438\u043d\u0430","tech":true},"dr_1800_600_0":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_1800_600_1":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2400_600_0":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2400_600_1":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2400_600_2":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_3000_600_0":{"type":"slide","dir":[0,1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"oven":{"type":"lid","pivot":[600,750],"angle":85,"name":"\u0414\u0443\u0445\u043e\u0432\u043e\u0439 \u0448\u043a\u0430\u0444","tech":true},"mw":{"type":"hinge","pivot":[3002,600],"angle":-95,"name":"\u0421\u0412\u0427","tech":true},"tall_top":{"type":"hinge","pivot":[3600,600],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"drl_600_0":{"type":"slide","dir":[1,0],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"drl_600_1":{"type":"slide","dir":[1,0],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"drl_600_2":{"type":"slide","dir":[1,0],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"fridge":{"type":"hinge","pivot":[600,1680],"angle":-92,"name":"\u0425\u043e\u043b\u043e\u0434\u0438\u043b\u044c\u043d\u0438\u043a","tech":true},"fridge_top":{"type":"hinge","pivot":[600,1680],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430"},"up0":{"type":"hinge","pivot":[0,350],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up1":{"type":"hinge","pivot":[793,350],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up2":{"type":"hinge","pivot":[793,350],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up3":{"type":"hinge","pivot":[1677,350],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up4":{"type":"hinge","pivot":[1677,350],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up5":{"type":"hinge","pivot":[2561,350],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"up6":{"type":"hinge","pivot":[2561,350],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430","tech":false},"upl0":{"type":"hinge","pivot":[350,350],"angle":92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430"},"upl1":{"type":"hinge","pivot":[350,1080],"angle":-92,"name":"\u0414\u0432\u0435\u0440\u0446\u0430"},"hood":{"type":"slide","dir":[0,1],"travel":180,"needs":[],"name":"\u0412\u044b\u0442\u044f\u0436\u043a\u0430","tech":true},"dr_1500_1400_0":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_1500_1400_1":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_1500_1400_2":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2100_1400_0":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2100_1400_1":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"},"dr_2100_1400_2":{"type":"slide","dir":[0,-1],"travel":384.0,"needs":[],"name":"\u042f\u0449\u0438\u043a"}},"cloth":["#e9e5df"],"meta":{"comps":[{"doors":[],"light":[1500,1350,450],"strip":[0,0,0,0,0,0]},{"doors":["fridge"],"light":[300,1000,1380],"strip":[0,0,0,0,0,0]}]}};
+
+// ---------------------------------------------------------------- сцена
+const host = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+function syncBg() {
+  renderer.setClearColor(new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#efebe5'));
+}
+syncBg();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncBg);
+new MutationObserver(syncBg).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+host.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 20, 40000);
+
+// внешний вид деталей по типу
+const SPECS = {
+  front:   { color: 0xffffff, map: 'stone', tile: 700, rough: 0.35, env: 0.8 },
+  quartz:  { color: 0xd8d4cf, map: 'stone', tile: 350, rough: 0.25, env: 1 },
+  gola:    { color: 0x2a2826, rough: 0.4, metal: 0.5, shadow: false },
+  appliance: { color: 0x2b2b2d, rough: 0.35, metal: 0.4 },
+  steel:   { color: 0xc9c9c9, rough: 0.25, metal: 1 },
+  chrome:  { color: 0xe0e0e0, rough: 0.12, metal: 1 },
+  glass:   { color: 0x111214, rough: 0.08, metal: 0.2, env: 1.2 },
+  burner:  { color: 0x3a3c40, rough: 0.3, shadow: false },
+  ovenglass: { color: 0x17181a, rough: 0.06, metal: 0.3, env: 1.2 },
+  sinkbowl: { color: 0x9a9da0, rough: 0.3, metal: 0.9 },
+  fridge:  { color: 0xf4f6f7, rough: 0.4 },
+  glassshelf: { color: 0xdfeaf0, rough: 0.05, env: 1.2 },
+  led:     { basic: true, color: 0xffe2b0 },
+  carcass: { color: 0xe8e3dc, map: 'board', tile: 400, rough: 0.7 },
+  shelf:   { color: 0xe8e3dc, map: 'board', tile: 400, rough: 0.7 },
+  plinth:  { color: 0x9d9187, rough: 0.7 },
+  groove:  { color: 0xeba3b3, rough: 0.4, shadow: false },
+  spacer:  { color: 0xe2ddd5, map: 'board', tile: 400, rough: 0.7 },
+  lid:     { color: 0xcbbfb8, rough: 0.35 },
+  dfront:  { color: 0xe3dfda, map: 'board', tile: 400, rough: 0.6 },
+  dbox:    { color: 0xf1ede7, map: 'board', tile: 400, rough: 0.7 },
+  back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
+  facade:  { color: 0xffffff, map: 'stone', tile: 700, rough: 0.35, env: 0.8 },
+  profile: { color: 0x1b1a19, rough: 0.35, metal: 0.6 },
+  wave:    { color: 0xffffff, map: 'wave', tile: 600, rough: 0.4, env: 0.8 },
+  woodshelf: { color: 0xd2a571, map: 'board', tile: 300, rough: 0.55 },
+  walnut:  { color: 0x6b4630, map: 'board', tile: 250, rough: 0.45 },
+  carcass_s: { color: 0xe6e1da, map: 'board', tile: 400, rough: 0.7 },
+  handle:  { color: 0x1c1a19, rough: 0.35, metal: 0.7, shape: 'bar' },
+  rail:    { color: 0xdedede, rough: 0.16, metal: 1, shape: 'rod' },
+  box:     { color: 0xcdc3b6, map: 'fabric', tile: 160, rough: 0.95 },
+  box2:    { color: 0x8a7f74, map: 'fabric', tile: 160, rough: 0.95 },
+  shoe:    { color: 0x2e2926, rough: 0.42, shape: 'shoe' },
+  wall_back:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_left:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_right: { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  floor:   { color: 0xffffff, map: 'parquet', tile: 1200, rough: 0.5, shadow: false },
+  door_entry: { color: 0x3a3531, rough: 0.45 },
+};
+// верхние фасады: светлые, фрезеровка «волна» – вертикальные волнистые пазы (шаг 60 мм на 600 мм)
+KIT.MAPS.wave = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 1024;
+  const g = c.getContext('2d');
+  g.drawImage(KIT.MAPS.stone.image, 0, 0, 1024, 1024);
+  const step = 1024 / 10, amp = 20;
+  for (let k = 0; k < 10; k++) {
+    const x0 = k * step + step / 2;
+    for (const [dx, col, w] of [[-3, 'rgba(90,82,76,0.55)', 5], [3, 'rgba(255,255,255,0.7)', 3]]) {
+      g.strokeStyle = col; g.lineWidth = w; g.beginPath();
+      for (let y = 0; y <= 1024; y += 8) {
+        const x = x0 + dx + amp * Math.sin(y / 1024 * Math.PI * 6);
+        y ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.stroke();
+    }
+  }
+  const tx = new THREE.CanvasTexture(c);
+  tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8;
+  return tx;
+})();
+function specOf(kind) {
+  if (kind.startsWith('fold')) return { color: new THREE.Color(DATA.cloth[+kind.slice(4)]), map: 'fabric', tile: 90, rough: 0.95 };
+  if (kind.startsWith('cloth')) return { color: new THREE.Color(DATA.cloth[+kind.slice(5)]), rough: 0.95, shape: 'cloth' };
+  return SPECS[kind] || { color: 0x999999 };
+}
+
+// подвижные группы
+const groups = {};
+for (const [id, meta] of Object.entries(DATA.groups)) {
+  const root = new THREE.Group();
+  scene.add(root);
+  const g = { id, meta, root, parent: root, slide: 0, slideTo: 0, rot: 0, rotTo: 0, state: 0 };
+  if (meta.type === 'hinge' || meta.type === 'lid') {
+    g.pivot = new THREE.Group();
+    if (meta.type === 'lid') g.pivot.position.set(0, meta.pivot[1], meta.pivot[0]);   // ось вдоль стены
+    else g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
+    root.add(g.pivot);
+    g.parent = g.pivot;
+  }
+  groups[id] = g;
+}
+
+const pickable = [];
+const walls = { wall_back: [], wall_left: [], wall_right: [] };
+for (const b of DATA.boxes) {
+  const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
+  const mesh = KIT.build(b, specOf(kind), kind);
+  let parent = scene;
+  if (gid) {
+    const g = groups[gid];
+    parent = g.parent;
+    if (g.pivot) mesh.position.sub(g.pivot.position);
+    mesh.traverse(o => { o.userData.gid = gid; if (o.isMesh) pickable.push(o); });
+  }
+  parent.add(mesh);
+  if (kind.startsWith('wall')) walls[kind].push(mesh);
+  if (kind === 'door_entry') walls.wall_left.push(mesh);
+}
+
+// свет
+KIT.sun(scene, new THREE.Vector3(4200, 4300, 5200), new THREE.Vector3(1800, 900, 1200), 3800);
+// подсветка внутри отсеков: LED-профиль под антресолью, горит при открытых дверях
+const COMP = DATA.meta.comps;
+const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
+for (const c of COMP) {
+  c.lamp = new THREE.PointLight(0xffd9a8, 0, 2600, 1);
+  c.lamp.position.set(c.light[0], c.light[1], c.light[2]);
+  scene.add(c.lamp);
+  if (!c.strip || c.strip[0] === c.strip[1]) continue;
+  const [x0, x1, y0, y1, z0, z1] = c.strip;                 // вертикальная LED-лента
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0), ledMat);
+  strip.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  scene.add(strip);
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+KIT.setup(renderer, scene);
+
+// ---------------------------------------------------------------- камера
+const target = new THREE.Vector3(1700, 1150, 1100);
+const sph = { r: 6800, theta: 0.6, phi: 1.2 };
+function placeCamera() {
+  const s = Math.sin(sph.phi);
+  camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
+                      target.y + sph.r * Math.cos(sph.phi),
+                      target.z + sph.r * s * Math.cos(sph.theta));
+  camera.lookAt(target);
+  // стены, которые оказались между камерой и комнатой, скрываем
+  walls.wall_back.forEach(m => (m.visible = camera.position.z > 0));
+  walls.wall_left.forEach(m => (m.visible = camera.position.x > 0));
+  walls.wall_right.forEach(m => (m.visible = camera.position.x < 1800));
+}
+let anim = null;      // плавный переход к заданному виду
+function flyTo(r, theta, phi, t) {
+  theta += 2 * Math.PI * Math.round((sph.theta - theta) / (2 * Math.PI));
+  anim = { from: { ...sph, t: target.clone() }, to: { r, theta, phi, t }, k: 0 };
+}
+
+function resize() {
+  const w = host.clientWidth, h = host.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.fov = w < h ? 62 : 45;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------------------------------------------------------------- управление
+const el = renderer.domElement;
+const ptrs = new Map();
+let moved = 0, panMode = false, lastPinch = 0, lastMid = null;
+el.addEventListener('contextmenu', e => e.preventDefault());
+el.addEventListener('pointerdown', e => {
+  el.setPointerCapture(e.pointerId);
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved = 0;
+  panMode = e.button === 2 || e.shiftKey;
+  lastPinch = 0; lastMid = null;
+  anim = null;
+});
+function pan(dx, dy) {
+  const k = sph.r * 0.0011;
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+  target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+}
+el.addEventListener('pointermove', e => {
+  hover(e);
+  const p = ptrs.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 1) {
+    if (panMode) pan(dx, dy);
+    else {
+      sph.theta -= dx * 0.006;
+      sph.phi = Math.min(1.62, Math.max(0.08, sph.phi - dy * 0.006));
+    }
+  } else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    if (lastPinch) sph.r = Math.min(12000, Math.max(500, sph.r * lastPinch / dist));
+    if (lastMid) pan(mid.x - lastMid.x, mid.y - lastMid.y);
+    lastPinch = dist; lastMid = mid;
+  }
+});
+function release(e) {
+  if (ptrs.size === 1 && moved < 8) pick(e);
+  ptrs.delete(e.pointerId);
+  lastPinch = 0; lastMid = null;
+}
+el.addEventListener('pointerup', release);
+el.addEventListener('pointercancel', e => ptrs.delete(e.pointerId));
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  anim = null;
+  sph.r = Math.min(12000, Math.max(500, sph.r * Math.exp(e.deltaY * 0.0012)));
+}, { passive: false });
+
+// ---------------------------------------------------------------- выбор деталей
+const ray = new THREE.Raycaster();
+function hit(e) {
+  const r = el.getBoundingClientRect();
+  const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(v, camera);
+  const h = ray.intersectObjects(pickable, false)[0];
+  return h ? groups[h.object.userData.gid] : null;
+}
+const NAMES = { hinge: 'Дверца', slide: 'Ящик', lid: 'Дверца' };
+const tip = document.getElementById('tip');
+function hover(e) {
+  if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
+  const g = hit(e);
+  el.style.cursor = g ? 'pointer' : 'grab';
+  if (g) {
+    tip.textContent = g.meta.name || NAMES[g.meta.type];
+    tip.style.left = e.clientX + 14 + 'px';
+    tip.style.top = e.clientY + 14 + 'px';
+    tip.style.display = 'block';
+  } else tip.style.display = 'none';
+}
+function pick(e) {
+  const g = hit(e);
+  if (!g) return;
+  toggle(g);
+  syncButtons();
+}
+
+// ---------------------------------------------------------------- действия
+const shelves = Object.values(groups).filter(g => g.meta.type === 'slide');
+const tech = Object.values(groups).filter(g => g.meta.tech);
+const doors = Object.values(groups).filter(g => g.meta.type === 'hinge' && !g.meta.tech);
+const drawers = shelves.filter(g => !g.meta.tech);
+const lids = tech;
+function setOpen(g, open) {
+  if (g.meta.type === 'lid') g.rotTo = open ? 1 : 0;
+  else if (g.meta.type === 'hinge') {
+    g.rotTo = open ? 1 : 0;
+    // закрываем дверь – сначала задвигаем полки за ней
+    if (!open) shelves.forEach(s => { if (s.meta.needs.includes(g.id)) s.slideTo = 0; });
+  } else {
+    g.slideTo = open ? 1 : 0;
+    if (open) g.meta.needs.forEach(id => (groups[id].rotTo = 1));
+  }
+}
+function toggle(g) { setOpen(g, (g.meta.type === 'slide' ? g.slideTo : g.rotTo) < 0.5); }
+function syncButtons() {
+  const isOpen = g => (g.meta.type === 'slide' ? g.slideTo : g.rotTo) > 0.5;
+  const anyDoor = doors.some(isOpen), anyShelf = drawers.some(isOpen), anyTech = tech.some(isOpen);
+  bDoors.textContent = anyDoor ? 'Закрыть дверцы' : 'Открыть дверцы';
+  bDoors.classList.toggle('on', anyDoor);
+  bShoes.textContent = anyShelf ? 'Задвинуть ящики' : 'Выдвинуть ящики';
+  bShoes.classList.toggle('on', anyShelf);
+  bLid.textContent = anyTech ? 'Закрыть технику' : 'Открыть технику';
+  bLid.classList.toggle('on', anyTech);
+}
+const bDoors = document.getElementById('bDoors');
+const bShoes = document.getElementById('bShoes');
+const bLid = document.getElementById('bLid');
+const flip = list => () => {
+  const open = !list.some(g => (g.meta.type === 'slide' ? g.slideTo : g.rotTo) > 0.5);
+  list.forEach(g => setOpen(g, open)); syncButtons();
+};
+bLid.onclick = flip(tech);
+bDoors.onclick = flip(doors);
+bShoes.onclick = flip(drawers);
+document.getElementById('bFront').onclick = () => flyTo(6400, 0.05, 1.4, new THREE.Vector3(1800, 1300, 700));
+document.getElementById('bSide').onclick = () => flyTo(6000, 1.05, 1.25, new THREE.Vector3(900, 1100, 1100));
+syncButtons();
+
+// ---------------------------------------------------------------- цикл
+let last = performance.now();
+function approach(v, to, step) { return Math.abs(to - v) <= step ? to : v + Math.sign(to - v) * step; }
+function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+function tick(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  const step = dt * 1.6;
+  for (const g of Object.values(groups)) {
+    if (g.meta.type === 'lid') {
+      g.rot = approach(g.rot, g.rotTo, step);
+      g.pivot.rotation.x = ease(g.rot) * g.meta.angle * Math.PI / 180;
+    } else if (g.meta.type === 'hinge') {
+      // дверь не закрывается, пока за ней выдвинута полка
+      const blocked = g.rotTo < g.rot && shelves.some(s => s.meta.needs.includes(g.id) && s.slide > 0);
+      if (!blocked) g.rot = approach(g.rot, g.rotTo, step);
+      g.pivot.rotation.y = ease(g.rot) * g.meta.angle * Math.PI / 180;
+    } else {
+      // полка выдвигается, только когда двери её отсека открыты
+      const free = g.meta.needs.every(id => groups[id].rot > 0.95);
+      if (g.slideTo < g.slide || free) g.slide = approach(g.slide, g.slideTo, step);
+      const s = ease(g.slide) * g.meta.travel;
+      g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
+    }
+  }
+  for (const c of COMP) c.lamp.intensity = 1500 * (c.doors.length ? Math.max(...c.doors.map(id => ease(groups[id].rot))) : 0.7);
+  if (anim) {
+    anim.k = Math.min(1, anim.k + dt * 1.4);
+    const k = ease(anim.k), f = anim.from, t = anim.to;
+    sph.r = f.r + (t.r - f.r) * k;
+    sph.theta = f.theta + (t.theta - f.theta) * k;
+    sph.phi = f.phi + (t.phi - f.phi) * k;
+    target.lerpVectors(f.t, t.t, k);
+    if (anim.k >= 1) anim = null;
+  }
+  placeCamera();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
