@@ -4,7 +4,7 @@
 Оси: x – по ширине шкафа (0 = левый край), y – от стены (0) к фасаду, z – вверх от пола.
 """
 from sheet import (T, DT, W, CD, DEPTH, PL, ZB, B0, MID, H, ZTOP, ZA, L_SHELVES, R_SHELVES,  # noqa: F401
-                   R_MID, RAIL_UP, RAIL_LOW, DR_Z, DR_H, DR_SET, DOOR_GAP, SPLIT, GROOVE, GROOVE_W)
+                   R_MID, RAIL_UP, RAIL_LOW, DR_Z, DR_H, DR_SET, DOOR_GAP, SPLIT, GROOVE, MILL, door_x)
 
 boxes = []
 groups = {}
@@ -81,23 +81,21 @@ def build():
         box(bx0, bx1, 40, fy1 - 18, z + 15, z + 23, "dbox")
         end()
 
-    # фасады: 4 нижние + 4 антресольные двери, фрезерованная ручка на стыках
-    dw = W / 4
-    hinges = [(0, -88), (MID, 85), (MID, -85), (W, 88)]
+    # фасады: 4 нижние + 4 антресольные двери, зазор 30 на стыках, розовая фрезеровка кромок
+    hinges = [(0, -88), (door_x(1)[1], 85), (door_x(2)[0], -85), (W, 88)]
     for row, (z0, z1) in enumerate(((PL + 2, SPLIT - DOOR_GAP / 2), (SPLIT + DOOR_GAP / 2, H - 2))):
         for i in range(4):
             hx, ang = hinges[i]
             gid = ("door%d" if row == 0 else "top%d") % i
             group(gid, type="hinge", pivot=[hx, DEPTH], angle=ang)
-            x0, x1 = i * dw + DOOR_GAP / 2, (i + 1) * dw - DOOR_GAP / 2
+            x0, x1 = door_x(i)
             box(x0, x1, CD, DEPTH, z0, z1, "facade")
             gz0, gz1 = max(z0, GROOVE[0]), min(z1, GROOVE[1])
             if gz1 > gz0:
-                for k in (i, i + 1):                       # стыки слева и справа от двери
-                    if 0 < k < 4:
-                        jx = k * dw
-                        ga, gb = (jx - GROOVE_W / 2, x1) if jx > x0 else (x0, jx + GROOVE_W / 2)
-                        box(ga, gb, DEPTH - 6, DEPTH + 0.6, gz0, gz1, "groove")
+                if i > 0:                                  # фрезеровка на левой кромке
+                    box(x0 - 0.5, x0 + MILL, DEPTH - 8, DEPTH + 0.6, gz0, gz1, "groove")
+                if i < 3:                                  # и на правой
+                    box(x1 - MILL, x1 + 0.5, DEPTH - 8, DEPTH + 0.6, gz0, gz1, "groove")
             end()
 
 

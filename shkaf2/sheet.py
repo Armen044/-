@@ -52,8 +52,18 @@ DR_Z = [B0 + 30 + i * (DR_H + DR_GAP) for i in range(4)]
 # фасады: 4 нижние двери + 4 антресольные, фрезерованная ручка на стыках
 DOOR_GAP = 3
 SPLIT = ZA + T / 2      # стык нижних и антресольных дверей
-GROOVE = (230, 2420)    # фрезерованная ручка: от – до (по высоте)
-GROOVE_W = 30
+GROOVE = (230, 2420)    # фрезеровка-ручка на кромках: от – до (по высоте)
+GROOVE_W = 30           # зазор между фасадами на стыках = место ручки
+HGAP = GROOVE_W
+MILL = 12               # ширина розовой фрезеровки на кромке фасада
+PINK = "#eba3b3"
+DOOR_W = (W - 3 * HGAP) / 4      # ширина створки = 377,5
+
+
+def door_x(i):
+    """Края i-й створки (зазор 30 на каждом из трёх стыков)."""
+    x0 = i * (DOOR_W + HGAP)
+    return x0, x0 + DOOR_W
 
 CUT = "#7d6c5b"
 FACADE = "#d9cfc9"
@@ -88,12 +98,16 @@ def led(v, x, z0, z1):
     rect(v.X(x) - 0.35, v.Z(z1), 0.7, (z1 - z0) * S, fill="#f0a800", stroke="none")
 
 
-def groove(v, x, z0, z1, w=GROOVE_W):
-    """Фрезерованная ручка – паз со скруглённым верхом."""
+def handle_gap(v, xa, xb, z0, z1):
+    """Стык створок: зазор 30 (виден корпус) и розовая фрезеровка на кромках со скруглённым верхом."""
+    v.box(xa, xb, PL + 2, H - 2, fill="#8f857d", sw=0.15)
+    ga, gb = GROOVE
+    w = (xb - xa) + 2 * MILL
     r = w * S / 2
-    x0 = v.X(x) - r
-    e(f'<path d="M{x0:.2f},{v.Z(z0):.2f} L{x0:.2f},{v.Z(z1) + r:.2f} A{r:.2f},{r:.2f} 0 0 1 {x0 + 2 * r:.2f},{v.Z(z1) + r:.2f} '
-      f'L{x0 + 2 * r:.2f},{v.Z(z0):.2f} z" fill="#bfb3ac" stroke="#7e726b" stroke-width="0.2"/>')
+    x0 = v.X(xa - MILL)
+    e(f'<path d="M{x0:.2f},{v.Z(ga):.2f} L{x0:.2f},{v.Z(gb) + r:.2f} A{r:.2f},{r:.2f} 0 0 1 {x0 + 2 * r:.2f},{v.Z(gb) + r:.2f} '
+      f'L{x0 + 2 * r:.2f},{v.Z(ga):.2f} z" fill="{PINK}" stroke="#b5737f" stroke-width="0.2"/>')
+    v.box(xa, xb, ga, gb - (xb - xa) / 2, fill="#8f857d", sw=0.1)
 
 
 # ---------------------------------------------------------------------------
@@ -105,25 +119,30 @@ def view_facade(ox, fy):
     v.box(50, W - 50, 0, PL, fill="#a99d93")                     # цоколь
     dw = W / 4
     for i in range(4):
-        x0, x1 = i * dw + DOOR_GAP / 2, (i + 1) * dw - DOOR_GAP / 2
+        x0, x1 = door_x(i)
         v.box(x0, x1, PL + 2, SPLIT - DOOR_GAP / 2, fill=FACADE, sw=0.3)
         v.box(x0, x1, SPLIT + DOOR_GAP / 2, H - 2, fill=FACADE, sw=0.3)
     for k in (1, 2, 3):
-        groove(v, k * dw, *GROOVE)
+        handle_gap(v, door_x(k - 1)[1], door_x(k)[0], *GROOVE)
     # раскрытие (условно): створки 1 и 3 – петли слева, 2 и 4 – справа
-    for i, (hinge, far) in enumerate(((0, dw), (2 * dw, dw), (2 * dw, 3 * dw), (W, 3 * dw))):
+    for i, (hinge, far) in enumerate(((0, door_x(0)[1]), (door_x(1)[1], door_x(1)[0]),
+                                      (door_x(2)[0], door_x(2)[1]), (W, door_x(3)[0]))):
         for z0, z1 in ((PL + 2, SPLIT), (SPLIT, H - 2)):
             line(v.X(hinge), v.Z(z0), v.X(far), v.Z((z0 + z1) / 2), w=0.12, color="#999", dash="1 0.8")
             line(v.X(hinge), v.Z(z1), v.X(far), v.Z((z0 + z1) / 2), w=0.12, color="#999", dash="1 0.8")
     yb = v.Z(0) + 9
     for i in range(4):
-        dim_h(v.X(i * dw), v.X((i + 1) * dw), yb, str(round(dw)), ext_from=v.Z(0) + 1, size=2.0)
+        x0, x1 = door_x(i)
+        dim_h(v.X(x0), v.X(x1), yb, "377,5", ext_from=v.Z(0) + 1, size=1.7)
+        if i < 3:
+            dim_h(v.X(x1), v.X(door_x(i + 1)[0]), yb - 4, "30", ext_from=v.Z(0) + 1, size=1.5)
     dim_h(v.X(0), v.X(W), yb + 6, f"{W}*")
     xl = v.X(0) - 5
     for a, b in ((0, PL), (PL, SPLIT), (SPLIT, H)):
         dim_v(v.Z(b), v.Z(a), xl, str(round(b - a)), ext_from=v.X(0), size=2.0)
     dim_v(v.Z(H), v.Z(0), xl - 6, str(H))
-    leader(v.X(dw), v.Z(1700), v.X(W + 120), v.Z(1950), "ручка фрезерованная\n(паз 30 на стыке створок)", size=1.8)
+    leader(v.X(door_x(0)[1] - MILL / 2), v.Z(1700), v.X(W + 120), v.Z(1950),
+           "зазор 30 — место ручки,\nфрезеровка кромок\n(розовая эмаль)", size=1.8)
     leader(v.X(dw * 3.5), v.Z(1200), v.X(W + 120), v.Z(1350), "фасад МДФ,\nпокраска эмаль", size=1.8)
     return v
 
@@ -238,10 +257,11 @@ def view_plan(ox, oy):
     line(*P(MID + 20, CD / 2), *P(W - 20, CD / 2), w=0.4, color="#555", dash="2 0.8")
     dw = W / 4
     for i in range(4):
-        a, b = P(i * dw + 1.5, CD)
-        rect(a, b, (dw - 3) * S, DT * S, fill=FACADE, stroke="#111", sw=0.25)
-    r = dw * S
-    for hinge, sgn in ((0, 1), (MID, -1), (MID, 1), (W, -1)):
+        x0, x1 = door_x(i)
+        a, b = P(x0, CD)
+        rect(a, b, (x1 - x0) * S, DT * S, fill=FACADE, stroke="#111", sw=0.25)
+    r = DOOR_W * S
+    for hinge, sgn in ((0, 1), (door_x(1)[1], -1), (door_x(2)[0], 1), (W, -1)):
         hx, hy = P(hinge, DEPTH)
         line(hx, hy, hx, hy + r, w=0.25, color="#555")
         sweep = 0 if sgn > 0 else 1
@@ -258,8 +278,8 @@ def notes(x, y):
     text(x, y, "ПРИМЕЧАНИЯ", size=3.0, weight="bold", anchor="start")
     rows = [
         "Корпус — ЛДСП Egger 16 мм, цвет «Кашемир»; цоколь 80.",
-        "Фасады — МДФ 18 мм, покраска эмаль; 4 нижние двери и 4 антресольные.",
-        "Ручка фрезерованная: паз 30 мм на стыках створок, верх скруглён.",
+        "Фасады — МДФ 18 мм, эмаль; 4 нижние + 4 антресольные двери по 377,5 мм.",
+        "Между фасадами на стыках зазор 30 — место ручки; кромки фрезерованы, розовая эмаль.",
         "Левый отсек: антресоль 450, 4 полки с шагом 300, блок ящиков 803:",
         "      4 внутренних ящика, фасады 170,75, зазор 11,25, отступ 30 от края,",
         "      вырез под ручку, направляющие полного выдвижения 500 мм.",
