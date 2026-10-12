@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Шкаф с ящиками 3D</title>
+<style>
+  /* полноэкранная 3D-сцена, карточки сверху, панель кнопок снизу */
+  :root { --bg: #efebe5; --panel: rgba(255,255,255,0.92); --ink: #2b2622; --muted: #6f655c;
+          --accent: #8a6a3f; --line: #d9d1c7; --on-ink: #ffffff; --tip: rgba(30,25,20,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+               font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+               overflow: hidden; -webkit-user-select: none; user-select: none; }
+  #view { position: fixed; inset: 0; touch-action: none; }
+  header { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; justify-content: space-between;
+           align-items: flex-start; gap: 12px; pointer-events: none; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
+          box-shadow: 0 4px 18px rgba(60,40,20,0.08); pointer-events: auto; }
+  h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: 0.2px; }
+  .sub { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .hint { font-size: 12.5px; color: var(--muted); line-height: 1.45; max-width: 290px; }
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; flex-wrap: wrap;
+        justify-content: center; gap: 8px; width: min(980px, calc(100% - 24px)); }
+  button { font: inherit; font-size: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; min-height: 42px;
+           box-shadow: 0 2px 10px rgba(60,40,20,0.08); }
+  button:hover { border-color: var(--accent); }
+  button.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #tip { position: fixed; pointer-events: none; padding: 5px 9px; border-radius: 7px; font-size: 12.5px;
+         background: var(--tip); color: #fff; display: none; white-space: nowrap; }
+  @media (max-width: 640px) {
+    .hint { display: none; }
+    h1 { font-size: 15px; }
+    button { font-size: 13px; padding: 9px 11px; }
+  }
+</style>
+</head>
+<body>
+<div id="view"></div>
+<header>
+  <div class="card">
+    <h1>Шкаф с ящиками</h1>
+    <div class="sub">1600 × 600 × 2645 мм · ЛДСП Egger «Кашемир», фасады МДФ эмаль</div>
+  </div>
+  <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
+    правая кнопка или два пальца — сдвиг. Нажмите на дверь или ящик.</div>
+</header>
+<nav>
+  <button id="bDoors">Открыть двери</button>
+  <button id="bShoes">Выдвинуть ящики</button>
+  <button id="bFront">Вид спереди</button>
+  <button id="bSide">Вид сбоку</button>
+</nav>
+<div id="tip"></div>
+
+<script>/*__THREE__*/</script>
+<script>/*__KIT__*/</script>
+<script>
+const DATA = /*__DATA__*/;
+
+// ---------------------------------------------------------------- сцена
+const host = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+function syncBg() {
+  renderer.setClearColor(new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#efebe5'));
+}
+syncBg();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncBg);
+new MutationObserver(syncBg).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+host.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 20, 40000);
+
+// внешний вид деталей по типу
+const SPECS = {
+  carcass: { color: 0xcfc6bc, map: 'board', tile: 400, rough: 0.7 },
+  shelf:   { color: 0xcfc6bc, map: 'board', tile: 400, rough: 0.7 },
+  plinth:  { color: 0x9d9187, rough: 0.7 },
+  groove:  { color: 0xb2a69e, rough: 0.45, shadow: false },
+  spacer:  { color: 0xe2ddd5, map: 'board', tile: 400, rough: 0.7 },
+  dfront:  { color: 0xd6ccc2, map: 'board', tile: 400, rough: 0.6 },
+  dbox:    { color: 0xf1ede7, map: 'board', tile: 400, rough: 0.7 },
+  back:    { color: 0xddd8d0, map: 'board', tile: 400, rough: 0.8 },
+  facade:  { color: 0xd9cec7, rough: 0.3, env: 0.8 },
+  handle:  { color: 0x1c1a19, rough: 0.35, metal: 0.7, shape: 'bar' },
+  rail:    { color: 0xdedede, rough: 0.16, metal: 1, shape: 'rod' },
+  box:     { color: 0xcdc3b6, map: 'fabric', tile: 160, rough: 0.95 },
+  box2:    { color: 0x8a7f74, map: 'fabric', tile: 160, rough: 0.95 },
+  shoe:    { color: 0x2e2926, rough: 0.42, shape: 'shoe' },
+  wall_back:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_left:  { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  wall_right: { color: 0xffffff, map: 'plaster', tile: 900, rough: 0.95, shadow: false },
+  floor:   { color: 0xffffff, map: 'parquet', tile: 1200, rough: 0.5, shadow: false },
+  door_entry: { color: 0x3a3531, rough: 0.45 },
+};
+function specOf(kind) {
+  if (kind.startsWith('fold')) return { color: new THREE.Color(DATA.cloth[+kind.slice(4)]), map: 'fabric', tile: 90, rough: 0.95 };
+  if (kind.startsWith('cloth')) return { color: new THREE.Color(DATA.cloth[+kind.slice(5)]), rough: 0.95, shape: 'cloth' };
+  return SPECS[kind] || { color: 0x999999 };
+}
+
+// подвижные группы
+const groups = {};
+for (const [id, meta] of Object.entries(DATA.groups)) {
+  const root = new THREE.Group();
+  scene.add(root);
+  const g = { id, meta, root, parent: root, slide: 0, slideTo: 0, rot: 0, rotTo: 0, state: 0 };
+  if (meta.type === 'hinge') {
+    g.pivot = new THREE.Group();
+    g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
+    root.add(g.pivot);
+    g.parent = g.pivot;
+  }
+  groups[id] = g;
+}
+
+const pickable = [];
+const walls = { wall_back: [], wall_left: [], wall_right: [] };
+for (const b of DATA.boxes) {
+  const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
+  const mesh = KIT.build(b, specOf(kind), kind);
+  let parent = scene;
+  if (gid) {
+    const g = groups[gid];
+    parent = g.parent;
+    if (g.pivot) mesh.position.sub(g.pivot.position);
+    mesh.traverse(o => { o.userData.gid = gid; if (o.isMesh) pickable.push(o); });
+  }
+  parent.add(mesh);
+  if (kind.startsWith('wall')) walls[kind].push(mesh);
+  if (kind === 'door_entry') walls.wall_left.push(mesh);
+}
+
+// свет
+KIT.sun(scene, new THREE.Vector3(-600, 4300, 4200), new THREE.Vector3(800, 900, 300), 2800);
+// подсветка внутри отсеков: LED-профиль под антресолью, горит при открытых дверях
+const COMP = DATA.meta.comps;
+const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
+for (const c of COMP) {
+  c.lamp = new THREE.PointLight(0xffd9a8, 0, 2600, 1);
+  c.lamp.position.set(c.light[0], c.light[1], c.light[2]);
+  scene.add(c.lamp);
+  const [x0, x1, y0, y1, z0, z1] = c.strip;                 // вертикальная LED-лента
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0), ledMat);
+  strip.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  scene.add(strip);
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+KIT.setup(renderer, scene);
+
+// ---------------------------------------------------------------- камера
+const target = new THREE.Vector3(800, 1300, 300);
+const sph = { r: 5200, theta: 0.5, phi: 1.3 };
+function placeCamera() {
+  const s = Math.sin(sph.phi);
+  camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
+                      target.y + sph.r * Math.cos(sph.phi),
+                      target.z + sph.r * s * Math.cos(sph.theta));
+  camera.lookAt(target);
+  // стены, которые оказались между камерой и комнатой, скрываем
+  walls.wall_back.forEach(m => (m.visible = camera.position.z > 0));
+  walls.wall_left.forEach(m => (m.visible = camera.position.x > 0));
+  walls.wall_right.forEach(m => (m.visible = camera.position.x < 1800));
+}
+let anim = null;      // плавный переход к заданному виду
+function flyTo(r, theta, phi, t) {
+  theta += 2 * Math.PI * Math.round((sph.theta - theta) / (2 * Math.PI));
+  anim = { from: { ...sph, t: target.clone() }, to: { r, theta, phi, t }, k: 0 };
+}
+
+function resize() {
+  const w = host.clientWidth, h = host.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.fov = w < h ? 62 : 45;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------------------------------------------------------------- управление
+const el = renderer.domElement;
+const ptrs = new Map();
+let moved = 0, panMode = false, lastPinch = 0, lastMid = null;
+el.addEventListener('contextmenu', e => e.preventDefault());
+el.addEventListener('pointerdown', e => {
+  el.setPointerCapture(e.pointerId);
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved = 0;
+  panMode = e.button === 2 || e.shiftKey;
+  lastPinch = 0; lastMid = null;
+  anim = null;
+});
+function pan(dx, dy) {
+  const k = sph.r * 0.0011;
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+  target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+}
+el.addEventListener('pointermove', e => {
+  hover(e);
+  const p = ptrs.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 1) {
+    if (panMode) pan(dx, dy);
+    else {
+      sph.theta -= dx * 0.006;
+      sph.phi = Math.min(1.62, Math.max(0.08, sph.phi - dy * 0.006));
+    }
+  } else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    if (lastPinch) sph.r = Math.min(12000, Math.max(500, sph.r * lastPinch / dist));
+    if (lastMid) pan(mid.x - lastMid.x, mid.y - lastMid.y);
+    lastPinch = dist; lastMid = mid;
+  }
+});
+function release(e) {
+  if (ptrs.size === 1 && moved < 8) pick(e);
+  ptrs.delete(e.pointerId);
+  lastPinch = 0; lastMid = null;
+}
+el.addEventListener('pointerup', release);
+el.addEventListener('pointercancel', e => ptrs.delete(e.pointerId));
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  anim = null;
+  sph.r = Math.min(12000, Math.max(500, sph.r * Math.exp(e.deltaY * 0.0012)));
+}, { passive: false });
+
+// ---------------------------------------------------------------- выбор деталей
+const ray = new THREE.Raycaster();
+function hit(e) {
+  const r = el.getBoundingClientRect();
+  const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(v, camera);
+  const h = ray.intersectObjects(pickable, false)[0];
+  return h ? groups[h.object.userData.gid] : null;
+}
+const NAMES = { hinge: 'Дверь', slide: 'Выдвижной ящик' };
+const tip = document.getElementById('tip');
+function hover(e) {
+  if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
+  const g = hit(e);
+  el.style.cursor = g ? 'pointer' : 'grab';
+  if (g) {
+    tip.textContent = NAMES[g.meta.type];
+    tip.style.left = e.clientX + 14 + 'px';
+    tip.style.top = e.clientY + 14 + 'px';
+    tip.style.display = 'block';
+  } else tip.style.display = 'none';
+}
+function pick(e) {
+  const g = hit(e);
+  if (!g) return;
+  toggle(g);
+  syncButtons();
+}
+
+// ---------------------------------------------------------------- действия
+const doors = Object.values(groups).filter(g => g.meta.type === 'hinge');
+const shelves = Object.values(groups).filter(g => g.meta.type === 'slide');
+function setOpen(g, open) {
+  if (g.meta.type === 'hinge') {
+    g.rotTo = open ? 1 : 0;
+    // закрываем дверь – сначала задвигаем полки за ней
+    if (!open) shelves.forEach(s => { if (s.meta.needs.includes(g.id)) s.slideTo = 0; });
+  } else {
+    g.slideTo = open ? 1 : 0;
+    if (open) g.meta.needs.forEach(id => (groups[id].rotTo = 1));
+  }
+}
+function toggle(g) { setOpen(g, (g.meta.type === 'hinge' ? g.rotTo : g.slideTo) < 0.5); }
+function syncButtons() {
+  const anyDoor = doors.some(d => d.rotTo > 0.5), anyShelf = shelves.some(s => s.slideTo > 0.5);
+  bDoors.textContent = anyDoor ? 'Закрыть двери' : 'Открыть двери';
+  bDoors.classList.toggle('on', anyDoor);
+  bShoes.textContent = anyShelf ? 'Задвинуть ящики' : 'Выдвинуть ящики';
+  bShoes.classList.toggle('on', anyShelf);
+}
+const bDoors = document.getElementById('bDoors');
+const bShoes = document.getElementById('bShoes');
+bDoors.onclick = () => { const open = !doors.some(d => d.rotTo > 0.5); doors.forEach(d => setOpen(d, open)); syncButtons(); };
+bShoes.onclick = () => { const open = !shelves.some(s => s.slideTo > 0.5); shelves.forEach(s => setOpen(s, open)); syncButtons(); };
+document.getElementById('bFront').onclick = () => flyTo(5200, 0.0, 1.45, new THREE.Vector3(800, 1320, 300));
+document.getElementById('bSide').onclick = () => flyTo(4600, -0.8, 1.35, new THREE.Vector3(800, 1250, 350));
+syncButtons();
+
+// ---------------------------------------------------------------- цикл
+let last = performance.now();
+function approach(v, to, step) { return Math.abs(to - v) <= step ? to : v + Math.sign(to - v) * step; }
+function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+function tick(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  const step = dt * 1.6;
+  for (const g of Object.values(groups)) {
+    if (g.meta.type === 'hinge') {
+      // дверь не закрывается, пока за ней выдвинута полка
+      const blocked = g.rotTo < g.rot && shelves.some(s => s.meta.needs.includes(g.id) && s.slide > 0);
+      if (!blocked) g.rot = approach(g.rot, g.rotTo, step);
+      g.pivot.rotation.y = ease(g.rot) * g.meta.angle * Math.PI / 180;
+    } else {
+      // полка выдвигается, только когда двери её отсека открыты
+      const free = g.meta.needs.every(id => groups[id].rot > 0.95);
+      if (g.slideTo < g.slide || free) g.slide = approach(g.slide, g.slideTo, step);
+      const s = ease(g.slide) * g.meta.travel;
+      g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
+    }
+  }
+  for (const c of COMP) c.lamp.intensity = 1500 * Math.max(...c.doors.map(id => ease(groups[id].rot)));
+  if (anim) {
+    anim.k = Math.min(1, anim.k + dt * 1.4);
+    const k = ease(anim.k), f = anim.from, t = anim.to;
+    sph.r = f.r + (t.r - f.r) * k;
+    sph.theta = f.theta + (t.theta - f.theta) * k;
+    sph.phi = f.phi + (t.phi - f.phi) * k;
+    target.lerpVectors(f.t, t.t, k);
+    if (anim.k >= 1) anim = null;
+  }
+  placeCamera();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
