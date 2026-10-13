@@ -8,7 +8,7 @@ import os
 
 import generate as g
 from generate import (S, T, H, D, DEPTH, PLINTH, ANT, RAIL, R1, R2, SIDE,
-                      DRAWER_TOP, BOARD_L, BOARD_W, LED, e, text, line, rect,
+                      RACK_Y, RACK_D, RACK_Z, RACK_TOP, RACK_SHELF, BOARD_L, BOARD_W, LED, e, text, line, rect,
                       MIR_D, MIR_T, MIR_H, MIR_Z, LM,
                       dim_h, dim_v, leader)
 
@@ -61,19 +61,27 @@ def section_a(ox):
 
     cutp(0, DEPTH, PLINTH, PLINTH + T)                           # дно
     cutp(DEPTH - 50, DEPTH - 34, 0, PLINTH)                       # цоколь
-    for i in range(4):                                           # ящики
-        zb = PLINTH + T + i * 200
-        cutp(DEPTH - 18, DEPTH, zb + 2, zb + 198, fill="#a89580")             # фасад
-        rect(U(80), Zf(zb + 150), (DEPTH - 18 - 80) * S, 130 * S, fill="#f6f1ea", stroke="#999", sw=0.15)
-        cutp(80, DEPTH - 18, zb + 20, zb + 28)                    # дно ящика
-        cutp(80, 92, zb + 28, zb + 150)                           # задняя стенка ящика
-        cutp(DEPTH, DEPTH + 12, zb + 125, zb + 137, fill="#c9a227")           # ручка
-        line(U(80), Zf(zb + 40), U(DEPTH - 18), Zf(zb + 40), w=0.35, color="#555")   # направляющая
-    cutp(0, DEPTH, DRAWER_TOP, DRAWER_TOP + T)
-    for z in (1230, 1550, 1870):
-        cutp(0, DEPTH - 20, z, z + T)
-        rect(U(DEPTH - 40), Zf(z), 18 * S, 10 * S, fill=LED, stroke="#7a5a00", sw=0.15)
-        rect(U(120), Zf(z + T + 200), 250 * S, 200 * S, fill="#e3d6c6", stroke="#aaa", sw=0.15)
+    # обувница Aiden (вид сбоку): каркас, центральная стенка, по 5 полок с двух сторон
+    ra, rb = RACK_Y, RACK_Y + RACK_D
+    rc = (ra + rb) / 2
+    DK = "#3f4245"
+    cutp(20, DEPTH - 30, RACK_Z, RACK_Z + 12, fill=DK)                    # направляющая низ
+    cutp(20, DEPTH - 30, RACK_TOP + 2, RACK_SHELF, fill=DK)               # направляющая верх
+    rect(U(ra), Zf(RACK_TOP), RACK_D * S, (RACK_TOP - RACK_Z - 14) * S, fill="#f1efed", stroke=DK, sw=0.3)
+    for z in (RACK_Z + 14, RACK_TOP - 20):
+        cutp(ra, rb, z, z + 20, fill=DK)
+    cutp(rc - 4, rc + 4, RACK_Z + 34, RACK_TOP - 20, fill="#5a5d60")
+    step = (RACK_TOP - RACK_Z - 14 - 40) / 5
+    for i in range(5):
+        zs = RACK_Z + 34 + i * step + 30
+        for ya, yb, lip in ((rc + 4, rb, rb - 14), (ra, rc - 4, ra)):
+            cutp(ya, yb, zs - 6, zs, fill=DK)
+            cutp(lip, lip + 14, zs, zs + 30, fill=DK)
+            sa, sb = (rc + 20, rb - 16) if ya > rc else (ra + 16, rc - 20)
+            rect(U(sa), Zf(zs + 110), (sb - sa) * S, 110 * S, fill="#d9cfc4", stroke="#8b7f73", sw=0.15)
+    cutp(0, DEPTH - 20, RACK_SHELF, RACK_SHELF + T)
+    rect(U(DEPTH - 40), Zf(RACK_SHELF), 18 * S, 10 * S, fill=LED, stroke="#7a5a00", sw=0.15)
+    rect(U(120), Zf(RACK_SHELF + T + 180), 250 * S, 180 * S, fill="#e3d6c6", stroke="#aaa", sw=0.15)
     cutp(0, DEPTH, ANT, ANT + T)
     rect(U(DEPTH - 22), Zf(ANT), 18 * S, 10 * S, fill=LED, stroke="#7a5a00", sw=0.15)
     rect(U(120), Zf(ANT + T + 260), 400 * S, 260 * S, fill="#e3d6c6", stroke="#aaa", sw=0.15)
@@ -84,8 +92,8 @@ def section_a(ox):
     dim_h(U(0), U(DEPTH), yb, "600", ext_from=FY + 1)
     dim_h(U(DEPTH), U(D), yb, f"{SIDE} проход вдоль боковых шкафов", ext_from=FY + 1)
     dim_h(U(0), U(D), yb + 7, str(D))
-    dim_h(U(80), U(DEPTH - 18), Zf(PLINTH + T + 200) + 3.2, "500 ящик", size=1.8)
-    zs = [0, PLINTH, DRAWER_TOP, 1230, 1550, 1870, ANT, H]
+    dim_h(U(RACK_Y), U(RACK_Y + RACK_D), Zf(RACK_Z) + 3.2, str(RACK_D), size=1.8)
+    zs = [0, PLINTH, RACK_Z, RACK_TOP, RACK_SHELF + T, ANT, H]
     xl = U(-100) - 5
     for a, b in zip(zs, zs[1:]):
         dim_v(Zf(b), Zf(a), xl, str(b - a), ext_from=U(-100), size=2.0)
@@ -94,10 +102,10 @@ def section_a(ox):
     # --- выноски
     leader(U(DEPTH - 12), Zf(ANT - 5), U(DEPTH + 120), Zf(ANT) + 7,
            "LED-профиль под антресолью", size=2.0)
-    leader(U(DEPTH - 30), Zf(1550 - 5), U(DEPTH + 120), Zf(1550) + 5,
-           "LED по краю полок", size=2.0)
-    leader(U(300), Zf(PLINTH + T + 640), U(DEPTH + 120), Zf(700),
-           "Выкатной ящик: направляющие\n500 мм полного выдвижения", size=2.0)
+    leader(U(DEPTH - 30), Zf(RACK_SHELF - 5), U(DEPTH + 120), Zf(RACK_SHELF) + 5,
+           "LED по краю полки", size=2.0)
+    leader(U(RACK_Y + RACK_D - 40), Zf(1100), U(DEPTH + 120), Zf(1100),
+           "Обувница ALPHALUX Aiden\nALF0814.10S.43, 764×400×1850,\n10 полок (5 + 5), тёмно-серый:\nвыдвинуть и повернуть 180°", size=2.0)
     text(U(300), Zf(H - 220), "З2", size=2.4, weight="bold")
     text(U(300), Zf(H - 300), "в разрезе", size=1.8, fill="#555")
     text(U(DEPTH + SIDE / 2), Zf(H) - 6.5, "правая стена (П1, П2) — за плоскостью разреза", size=1.9, fill="#666")

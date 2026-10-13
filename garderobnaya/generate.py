@@ -162,6 +162,29 @@ class View:
             text((self.X(x0) + self.X(x1)) / 2, self.Z(z) + 2.2, f"полка для обуви Н={z}", size=1.5, fill="#444")
         self.panel_h(x0, x1, top)
 
+    def shoe_rack(self, x0, x1):
+        """Обувница Aiden – вид спереди: рама, 5 ярусов на стороне к проходу (ещё 5 – с обратной)."""
+        cx = (x0 + x1) / 2
+        a, b = cx - RACK_W / 2, cx + RACK_W / 2
+        rect(self.X(a), self.Z(RACK_TOP), RACK_W * S, RACK_H * S, fill="#e9e7e5", stroke="#3f4245", sw=0.4)
+        for z in (RACK_Z, RACK_TOP - 20):
+            rect(self.X(a), self.Z(z + 20), RACK_W * S, 20 * S, fill="#3f4245", stroke="none")
+        for x in (a, b - 20):
+            rect(self.X(x), self.Z(RACK_TOP), 20 * S, RACK_H * S, fill="#3f4245", stroke="none")
+        step = (RACK_H - 40) / 5
+        for i in range(5):
+            zb = RACK_Z + 20 + i * step + 30
+            for k in range(6):
+                sx = a + 40 + k * (RACK_W - 80) / 6
+                sw = (RACK_W - 80) / 6 - 14
+                hh = 120 - (k % 2) * 25
+                e(f'<path d="M{self.X(sx):.2f},{self.Z(zb):.2f} L{self.X(sx):.2f},{self.Z(zb + hh):.2f} '
+                  f'Q{self.X(sx + sw / 2):.2f},{self.Z(zb + hh + 25):.2f} {self.X(sx + sw):.2f},{self.Z(zb + hh):.2f} '
+                  f'L{self.X(sx + sw):.2f},{self.Z(zb):.2f} z" fill="#d9cfc4" stroke="#8b7f73" stroke-width="0.15"/>')
+            rect(self.X(a + 20), self.Z(zb), (RACK_W - 40) * S, 1.0, fill="#3f4245", stroke="none")
+        text(cx, self.Z(RACK_TOP) + 4, "ОБУВНИЦА", size=2.0, weight="bold", fill="#3f4245")
+        text(cx, self.Z(RACK_TOP) + 6.6, "поворотно-выдвижная", size=1.6, fill="#3f4245")
+
     def carcass(self, panels_x):
         # цоколь
         rect(self.X(0), self.Z(PLINTH), self.w * S, PLINTH * S, fill="url(#hatch)", sw=0.2)
@@ -205,7 +228,14 @@ MIR_D, MIR_T, MIR_H = 480, 50, 1405   # зеркало Lexy 480×50×1405 (гл�
 MIR_Z = 450             # низ зеркала от пола
 R1 = 940                # правая: длинная одежда (от угла)
 R2 = SIDE - R1          # правая: узкая ниша гладильной доски (у входа) = 200
-B1, B2, B3 = 900, 600, 900
+B1, B2, B3 = 800, 800, 800
+# З2 – поворотно-выдвижная обувница ALPHALUX Aiden ALF0814.10S.43 (база 800, 10 полок, тёмно-серый)
+RACK = "ALPHALUX Aiden ALF0814.10S.43"
+RACK_W, RACK_D, RACK_H = 764, 400, 1850
+RACK_Z = PLINTH + T                  # низ механизма – на дне корпуса
+RACK_TOP = RACK_Z + RACK_H           # 1946
+RACK_SHELF = 1960                    # полка над обувницей
+RACK_Y = (DEPTH - RACK_D) / 2 + 10   # от задней стены: 110…510
 
 
 def elevation_left(ox):
@@ -249,10 +279,9 @@ def elevation_back(ox):
     v.hangers(T, p1, RAIL_LOW, 850)
     v.rail(T, p1, RAIL)
     v.rail(T, p1, RAIL_LOW)
-    # B2 – ящики + полки для сумок
-    v.drawers(p1 + T, p2)
-    for z in (1230, 1550, 1870):
-        v.shelf(p1 + T, p2, z)
+    # B2 – поворотно-выдвижная обувница + полка
+    v.shoe_rack(p1 + T, p2)
+    v.shelf(p1 + T, p2, RACK_SHELF)
     # B3 – длинная одежда
     v.hangers(p2 + T, W - T, RAIL, 1450)
     v.rail(p2 + T, W - T, RAIL)
@@ -362,10 +391,12 @@ def build_elevations():
     dim_v(vb.Z(H), vb.Z(RAIL), ex, str(H - RAIL), ext_from=vb.X(0))
     dim_v(vb.Z(H), vb.Z(0), ex - 6, str(H), ext_from=vb.X(0))
     # шаг полок в средней секции
-    xm = vb.X(B1 + B2 / 2) + 9
-    zs = [DRAWER_TOP, 1230, 1550, 1870, ANT]
+    xm = vb.X(B1 + B2) + 4
+    zs = [RACK_Z, RACK_TOP, RACK_SHELF + T, ANT]
     for a, b in zip(zs, zs[1:]):
         dim_v(vb.Z(b), vb.Z(a), xm, str(b - a), size=2.0)
+    xr0 = vb.X(B1 + B2 / 2 - RACK_W / 2)
+    dim_h(xr0, xr0 + RACK_W * S, vb.Z(RACK_Z) - 3, str(RACK_W), size=1.8)
     dims_vertical_common(vr, vr.X(SIDE) + 6, "right")
     # ниша доски
     ix = vr.X(R1) + 2.6
@@ -427,8 +458,17 @@ def build_plan():
     box(0, 0, W, DEPTH)
     box(0, DEPTH, DEPTH, SIDE)
     box(W - DEPTH, DEPTH, DEPTH, SIDE)
-    # ящики
-    box(B1, 0, B2, DEPTH, fill="url(#drw)")
+    # обувница З2 (в шкафу – сплошная, выдвинутая/поворот – пунктир)
+    rx = B1 + B2 / 2 - RACK_W / 2
+    a, b = P(rx, RACK_Y)
+    rect(a, b, RACK_W * S, RACK_D * S, fill="#e9e7e5", stroke="#3f4245", sw=0.35)
+    line(*P(rx, RACK_Y + RACK_D / 2), *P(rx + RACK_W, RACK_Y + RACK_D / 2), w=0.3, color="#3f4245")
+    a, b = P(rx, DEPTH + 20)
+    rect(a, b, RACK_W * S, RACK_D * S, fill="none", stroke="#3f4245", sw=0.25, dash="1.2 0.8")
+    cxr, cyr = P(B1 + B2 / 2, DEPTH + 20 + RACK_D / 2)
+    e(f'<path d="M{cxr - 5:.2f},{cyr + 1.5:.2f} A5.5,3 0 1 0 {cxr + 5:.2f},{cyr + 1.5:.2f}" fill="none" '
+      f'stroke="#3f4245" stroke-width="0.25" marker-end="url(#arr)"/>')
+    text(cxr, cyr - 3.6, "обувница: выдвинуть и повернуть 180°", size=1.6, fill="#3f4245")
     # перегородки
     for xx in (B1, B1 + B2):
         line(*P(xx, 0), *P(xx, DEPTH), w=0.4)
@@ -475,7 +515,7 @@ def build_plan():
         cx, cy = P(x, y)
         e(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="2.2" fill="#fff" stroke="#111" stroke-width="0.25"/>')
         text(cx, cy + 0.8, s, size=2.1, weight="bold")
-    cx, cy = P(W / 2, DEPTH + 260)
+    cx, cy = P(W / 2, DEPTH + 720)
     text(cx, cy - 2, "ПРОХОД", size=2.6, weight="bold", fill="#555")
     text(cx, cy + 2, "1200 × 1140", size=2.2, fill="#555")
 
@@ -530,7 +570,7 @@ def build_notes():
     text(x, y, "УСЛОВНЫЕ ОБОЗНАЧЕНИЯ", size=3.2, weight="bold", anchor="start")
     rows = [
         ("led", "LED-лента 24 В в алюм. профиле с рассеивателем"),
-        ("drw", "Выкатной ящик (направляющие полного выдвижения, доводчик)"),
+        ("rack", "Обувница поворотно-выдвижная " + RACK + ", 10 полок"),
         ("rail", "Штанга для плечиков (овальная, хром/золото)"),
         ("board", "Гладильная доска (хранение боком, ребром к проходу)"),
         ("corner", "Граница угловой зоны / открыто в угол"),
@@ -541,8 +581,9 @@ def build_notes():
         yy = y + 7 + i * 6
         if k == "led":
             line(x, yy, x + 10, yy, w=0.7, color=LED, dash="1.6 0.8")
-        elif k == "drw":
-            rect(x, yy - 2, 10, 4, fill="url(#drw)", sw=0.2)
+        elif k == "rack":
+            rect(x, yy - 2, 10, 4, fill="#e9e7e5", stroke="#3f4245", sw=0.4)
+            line(x, yy, x + 10, yy, w=0.5, color="#3f4245")
         elif k == "rail":
             line(x, yy, x + 10, yy, w=0.6, color="#555")
             for xx in (x, x + 10):
@@ -564,9 +605,9 @@ def build_notes():
         ("Зр", "120", "Ниша зеркала Lexy (выдвижное поворотное), напротив доски П2"),
         ("Л1", "450", "Полки для обуви: дно + 3 полки (Н=290/490/690) с бортиком 30 мм, полка 896 + 3 полки с LED"),
         ("Л2", "570", "2 яруса штанг (короткая одежда), открыта в угол"),
-        ("З1", "900", "2 яруса штанг (рубашки, юбки, брюки), угловая зона"),
-        ("З2", "600", "4 выкатных ящика + 3 полки с LED (сумки)"),
-        ("З3", "900", "Длинная одежда (пальто, платья), угловая зона"),
+        ("З1", "800", "2 яруса штанг (рубашки, юбки, брюки), угловая зона"),
+        ("З2", "800", "Обувница Aiden ALF0814.10S.43 764×400×1850 (10 полок) + полка Н=1960 с LED"),
+        ("З3", "800", "Длинная одежда (пальто, платья), угловая зона"),
         ("П1", "940", "Длинная одежда + полка для обуви Н=350, открыта в угол"),
         ("П2", "200", "Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560"),
         ("—", "2400", "Антресоль Н=424 по всему периметру, LED снизу"),
@@ -585,7 +626,7 @@ def build_notes():
         "Планировка П-образная, глубина гардеробной (корпусов) — 600 мм",
         "Проход между боковыми секциями — 1200 мм",
         "Материал: ЛДСП 16 мм (цвет «серо-коричневый»), кромка ПВХ 2 мм",
-        "Цоколь 80 мм, ящики — фасады 200 мм, ручки-скобы латунь",
+        "Цоколь 80 мм; З2 — обувница ALPHALUX Aiden, база 800 (внутри 784)",
         "Антресоль с низа 2200 до потолка 2640, верхняя штанга Н=2130",
         "LED: лента 24 В, 4000 K, блок питания в антресоли, датчик открытия двери",
         "Гладильная доска справа у входа (П2), напротив — выдвижное зеркало (Зр)",

@@ -51,10 +51,10 @@
     <div class="sub">2400 × 1740 × 2640 мм · глубина шкафов 600 мм</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
-    правая кнопка или два пальца — сдвиг. Нажмите на ящик, зеркало или гладильную доску.</div>
+    правая кнопка или два пальца — сдвиг. Нажмите на обувницу, зеркало или гладильную доску.</div>
 </header>
 <nav>
-  <button id="bDrawers">Выдвинуть ящики</button>
+  <button id="bRack">Обувница: выдвинуть</button>
   <button id="bMirror">Зеркало: выдвинуть</button>
   <button id="bBoard">Гладильная доска</button>
   <button id="bLed" class="on">Подсветка</button>
@@ -89,10 +89,10 @@ const COLORS = {
   dbox: 0xd8cfc4, dbottom: 0xe8e1d8,
   board: 0xbcd3ea, iron: 0x2f5d8a, socket: 0xffffff, mirror_frame: 0x3a3d40, mirror: 0xe3edf3,
   wall_back: 0xe8e4df, wall_left: 0xe8e4df, wall_right: 0xe8e4df, floor: 0xa8774f,
-  box: 0x6b625a, shoe: 0x3d3733, bag0: 0x7a5236, bag1: 0x2e2b29, bag2: 0xc9a27a,
+  box: 0x6b625a, shoe: 0x3d3733, shoe2: 0x8a6a52, rack: 0x3f4245, rackmesh: 0x5a5d60, bag0: 0x7a5236, bag1: 0x2e2b29, bag2: 0xc9a27a,
 };
 const EDGES = { carcass: 0x2a2520, plinth: 0x2a2520, front: 0x2a2520, board: 0x2f5d8a,
-                mirror_frame: 0x111111, dbox: 0x8b7f72 };
+                mirror_frame: 0x111111, dbox: 0x8b7f72, rack: 0x1e2022 };
 const LED_ON = 0xffd36b, LED_OFF = 0x6d655c;
 
 const matCache = {};
@@ -102,7 +102,7 @@ function material(kind) {
   if (kind === 'led') m = new THREE.MeshBasicMaterial({ color: LED_ON });
   else {
     const c = kind.startsWith('cloth') ? new THREE.Color(DATA.cloth[+kind.slice(5)]) : new THREE.Color(COLORS[kind] ?? 0x999999);
-    const metal = kind === 'handle' || kind === 'rail';
+    const metal = kind === 'handle' || kind === 'rail' || kind === 'rack';
     m = new THREE.MeshStandardMaterial({ color: c, roughness: kind === 'mirror' ? 0.08 : metal ? 0.3 : 0.85,
                                          metalness: metal ? 0.6 : kind === 'mirror' ? 0.15 : 0 });
   }
@@ -115,7 +115,7 @@ for (const [id, meta] of Object.entries(DATA.groups)) {
   const root = new THREE.Group();
   scene.add(root);
   const g = { id, meta, root, parent: root, slide: 0, slideTo: 0, rot: 0, rotTo: 0, state: 0 };
-  if (meta.type === 'mirror') {
+  if (meta.type === 'mirror' || meta.type === 'rack') {
     g.pivot = new THREE.Group();
     g.pivot.position.set(meta.pivot[0], 0, meta.pivot[1]);
     root.add(g.pivot);
@@ -261,7 +261,7 @@ function hit(e) {
   const h = ray.intersectObjects(pickable, false)[0];
   return h ? groups[h.object.userData.gid] : null;
 }
-const NAMES = { drawer: 'Выкатной ящик', mirror: 'Выдвижное поворотное зеркало', board: 'Гладильная доска' };
+const NAMES = { rack: 'Обувница поворотно-выдвижная ALPHALUX Aiden', mirror: 'Выдвижное поворотное зеркало', board: 'Гладильная доска' };
 const tip = document.getElementById('tip');
 function hover(e) {
   if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
@@ -277,33 +277,30 @@ function hover(e) {
 function pick(e) {
   const g = hit(e);
   if (!g) return;
-  if (g.meta.type === 'mirror') cycleMirror();
+  if (g.pivot) cycle(g);
   else setOpen(g, g.slideTo < 0.5);
   syncButtons();
 }
 
 // ---------------------------------------------------------------- действия
-const drawers = Object.values(groups).filter(g => g.meta.type === 'drawer');
+const rack = Object.values(groups).find(g => g.meta.type === 'rack');
 const mirror = Object.values(groups).find(g => g.meta.type === 'mirror');
 const board = Object.values(groups).find(g => g.meta.type === 'board');
 function setOpen(g, open) { g.slideTo = open ? 1 : 0; }
-function cycleMirror() {
-  mirror.state = (mirror.state + 1) % 3;
-}
+function cycle(g) { g.state = (g.state + 1) % 3; }
 function syncButtons() {
-  const anyOpen = drawers.some(d => d.slideTo > 0.5);
-  bDrawers.textContent = anyOpen ? 'Задвинуть ящики' : 'Выдвинуть ящики';
-  bDrawers.classList.toggle('on', anyOpen);
+  bRack.textContent = ['Обувница: выдвинуть', 'Обувница: повернуть', 'Обувница: убрать'][rack.state];
+  bRack.classList.toggle('on', rack.state > 0);
   bMirror.textContent = ['Зеркало: выдвинуть', 'Зеркало: повернуть', 'Зеркало: убрать'][mirror.state];
   bMirror.classList.toggle('on', mirror.state > 0);
   bBoard.classList.toggle('on', board.slideTo > 0.5);
 }
-const bDrawers = document.getElementById('bDrawers');
+const bRack = document.getElementById('bRack');
 const bMirror = document.getElementById('bMirror');
 const bBoard = document.getElementById('bBoard');
 const bLed = document.getElementById('bLed');
-bDrawers.onclick = () => { const open = !drawers.some(d => d.slideTo > 0.5); drawers.forEach(d => setOpen(d, open)); syncButtons(); };
-bMirror.onclick = () => { cycleMirror(); syncButtons(); };
+bRack.onclick = () => { cycle(rack); syncButtons(); };
+bMirror.onclick = () => { cycle(mirror); syncButtons(); };
 bBoard.onclick = () => { setOpen(board, board.slideTo < 0.5); syncButtons(); };
 bLed.onclick = () => {
   const on = !bLed.classList.contains('on');
@@ -324,13 +321,13 @@ function tick(now) {
   last = now;
   const step = dt * 1.6;
   for (const g of Object.values(groups)) {
-    if (g.meta.type === 'mirror') {
+    if (g.pivot) {
       // сначала выдвинуть, потом повернуть; обратно – в обратном порядке
       const wantSlide = g.state > 0 ? 1 : 0, wantRot = g.state === 2 ? 1 : 0;
       if (wantRot > g.rot && g.slide < 1) g.slide = approach(g.slide, 1, step);
       else if (wantSlide < g.slide && g.rot > 0) g.rot = approach(g.rot, 0, step);
       else { g.slide = approach(g.slide, wantSlide, step); g.rot = approach(g.rot, wantRot, step); }
-      g.pivot.rotation.y = ease(g.rot) * Math.PI / 2;
+      g.pivot.rotation.y = ease(g.rot) * (g.meta.angle ?? Math.PI / 2);
     } else g.slide = approach(g.slide, g.slideTo, step);
     const s = ease(g.slide) * g.meta.travel;
     g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
