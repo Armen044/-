@@ -265,7 +265,6 @@ def elevation_back(ox):
     # B3 – длинная одежда
     v.hangers(p2 + T, W - T, RAIL, 1450)
     v.rail(p2 + T, W - T, RAIL)
-    v.shelf(W - DEPTH, W - T, 350, led=False)       # угловая часть полки для обуви П1
     # угловые зоны (перекрыты боковыми секциями)
     for x in (DEPTH, W - DEPTH):
         line(v.X(x), v.Z(H - T), v.X(x), v.Z(PLINTH), w=0.3, color="#c0392b", dash="2 1")
@@ -280,10 +279,11 @@ def elevation_right(ox):
     v.carcass([p, SIDE - T])
     v.panel_h(0, SIDE, ANT)
     v.led(0, SIDE, ANT - 9)
-    # R1 – длинная одежда + 2 полки для обуви внизу, открыто в угол
-    v.hangers(0, p, RAIL, 1450)
+    # R1 – два яруса штанг (как Л2), открыто в угол
+    v.hangers(0, p, RAIL, 900)
+    v.hangers(0, p, RAIL_LOW, 850)
     v.rail(0, p, RAIL)
-    v.shelf(0, p, 350, led=False)
+    v.rail(0, p, RAIL_LOW)
     line(v.X(0), v.Z(H - T), v.X(0), v.Z(PLINTH + T), w=0.3, dash="1.5 1")
     # R2 – ниша гладильной доски
     x0, x1 = p + T, SIDE - T
@@ -472,11 +472,6 @@ def build_plan():
     line(a1 + 1, cym + 2.4, a2 - 1, cym + 2.4, w=0.25, color="#33373b")
     e(f'<path d="M{a2 - 1:.2f},{cym + 2.4:.2f} l-1.6,-0.7 l0,1.4 z" fill="#33373b"/>')
     line(*P(W - DEPTH, DEPTH + R1), *P(W, DEPTH + R1), w=0.4)
-    # угловая Г-образная полка для обуви Н=350 (П1 + угол З3)
-    e('<path d="M{:.2f},{:.2f} L{:.2f},{:.2f} L{:.2f},{:.2f} L{:.2f},{:.2f} L{:.2f},{:.2f} L{:.2f},{:.2f} z" '
-      'fill="none" stroke="#8b6f4e" stroke-width="0.3" stroke-dasharray="0.8 0.6"/>'.format(
-          *P(W - DEPTH + 30, 30), *P(W - T - 10, 30), *P(W - T - 10, DEPTH + R1 - 30),
-          *P(W - DEPTH + 30, DEPTH + R1 - 30), *P(W - DEPTH + 30, DEPTH), *P(W - DEPTH + 30, 30)))
     # угловые зоны / открыто
     line(*P(0, DEPTH), *P(DEPTH, DEPTH), w=0.3, color="#c0392b", dash="1.5 1")
     line(*P(W - DEPTH, DEPTH), *P(W, DEPTH), w=0.3, color="#c0392b", dash="1.5 1")
@@ -598,7 +593,7 @@ def build_notes():
         ("З1", "800", "2 яруса штанг (рубашки, юбки, брюки), угловая зона"),
         ("З2", "800", "Обувница Aiden ALF0814.10S.43 764×400×1850 (10 полок) + полка Н=1960 с LED"),
         ("З3", "800", "Длинная одежда (пальто, платья), угловая зона"),
-        ("П1", "940", "Длинная одежда + угловая Г-образная полка для обуви Н=350"),
+        ("П1", "940", "2 яруса штанг Н=2130 / 1080 (как Л2), открыта в угол"),
         ("П2", "200", "Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560"),
         ("—", "2400", "Антресоль Н=424 по всему периметру, LED снизу"),
     ]

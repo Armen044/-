@@ -208,21 +208,12 @@ def build(interactive=False):
         box(xf, W, DEPTH, D, z, z + T, "carcass")
     box(xf + 34, xf + 50, DEPTH, D, 0, PLINTH, "plinth")
     box(xf + 4, xf + 22, DEPTH, D - T, ANT - 10, ANT, "led")
-    # П1 – длинная одежда + полка для обуви
+    # П1 – два яруса штанг (как Л2), открыто в угол
     y0, y1 = DEPTH, yr - T / 2
-    box(W - 310, W - 290, y0, y1, RAIL - 10, RAIL + 10, "rail")
-    clothes_y(y0, y1, W - 300, RAIL, 1450)
-    box(xf, W, y0, y1, 350, 350 + T, "carcass")
-    # угловая часть полки (Г-образная, заходит в угловую зону З3)
-    box(xf, W - T, 0, y0, 350, 350 + T, "carcass")
-    for k in range(3):
-        x = xf + 90 + k * 150
-        box(x, x + 90, 120, 400, PLINTH + T, PLINTH + T + 110, "shoe")
-        box(x, x + 90, 120, 400, 366, 476, "shoe")
-    for k in range(5):
-        y = y0 + 40 + k * 180
-        box(xf + 120, xf + 400, y, y + 90, PLINTH + T, PLINTH + T + 110, "shoe")
-        box(xf + 120, xf + 400, y, y + 90, 366, 476, "shoe")
+    for z in (RAIL, RAIL_LOW):
+        box(W - 310, W - 290, y0, y1, z - 10, z + 10, "rail")
+    clothes_y(y0, y1, W - 300, RAIL, 900)
+    clothes_y(y0, y1, W - 300, RAIL_LOW, 850)
     # П2 – узкая ниша гладильной доски
     y0, y1 = yr + T / 2, ye - T
     for z in (1560, 1880):

@@ -156,7 +156,6 @@
 <line x1="249.60" y1="70.00" x2="300.53" y2="70.00" stroke="#555" stroke-width="0.6"/>
 <circle cx="249.20" cy="70.00" r="0.55" fill="#555"/>
 <circle cx="300.93" cy="70.00" r="0.55" fill="#555"/>
-<rect x="262.00" y="187.60" width="38.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="182.00" y1="37.07" x2="182.00" y2="206.67" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="2 1"/>
 <line x1="262.00" y1="37.07" x2="262.00" y2="206.67" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="2 1"/>
 <rect x="142.00" y="36.00" width="160.00" height="176.00" fill="none" stroke="#111" stroke-width="0.45" />
@@ -169,24 +168,41 @@
 <rect x="322.00" y="64.27" width="76.00" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="322.30" y1="65.93" x2="397.70" y2="65.93" stroke="#f0a800" stroke-width="0.7" stroke-dasharray="1.6 0.8"/>
 <path d="M329.77,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="326.27" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="326.27" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M337.53,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="334.04" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="334.04" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M345.30,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="341.81" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="341.81" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M353.07,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="349.57" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="349.57" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M360.83,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="357.34" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="357.34" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M368.60,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="365.11" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="365.11" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <path d="M376.37,70.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
-<rect x="372.87" y="71.60" width="6.99" height="95.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<rect x="372.87" y="71.60" width="6.99" height="58.40" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M329.77,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="326.27" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M337.53,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="334.04" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M345.30,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="341.81" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M353.07,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="349.57" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M360.83,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="357.34" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M368.60,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="365.11" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
+<path d="M376.37,140.00 l-3.50,1.60 l6.99,0 z" fill="none" stroke="#999" stroke-width="0.15"/>
+<rect x="372.87" y="141.60" width="6.99" height="55.07" fill="#ece8e3" stroke="#b5aca2" stroke-width="0.12" />
 <text x="323.50" y="69.10" font-size="1.7" text-anchor="start" font-weight="normal" fill="#444">штанга Н=2130</text>
 <line x1="322.40" y1="70.00" x2="383.73" y2="70.00" stroke="#555" stroke-width="0.6"/>
 <circle cx="322.00" cy="70.00" r="0.55" fill="#555"/>
 <circle cx="384.13" cy="70.00" r="0.55" fill="#555"/>
-<rect x="322.00" y="187.60" width="62.13" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
+<text x="323.50" y="139.10" font-size="1.7" text-anchor="start" font-weight="normal" fill="#444">штанга Н=1080</text>
+<line x1="322.40" y1="140.00" x2="383.73" y2="140.00" stroke="#555" stroke-width="0.6"/>
+<circle cx="322.00" cy="140.00" r="0.55" fill="#555"/>
+<circle cx="384.13" cy="140.00" r="0.55" fill="#555"/>
 <line x1="322.00" y1="37.07" x2="322.00" y2="205.60" stroke="#111" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <rect x="385.20" y="106.93" width="11.73" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <rect x="385.20" y="85.60" width="11.73" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
@@ -451,7 +467,6 @@
 <line x1="130.67" y1="386.13" x2="167.33" y2="386.13" stroke="#33373b" stroke-width="0.25"/>
 <path d="M167.33,386.13 l-1.6,-0.7 l0,1.4 z" fill="#33373b"/>
 <line x1="215.00" y1="374.67" x2="255.00" y2="374.67" stroke="#111" stroke-width="0.4"/>
-<path d="M217.00,274.00 L253.27,274.00 L253.27,372.67 L217.00,372.67 L217.00,312.00 L217.00,274.00 z" fill="none" stroke="#8b6f4e" stroke-width="0.3" stroke-dasharray="0.8 0.6"/>
 <line x1="95.00" y1="312.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="215.00" y1="312.00" x2="255.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="135.00" y1="272.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.15" stroke-dasharray="1.5 1"/>
@@ -636,7 +651,7 @@
 <text x="443.00" y="199.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда (пальто, платья), угловая зона</text>
 <text x="425.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П1</text>
 <text x="433.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">940</text>
-<text x="443.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + угловая Г-образная полка для обуви Н=350</text>
+<text x="443.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">2 яруса штанг Н=2130 / 1080 (как Л2), открыта в угол</text>
 <text x="425.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П2</text>
 <text x="433.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">200</text>
 <text x="443.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560</text>
