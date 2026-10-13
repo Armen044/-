@@ -1,0 +1,362 @@
+<title>Гардеробная с островом</title>
+<style>
+  /* полноэкранная 3D-сцена, карточки сверху, панель кнопок снизу */
+  :root { --bg: #efebe5; --panel: rgba(255,255,255,0.92); --ink: #2b2622; --muted: #6f655c;
+          --accent: #8a6a3f; --line: #d9d1c7; --on-ink: #ffffff; --tip: rgba(30,25,20,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+               font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+               overflow: hidden; -webkit-user-select: none; user-select: none; }
+  #view { position: fixed; inset: 0; touch-action: none; }
+  header { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; justify-content: space-between;
+           align-items: flex-start; gap: 12px; pointer-events: none; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
+          box-shadow: 0 4px 18px rgba(60,40,20,0.08); pointer-events: auto; }
+  h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: 0.2px; }
+  .sub { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .hint { font-size: 12.5px; color: var(--muted); line-height: 1.45; max-width: 290px; }
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; flex-wrap: wrap;
+        justify-content: center; gap: 8px; width: min(980px, calc(100% - 24px)); }
+  button { font: inherit; font-size: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; min-height: 42px;
+           box-shadow: 0 2px 10px rgba(60,40,20,0.08); }
+  button:hover { border-color: var(--accent); }
+  button.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #tip { position: fixed; pointer-events: none; padding: 5px 9px; border-radius: 7px; font-size: 12.5px;
+         background: var(--tip); color: #fff; display: none; white-space: nowrap; }
+  @media (max-width: 640px) {
+    .hint { display: none; }
+    h1 { font-size: 15px; }
+    button { font-size: 13px; padding: 9px 11px; }
+  }
+</style>
+<div id="view"></div>
+<header>
+  <div class="card">
+    <h1>Гардеробная с островом</h1>
+    <div class="sub">3200 × 4600 × 3050 мм · цоколь 80 · ЛДСП «орех»</div>
+  </div>
+  <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
+    правая кнопка или два пальца — сдвиг. Нажмите на ящик, лоток или стеклянную дверь.</div>
+</header>
+<nav id="nav"></nav>
+<div id="tip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+const DATA = {"room":[3200,4600,3050],"boxes":[[-100,3300,-100,0,0,3050,"wall_back"],[-100,0,-100,4640,0,3050,"wall_left"],[3200,3300,-100,4640,0,3050,"wall_right"],[-100,3300,-100,5500,-30,0,"floor"],[700,2500,800,4300,0,8,"rug"],[0,3200,0,600,80,96,"carcass"],[0,3200,0,600,2300,2316,"carcass"],[0,3200,0,600,2680,2696,"carcass"],[0,3200,0,600,3034,3050,"carcass"],[1192,1208,0,600,80,3050,"carcass"],[1992,2008,0,600,80,3050,"carcass"],[550,2650,550,566,0,80,"plinth"],[16,3184,578,596,2290,2300,"led"],[1350,1690,120,480,2316,2536,"box"],[2300,2640,120,480,2316,2536,"box"],[220,560,120,480,2696,2916,"box"],[2640,2980,120,480,2696,2916,"box"],[1208,1992,0,600,380,396,"carcass"],[1320,1880,80,520,396,556,"cloth0"],[1208,1992,0,600,660,676,"carcass"],[1320,1880,80,520,676,836,"cloth0"],[1208,1992,0,600,940,956,"carcass"],[1320,1880,80,520,956,1116,"cloth0"],[1208,1992,0,600,1220,1236,"carcass"],[1320,1880,80,520,1236,1396,"cloth0"],[1208,1992,0,600,1500,1516,"carcass"],[1320,1880,80,520,1516,1676,"cloth0"],[1208,1992,0,600,1780,1796,"carcass"],[1320,1880,80,520,1796,1956,"cloth0"],[1208,1992,0,600,2060,2076,"carcass"],[1320,1880,80,520,2076,2236,"cloth0"],[300,1192,290,310,2220,2240,"rail"],[610,640,80,520,680,2200,"cloth0"],[690,720,80,520,750,2200,"cloth3"],[770,800,80,520,820,2200,"cloth6"],[850,880,80,520,680,2200,"cloth9"],[930,960,80,520,750,2200,"cloth2"],[1010,1040,80,520,820,2200,"cloth5"],[1090,1120,80,520,680,2200,"cloth8"],[0,1192,0,600,380,396,"carcass"],[0,550,600,1300,380,396,"carcass"],[55,495,660,690,680,2200,"cloth2"],[55,495,740,770,750,2200,"cloth9"],[55,495,820,850,820,2200,"cloth6"],[55,495,900,930,680,2200,"cloth3"],[55,495,980,1010,750,2200,"cloth0"],[55,495,1060,1090,820,2200,"cloth7"],[55,495,1140,1170,680,2200,"cloth4"],[55,495,1220,1250,750,2200,"cloth1"],[2008,2900,290,310,2220,2240,"rail"],[2008,2900,290,310,1070,1090,"rail"],[2008,3200,0,600,1150,1166,"carcass"],[2650,3200,600,1300,1150,1166,"carcass"],[2915,2935,300,1300,1070,1090,"rail"],[2048,2078,80,520,1280,2200,"cloth4"],[2128,2158,80,520,1350,2200,"cloth7"],[2208,2238,80,520,1420,2200,"cloth0"],[2288,2318,80,520,1280,2200,"cloth3"],[2368,2398,80,520,1350,2200,"cloth6"],[2448,2478,80,520,1420,2200,"cloth9"],[2528,2558,80,520,1280,2200,"cloth2"],[2048,2078,80,520,180,1050,"cloth1"],[2128,2158,80,520,250,1050,"cloth4"],[2208,2238,80,520,320,1050,"cloth7"],[2288,2318,80,520,180,1050,"cloth0"],[2368,2398,80,520,250,1050,"cloth3"],[2448,2478,80,520,320,1050,"cloth6"],[2528,2558,80,520,180,1050,"cloth9"],[2705,3145,660,690,1280,2200,"cloth5"],[2705,3145,740,770,1350,2200,"cloth2"],[2705,3145,820,850,1420,2200,"cloth9"],[2705,3145,900,930,1280,2200,"cloth6"],[2705,3145,980,1010,1350,2200,"cloth3"],[2705,3145,1060,1090,1420,2200,"cloth0"],[2705,3145,1140,1170,1280,2200,"cloth7"],[2705,3145,1220,1250,1350,2200,"cloth4"],[2705,3145,660,690,180,1050,"cloth6"],[2705,3145,740,770,250,1050,"cloth3"],[2705,3145,820,850,320,1050,"cloth0"],[2705,3145,900,930,180,1050,"cloth7"],[2705,3145,980,1010,250,1050,"cloth4"],[2705,3145,1060,1090,320,1050,"cloth1"],[2705,3145,1140,1170,180,1050,"cloth8"],[2705,3145,1220,1250,250,1050,"cloth5"],[0,550,600,4600,80,96,"carcass"],[0,550,600,4600,2300,2316,"carcass"],[0,550,600,4600,2680,2696,"carcass"],[0,550,600,4600,3034,3050,"carcass"],[0,550,1300,1316,80,3050,"carcass"],[0,550,2200,2216,80,3050,"carcass"],[0,550,3100,3116,80,3050,"carcass"],[0,550,3900,3916,80,3050,"carcass"],[0,550,4584,4600,80,3050,"carcass"],[500,516,600,4600,0,80,"plinth"],[528,546,600,4584,2290,2300,"led"],[265,285,1316,2200,2220,2240,"rail"],[55,495,1356,1386,1230,2200,"cloth1"],[55,495,1436,1466,1300,2200,"cloth8"],[55,495,1516,1546,1370,2200,"cloth5"],[55,495,1596,1626,1230,2200,"cloth2"],[55,495,1676,1706,1300,2200,"cloth9"],[55,495,1756,1786,1370,2200,"cloth6"],[55,495,1836,1866,1230,2200,"cloth3"],[55,495,1916,1946,1300,2200,"cloth0"],[55,495,1996,2026,1370,2200,"cloth7"],[55,495,2076,2106,1230,2200,"cloth4"],[0,550,1316,2200,380,396,"carcass"],[140,420,1396,1491,396,506,"shoe"],[140,420,1656,1751,396,506,"shoe"],[140,420,1916,2011,396,506,"shoe"],[30,550,1326,2190,950,968,"tray","tray_l_0"],[30,550,1326,1344,968,1010,"tray","tray_l_0"],[30,550,2172,2190,968,1010,"tray","tray_l_0"],[532,550,1326,2190,968,1010,"tray","tray_l_0"],[90,490,1376,1426,968,1000,"cloth0","tray_l_0"],[90,490,1461,1511,968,1000,"velvet","tray_l_0"],[90,490,1546,1596,968,1000,"cloth2","tray_l_0"],[90,490,1631,1681,968,1000,"velvet","tray_l_0"],[90,490,1716,1766,968,1000,"cloth4","tray_l_0"],[90,490,1801,1851,968,1000,"velvet","tray_l_0"],[90,490,1886,1936,968,1000,"cloth6","tray_l_0"],[90,490,1971,2021,968,1000,"velvet","tray_l_0"],[90,490,2056,2106,968,1000,"cloth8","tray_l_0"],[265,285,2216,3100,2220,2240,"rail"],[55,495,2256,2286,1230,2200,"cloth4"],[55,495,2336,2366,1300,2200,"cloth1"],[55,495,2416,2446,1370,2200,"cloth8"],[55,495,2496,2526,1230,2200,"cloth5"],[55,495,2576,2606,1300,2200,"cloth2"],[55,495,2656,2686,1370,2200,"cloth9"],[55,495,2736,2766,1230,2200,"cloth6"],[55,495,2816,2846,1300,2200,"cloth3"],[55,495,2896,2926,1370,2200,"cloth0"],[55,495,2976,3006,1230,2200,"cloth7"],[0,550,2216,3100,380,396,"carcass"],[140,420,2296,2391,396,506,"shoe"],[140,420,2556,2651,396,506,"shoe"],[140,420,2816,2911,396,506,"shoe"],[30,550,2226,3090,950,968,"tray","tray_l_1"],[30,550,2226,2244,968,1010,"tray","tray_l_1"],[30,550,3072,3090,968,1010,"tray","tray_l_1"],[532,550,2226,3090,968,1010,"tray","tray_l_1"],[90,490,2276,2326,968,1000,"cloth0","tray_l_1"],[90,490,2361,2411,968,1000,"velvet","tray_l_1"],[90,490,2446,2496,968,1000,"cloth2","tray_l_1"],[90,490,2531,2581,968,1000,"velvet","tray_l_1"],[90,490,2616,2666,968,1000,"cloth4","tray_l_1"],[90,490,2701,2751,968,1000,"velvet","tray_l_1"],[90,490,2786,2836,968,1000,"cloth6","tray_l_1"],[90,490,2871,2921,968,1000,"velvet","tray_l_1"],[90,490,2956,3006,968,1000,"cloth8","tray_l_1"],[532,550,3118,3898,98,294,"front","drw_l_0"],[550,562,3288,3728,256,266,"handle","drw_l_0"],[50,532,3129,3141,121,261,"dbox","drw_l_0"],[50,532,3875,3887,121,261,"dbox","drw_l_0"],[50,62,3129,3887,121,261,"dbox","drw_l_0"],[50,532,3129,3887,121,129,"dbottom","drw_l_0"],[532,550,3118,3898,298,494,"front","drw_l_1"],[550,562,3288,3728,456,466,"handle","drw_l_1"],[50,532,3129,3141,321,461,"dbox","drw_l_1"],[50,532,3875,3887,321,461,"dbox","drw_l_1"],[50,62,3129,3887,321,461,"dbox","drw_l_1"],[50,532,3129,3887,321,329,"dbottom","drw_l_1"],[532,550,3118,3898,498,694,"front","drw_l_2"],[550,562,3288,3728,656,666,"handle","drw_l_2"],[50,532,3129,3141,521,661,"dbox","drw_l_2"],[50,532,3875,3887,521,661,"dbox","drw_l_2"],[50,62,3129,3887,521,661,"dbox","drw_l_2"],[50,532,3129,3887,521,529,"dbottom","drw_l_2"],[532,550,3118,3898,698,894,"front","drw_l_3"],[550,562,3288,3728,856,866,"handle","drw_l_3"],[50,532,3129,3141,721,861,"dbox","drw_l_3"],[50,532,3875,3887,721,861,"dbox","drw_l_3"],[50,62,3129,3887,721,861,"dbox","drw_l_3"],[50,532,3129,3887,721,729,"dbottom","drw_l_3"],[0,550,3116,3900,896,912,"carcass"],[30,550,3126,3890,950,964,"tray","jew_l"],[50,200,3146,3316,964,980,"velvet","jew_l"],[100,150,3206,3256,980,995,"item0","jew_l"],[215,365,3146,3316,964,980,"velvet","jew_l"],[380,530,3146,3316,964,980,"velvet","jew_l"],[430,480,3206,3256,980,995,"item2","jew_l"],[50,200,3331,3501,964,980,"velvet","jew_l"],[215,365,3331,3501,964,980,"velvet","jew_l"],[265,315,3391,3441,980,995,"item2","jew_l"],[380,530,3331,3501,964,980,"velvet","jew_l"],[50,200,3516,3686,964,980,"velvet","jew_l"],[100,150,3576,3626,980,995,"item2","jew_l"],[215,365,3516,3686,964,980,"velvet","jew_l"],[380,530,3516,3686,964,980,"velvet","jew_l"],[430,480,3576,3626,980,995,"item1","jew_l"],[50,200,3701,3871,964,980,"velvet","jew_l"],[215,365,3701,3871,964,980,"velvet","jew_l"],[265,315,3761,3811,980,995,"item1","jew_l"],[380,530,3701,3871,964,980,"velvet","jew_l"],[532,550,3126,3890,950,1005,"tray","jew_l"],[0,550,3116,3900,1280,1296,"carcass"],[125,425,3176,3840,1296,1456,"cloth0"],[0,550,3116,3900,1610,1626,"carcass"],[125,425,3176,3840,1626,1786,"cloth0"],[0,550,3116,3900,1940,1956,"carcass"],[125,425,3176,3840,1956,2116,"cloth0"],[0,550,3916,4584,380,396,"carcass"],[220,490,3966,4056,396,501,"shoe2"],[220,490,4166,4256,396,476,"shoe"],[220,490,4366,4456,396,501,"shoe"],[0,550,3916,4584,660,676,"carcass"],[220,490,3966,4056,676,781,"shoe2"],[220,490,4166,4256,676,756,"shoe"],[220,490,4366,4456,676,781,"shoe"],[0,550,3916,4584,940,956,"carcass"],[220,490,3966,4056,956,1061,"shoe2"],[220,490,4166,4256,956,1036,"shoe"],[220,490,4366,4456,956,1061,"shoe"],[0,550,3916,4584,1220,1236,"carcass"],[220,490,3966,4056,1236,1341,"shoe2"],[220,490,4166,4256,1236,1316,"shoe"],[220,490,4366,4456,1236,1341,"shoe"],[0,550,3916,4584,1500,1516,"carcass"],[220,490,3966,4056,1516,1621,"shoe2"],[220,490,4166,4256,1516,1596,"shoe"],[220,490,4366,4456,1516,1621,"shoe"],[0,550,3916,4584,1780,1796,"carcass"],[220,490,3966,4056,1796,1901,"shoe"],[220,490,4166,4256,1796,1876,"shoe2"],[220,490,4366,4456,1796,1901,"shoe"],[0,550,3916,4584,2060,2076,"carcass"],[220,490,3966,4056,2076,2181,"shoe"],[220,490,4166,4256,2076,2156,"shoe2"],[220,490,4366,4456,2076,2181,"shoe"],[265,285,300,1300,2220,2240,"rail"],[2650,3200,600,4600,80,96,"carcass"],[2650,3200,600,4600,2300,2316,"carcass"],[2650,3200,600,4600,2680,2696,"carcass"],[2650,3200,600,4600,3034,3050,"carcass"],[2650,3200,1300,1316,80,3050,"carcass"],[2650,3200,2200,2216,80,3050,"carcass"],[2650,3200,3100,3116,80,3050,"carcass"],[2650,3200,3900,3916,80,3050,"carcass"],[2650,3200,4584,4600,80,3050,"carcass"],[2684,2700,600,4600,0,80,"plinth"],[2654,2672,600,4584,2290,2300,"led"],[2915,2935,1316,2200,2220,2240,"rail"],[2705,3145,1356,1386,1230,2200,"cloth0"],[2705,3145,1436,1466,1300,2200,"cloth7"],[2705,3145,1516,1546,1370,2200,"cloth4"],[2705,3145,1596,1626,1230,2200,"cloth1"],[2705,3145,1676,1706,1300,2200,"cloth8"],[2705,3145,1756,1786,1370,2200,"cloth5"],[2705,3145,1836,1866,1230,2200,"cloth2"],[2705,3145,1916,1946,1300,2200,"cloth9"],[2705,3145,1996,2026,1370,2200,"cloth6"],[2705,3145,2076,2106,1230,2200,"cloth3"],[2650,3200,1316,2200,380,396,"carcass"],[2780,3060,1396,1491,396,506,"shoe"],[2780,3060,1656,1751,396,506,"shoe"],[2780,3060,1916,2011,396,506,"shoe"],[2650,3170,1326,2190,950,968,"tray","tray_r_0"],[2650,3170,1326,1344,968,1010,"tray","tray_r_0"],[2650,3170,2172,2190,968,1010,"tray","tray_r_0"],[2650,2668,1326,2190,968,1010,"tray","tray_r_0"],[2710,3110,1376,1426,968,1000,"cloth0","tray_r_0"],[2710,3110,1461,1511,968,1000,"velvet","tray_r_0"],[2710,3110,1546,1596,968,1000,"cloth2","tray_r_0"],[2710,3110,1631,1681,968,1000,"velvet","tray_r_0"],[2710,3110,1716,1766,968,1000,"cloth4","tray_r_0"],[2710,3110,1801,1851,968,1000,"velvet","tray_r_0"],[2710,3110,1886,1936,968,1000,"cloth6","tray_r_0"],[2710,3110,1971,2021,968,1000,"velvet","tray_r_0"],[2710,3110,2056,2106,968,1000,"cloth8","tray_r_0"],[2915,2935,2216,3100,2220,2240,"rail"],[2705,3145,2256,2286,1230,2200,"cloth3"],[2705,3145,2336,2366,1300,2200,"cloth0"],[2705,3145,2416,2446,1370,2200,"cloth7"],[2705,3145,2496,2526,1230,2200,"cloth4"],[2705,3145,2576,2606,1300,2200,"cloth1"],[2705,3145,2656,2686,1370,2200,"cloth8"],[2705,3145,2736,2766,1230,2200,"cloth5"],[2705,3145,2816,2846,1300,2200,"cloth2"],[2705,3145,2896,2926,1370,2200,"cloth9"],[2705,3145,2976,3006,1230,2200,"cloth6"],[2650,3200,2216,3100,380,396,"carcass"],[2780,3060,2296,2391,396,506,"shoe"],[2780,3060,2556,2651,396,506,"shoe"],[2780,3060,2816,2911,396,506,"shoe"],[2650,3170,2226,3090,950,968,"tray","tray_r_1"],[2650,3170,2226,2244,968,1010,"tray","tray_r_1"],[2650,3170,3072,3090,968,1010,"tray","tray_r_1"],[2650,2668,2226,3090,968,1010,"tray","tray_r_1"],[2710,3110,2276,2326,968,1000,"cloth0","tray_r_1"],[2710,3110,2361,2411,968,1000,"velvet","tray_r_1"],[2710,3110,2446,2496,968,1000,"cloth2","tray_r_1"],[2710,3110,2531,2581,968,1000,"velvet","tray_r_1"],[2710,3110,2616,2666,968,1000,"cloth4","tray_r_1"],[2710,3110,2701,2751,968,1000,"velvet","tray_r_1"],[2710,3110,2786,2836,968,1000,"cloth6","tray_r_1"],[2710,3110,2871,2921,968,1000,"velvet","tray_r_1"],[2710,3110,2956,3006,968,1000,"cloth8","tray_r_1"],[2650,2668,3118,3898,98,294,"front","drw_r_0"],[2638,2650,3288,3728,256,266,"handle","drw_r_0"],[2668,3150,3129,3141,121,261,"dbox","drw_r_0"],[2668,3150,3875,3887,121,261,"dbox","drw_r_0"],[3138,3150,3129,3887,121,261,"dbox","drw_r_0"],[2668,3150,3129,3887,121,129,"dbottom","drw_r_0"],[2650,2668,3118,3898,298,494,"front","drw_r_1"],[2638,2650,3288,3728,456,466,"handle","drw_r_1"],[2668,3150,3129,3141,321,461,"dbox","drw_r_1"],[2668,3150,3875,3887,321,461,"dbox","drw_r_1"],[3138,3150,3129,3887,321,461,"dbox","drw_r_1"],[2668,3150,3129,3887,321,329,"dbottom","drw_r_1"],[2650,2668,3118,3898,498,694,"front","drw_r_2"],[2638,2650,3288,3728,656,666,"handle","drw_r_2"],[2668,3150,3129,3141,521,661,"dbox","drw_r_2"],[2668,3150,3875,3887,521,661,"dbox","drw_r_2"],[3138,3150,3129,3887,521,661,"dbox","drw_r_2"],[2668,3150,3129,3887,521,529,"dbottom","drw_r_2"],[2650,2668,3118,3898,698,894,"front","drw_r_3"],[2638,2650,3288,3728,856,866,"handle","drw_r_3"],[2668,3150,3129,3141,721,861,"dbox","drw_r_3"],[2668,3150,3875,3887,721,861,"dbox","drw_r_3"],[3138,3150,3129,3887,721,861,"dbox","drw_r_3"],[2668,3150,3129,3887,721,729,"dbottom","drw_r_3"],[2650,3200,3116,3900,896,912,"carcass"],[2650,3170,3126,3890,950,964,"tray","jew_r"],[2670,2820,3146,3316,964,980,"velvet","jew_r"],[2720,2770,3206,3256,980,995,"item0","jew_r"],[2835,2985,3146,3316,964,980,"velvet","jew_r"],[3000,3150,3146,3316,964,980,"velvet","jew_r"],[3050,3100,3206,3256,980,995,"item2","jew_r"],[2670,2820,3331,3501,964,980,"velvet","jew_r"],[2835,2985,3331,3501,964,980,"velvet","jew_r"],[2885,2935,3391,3441,980,995,"item2","jew_r"],[3000,3150,3331,3501,964,980,"velvet","jew_r"],[2670,2820,3516,3686,964,980,"velvet","jew_r"],[2720,2770,3576,3626,980,995,"item2","jew_r"],[2835,2985,3516,3686,964,980,"velvet","jew_r"],[3000,3150,3516,3686,964,980,"velvet","jew_r"],[3050,3100,3576,3626,980,995,"item1","jew_r"],[2670,2820,3701,3871,964,980,"velvet","jew_r"],[2835,2985,3701,3871,964,980,"velvet","jew_r"],[2885,2935,3761,3811,980,995,"item1","jew_r"],[3000,3150,3701,3871,964,980,"velvet","jew_r"],[2650,2668,3126,3890,950,1005,"tray","jew_r"],[2650,3200,3116,3900,1280,1296,"carcass"],[2775,3075,3176,3840,1296,1456,"cloth0"],[2650,3200,3116,3900,1610,1626,"carcass"],[2775,3075,3176,3840,1626,1786,"cloth0"],[2650,3200,3116,3900,1940,1956,"carcass"],[2775,3075,3176,3840,1956,2116,"cloth0"],[2650,3200,3916,4584,380,396,"carcass"],[2710,2980,3966,4056,396,501,"shoe2"],[2710,2980,4166,4256,396,476,"shoe"],[2710,2980,4366,4456,396,501,"shoe"],[2650,3200,3916,4584,660,676,"carcass"],[2710,2980,3966,4056,676,781,"shoe2"],[2710,2980,4166,4256,676,756,"shoe"],[2710,2980,4366,4456,676,781,"shoe"],[2650,3200,3916,4584,940,956,"carcass"],[2710,2980,3966,4056,956,1061,"shoe2"],[2710,2980,4166,4256,956,1036,"shoe"],[2710,2980,4366,4456,956,1061,"shoe"],[2650,3200,3916,4584,1220,1236,"carcass"],[2710,2980,3966,4056,1236,1341,"shoe2"],[2710,2980,4166,4256,1236,1316,"shoe"],[2710,2980,4366,4456,1236,1341,"shoe"],[2650,3200,3916,4584,1500,1516,"carcass"],[2710,2980,3966,4056,1516,1621,"shoe2"],[2710,2980,4166,4256,1516,1596,"shoe"],[2710,2980,4366,4456,1516,1621,"shoe"],[2650,3200,3916,4584,1780,1796,"carcass"],[2710,2980,3966,4056,1796,1901,"shoe"],[2710,2980,4166,4256,1796,1876,"shoe2"],[2710,2980,4366,4456,1796,1901,"shoe"],[2650,3200,3916,4584,2060,2076,"carcass"],[2710,2980,3966,4056,2076,2181,"shoe"],[2710,2980,4166,4256,2076,2156,"shoe2"],[2710,2980,4366,4456,2076,2181,"shoe"],[2915,2935,300,1300,2220,2240,"rail"],[1250,1950,2700,3450,80,860,"carcass"],[1290,1910,2400,3410,0,80,"plinth"],[1250,1280,2700,3450,860,900,"carcass"],[1920,1950,2700,3450,860,900,"carcass"],[1250,1950,3420,3450,860,900,"carcass"],[1280,1920,2410,3420,854,860,"velvet"],[1300,1590,2490,2690,854,864,"tray"],[1360,1530,2540,2640,864,880,"item0"],[1610,1900,2490,2690,854,864,"tray"],[1670,1840,2540,2640,864,880,"item1"],[1300,1590,2710,2910,854,864,"tray"],[1360,1530,2760,2860,864,880,"item1"],[1610,1900,2710,2910,854,864,"tray"],[1670,1840,2760,2860,864,880,"item2"],[1300,1590,2930,3130,854,864,"tray"],[1360,1530,2980,3080,864,880,"item2"],[1610,1900,2930,3130,854,864,"tray"],[1670,1840,2980,3080,864,880,"item0"],[1300,1590,3150,3350,854,864,"tray"],[1360,1530,3200,3300,864,880,"item0"],[1610,1900,3150,3350,854,864,"tray"],[1670,1840,3200,3300,864,880,"item1"],[1280,1920,2700,3420,896,900,"vitrine"],[1540,1660,2420,2500,900,930,"item2"],[1232,1250,2720,3430,100,450,"front","isl_l0"],[1222,1232,2895,3255,400,410,"handle","isl_l0"],[1250,1580,2740,3410,130,400,"dbox","isl_l0"],[1232,1250,2720,3430,470,820,"front","isl_l1"],[1222,1232,2895,3255,770,780,"handle","isl_l1"],[1250,1580,2740,3410,500,770,"dbox","isl_l1"],[1950,1968,2720,3430,100,450,"front","isl_r0"],[1968,1978,2895,3255,400,410,"handle","isl_r0"],[1620,1950,2740,3410,130,400,"dbox","isl_r0"],[1950,1968,2720,3430,470,820,"front","isl_r1"],[1968,1978,2895,3255,770,780,"handle","isl_r1"],[1620,1950,2740,3410,500,770,"dbox","isl_r1"],[1540,1660,3450,3456,640,720,"socket"],[1260,1940,3460,3480,390,460,"cushion"],[20,780,4607,4613,20,3030,"glass"],[0,20,4600,4620,0,3050,"frame"],[780,800,4600,4620,0,3050,"frame"],[0,800,4600,4620,0,20,"frame"],[0,800,4600,4620,3030,3050,"frame"],[820,1580,4631,4637,20,3030,"glass","door_L"],[800,820,4624,4644,0,3050,"frame","door_L"],[1580,1600,4624,4644,0,3050,"frame","door_L"],[800,1600,4624,4644,0,20,"frame","door_L"],[800,1600,4624,4644,3030,3050,"frame","door_L"],[1520,1540,4644,4674,900,1500,"frame","door_L"],[1620,2380,4631,4637,20,3030,"glass","door_R"],[1600,1620,4624,4644,0,3050,"frame","door_R"],[2380,2400,4624,4644,0,3050,"frame","door_R"],[1600,2400,4624,4644,0,20,"frame","door_R"],[1600,2400,4624,4644,3030,3050,"frame","door_R"],[1660,1680,4644,4674,900,1500,"frame","door_R"],[2420,3180,4607,4613,20,3030,"glass"],[2400,2420,4600,4620,0,3050,"frame"],[3180,3200,4600,4620,0,3050,"frame"],[2400,3200,4600,4620,0,20,"frame"],[2400,3200,4600,4620,3030,3050,"frame"],[0,3200,4600,4644,3010,3050,"frame"]],"cyls":[[1600,2700,350,80,860,"isl",-1],[1600,2700,350,860,900,"isl",-1],[1600,2700,320,896,900,"vitrine",-1],[1600,3460,350,0,390,"pouf",1],[1600,3460,340,390,460,"cushion",1]],"groups":{"tray_l_0":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0440\u0435\u043c\u043d\u0435\u0439 \u0438 \u0433\u0430\u043b\u0441\u0442\u0443\u043a\u043e\u0432","dir":[1,0],"travel":420},"tray_l_1":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0440\u0435\u043c\u043d\u0435\u0439 \u0438 \u0433\u0430\u043b\u0441\u0442\u0443\u043a\u043e\u0432","dir":[1,0],"travel":420},"drw_l_0":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[1,0],"travel":450},"drw_l_1":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[1,0],"travel":450},"drw_l_2":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[1,0],"travel":450},"drw_l_3":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[1,0],"travel":450},"jew_l":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0443\u043a\u0440\u0430\u0448\u0435\u043d\u0438\u0439","dir":[1,0],"travel":420},"tray_r_0":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0440\u0435\u043c\u043d\u0435\u0439 \u0438 \u0433\u0430\u043b\u0441\u0442\u0443\u043a\u043e\u0432","dir":[-1,0],"travel":420},"tray_r_1":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0440\u0435\u043c\u043d\u0435\u0439 \u0438 \u0433\u0430\u043b\u0441\u0442\u0443\u043a\u043e\u0432","dir":[-1,0],"travel":420},"drw_r_0":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[-1,0],"travel":450},"drw_r_1":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[-1,0],"travel":450},"drw_r_2":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[-1,0],"travel":450},"drw_r_3":{"set":"drawers","name":"\u0412\u044b\u043a\u0430\u0442\u043d\u043e\u0439 \u044f\u0449\u0438\u043a","dir":[-1,0],"travel":450},"jew_r":{"set":"trays","name":"\u0412\u044b\u0434\u0432\u0438\u0436\u043d\u043e\u0439 \u043b\u043e\u0442\u043e\u043a \u0434\u043b\u044f \u0443\u043a\u0440\u0430\u0448\u0435\u043d\u0438\u0439","dir":[-1,0],"travel":420},"isl_l0":{"set":"drawers","name":"\u042f\u0449\u0438\u043a \u043e\u0441\u0442\u0440\u043e\u0432\u0430","dir":[-1,0],"travel":380},"isl_l1":{"set":"drawers","name":"\u042f\u0449\u0438\u043a \u043e\u0441\u0442\u0440\u043e\u0432\u0430","dir":[-1,0],"travel":380},"isl_r0":{"set":"drawers","name":"\u042f\u0449\u0438\u043a \u043e\u0441\u0442\u0440\u043e\u0432\u0430","dir":[1,0],"travel":380},"isl_r1":{"set":"drawers","name":"\u042f\u0449\u0438\u043a \u043e\u0441\u0442\u0440\u043e\u0432\u0430","dir":[1,0],"travel":380},"door_L":{"set":"doors","name":"\u0421\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u0430\u044f \u0440\u0430\u0437\u0434\u0432\u0438\u0436\u043d\u0430\u044f \u0434\u0432\u0435\u0440\u044c","dir":[-1,0],"travel":760},"door_R":{"set":"doors","name":"\u0421\u0442\u0435\u043a\u043b\u044f\u043d\u043d\u0430\u044f \u0440\u0430\u0437\u0434\u0432\u0438\u0436\u043d\u0430\u044f \u0434\u0432\u0435\u0440\u044c","dir":[1,0],"travel":760}},"cloth":["#e9e5df","#cfc8bf","#b9b2aa","#8d8680","#f3f1ec","#a39383","#6f6a66","#d8cdbf","#2f2d2c","#7a8a9a"],"colors":{"carcass":6966328,"front":8018500,"plinth":4074528,"handle":1907997,"rail":1907997,"frame":1776411,"tray":5914156,"isl":6966328,"pouf":8018500,"velvet":15261904,"dbox":9202773,"dbottom":10255460,"floor":9407108,"rug":15131096,"cushion":14866112,"box":2039583,"shoe":2893346,"shoe2":9071186,"socket":2763306,"item0":9055019,"item1":2837114,"item2":13214247,"wall_back":15262943,"wall_left":15262943,"wall_right":15262943},"edges":{"carcass":2759956,"front":2759956,"tray":2759956,"frame":0},"wood":["carcass","front","tray","isl","pouf"],"sets":[["drawers","\u042f\u0449\u0438\u043a\u0438"],["trays","\u041b\u043e\u0442\u043a\u0438"],["doors","\u0414\u0432\u0435\u0440\u0438"]],"lights":[[1600.0,300,2150],[275,1800,2150],[2925,1800,2150],[275,3500,2150],[2925,3500,2150]]};
+const RW = DATA.room[0], RD = DATA.room[1], RH = DATA.room[2];
+
+// ---------------------------------------------------------------- сцена
+const host = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+function syncBg() {
+  renderer.setClearColor(new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#efebe5'));
+}
+syncBg();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncBg);
+new MutationObserver(syncBg).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 20, 60000);
+
+// древесная текстура (орех) – рисуется на canvas, без внешних файлов
+function woodTexture(base, dark) {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = base; g.fillRect(0, 0, 512, 512);
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 140; i++) {
+    const y = rnd() * 512, a = 0.04 + rnd() * 0.10, w = 0.6 + rnd() * 2.2, amp = 2 + rnd() * 7, f = 0.004 + rnd() * 0.01;
+    g.strokeStyle = `rgba(${dark},${a})`; g.lineWidth = w; g.beginPath();
+    for (let x = 0; x <= 512; x += 8) g.lineTo(x, y + Math.sin(x * f + i) * amp);
+    g.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const WOOD = woodTexture('#6a4c38', '40,24,14');
+
+const COLORS = DATA.colors;
+const EDGES = DATA.edges;
+const matCache = {};
+function material(kind) {
+  if (matCache[kind]) return matCache[kind];
+  let m;
+  if (kind === 'led') m = new THREE.MeshBasicMaterial({ color: 0xffd36b });
+  else if (kind === 'glass') m = new THREE.MeshStandardMaterial({ color: 0x9fb2b8, transparent: true, opacity: 0.28,
+                                                                  roughness: 0.05, metalness: 0.1, depthWrite: false });
+  else if (kind === 'vitrine') m = new THREE.MeshStandardMaterial({ color: 0xdde8ea, transparent: true, opacity: 0.22,
+                                                                    roughness: 0.05, depthWrite: false });
+  else {
+    const c = kind.startsWith('cloth') ? new THREE.Color(DATA.cloth[+kind.slice(5)]) : new THREE.Color(COLORS[kind] ?? 0x999999);
+    const metal = ['handle', 'rail', 'frame'].includes(kind);
+    m = new THREE.MeshStandardMaterial({ color: c, roughness: metal ? 0.35 : 0.8, metalness: metal ? 0.5 : 0 });
+    if (DATA.wood.includes(kind)) { m.map = WOOD; m.color = kind === 'carcass' || kind === 'isl' ? new THREE.Color(0xffffff) : c; }
+  }
+  return (matCache[kind] = m);
+}
+// UV в миллиметрах: волокна вдоль длинной стороны каждой грани
+function boxGeo(w, h, d, wood) {
+  const geo = new THREE.BoxGeometry(w, h, d);
+  if (!wood) return geo;
+  const uv = geo.attributes.uv, n = geo.attributes.normal;
+  for (let i = 0; i < uv.count; i++) {
+    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i));
+    const [a, b] = ax > 0.5 ? [d, h] : ay > 0.5 ? [w, d] : [w, h];
+    let u = uv.getX(i) * a / 900, v = uv.getY(i) * b / 900;
+    if (b > a) [u, v] = [v, u];
+    uv.setXY(i, u, v);
+  }
+  return geo;
+}
+
+// подвижные группы (выдвижение по прямой)
+const groups = {};
+for (const [id, meta] of Object.entries(DATA.groups)) {
+  const root = new THREE.Group();
+  scene.add(root);
+  groups[id] = { id, meta, root, slide: 0, slideTo: 0 };
+}
+const pickable = [];
+const walls = {};
+for (const b of DATA.boxes) {
+  const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
+  const wood = DATA.wood.includes(kind);
+  const geo = boxGeo(x1 - x0, z1 - z0, y1 - y0, wood);
+  const mesh = new THREE.Mesh(geo, material(kind));
+  mesh.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  const see = !kind.startsWith('wall') && !['floor', 'rug', 'glass', 'vitrine'].includes(kind);
+  mesh.castShadow = see;
+  mesh.receiveShadow = kind !== 'glass' && kind !== 'vitrine';
+  let parent = scene;
+  if (gid) {
+    parent = groups[gid].root;
+    mesh.userData.gid = gid;
+    pickable.push(mesh);
+  }
+  parent.add(mesh);
+  if (EDGES[kind] !== undefined) {
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: EDGES[kind] }));
+    e.position.copy(mesh.position);
+    parent.add(e);
+  }
+  if (kind.startsWith('wall')) walls[kind] = mesh;
+}
+
+for (const [cx, cy, r, z0, z1, kind, toward] of DATA.cyls) {
+  const geo = new THREE.CylinderGeometry(r, r, z1 - z0, 48, 1, false, toward > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+  const mesh = new THREE.Mesh(geo, material(kind));
+  mesh.position.set(cx, (z0 + z1) / 2, cy);
+  mesh.castShadow = mesh.receiveShadow = kind !== 'vitrine';
+  scene.add(mesh);
+}
+
+// свет
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a50, 1.7));
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(RW * 0.3, RH * 2.2, RD * 1.6);
+sun.target.position.set(RW / 2, 0, RD / 2);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+const S = Math.max(RW, RD);
+Object.assign(sun.shadow.camera, { left: -S, right: S, top: S, bottom: -S, near: 100, far: 20000 });
+sun.shadow.bias = -0.0006;
+scene.add(sun, sun.target);
+const ledLights = [];
+for (const [x, y, z] of DATA.lights) {
+  const p = new THREE.PointLight(0xffc977, 0.7, 2200, 1.5);
+  p.position.set(x, z, y);
+  scene.add(p);
+  ledLights.push(p);
+}
+
+// ---------------------------------------------------------------- камера
+const target = new THREE.Vector3(RW / 2, RH * 0.42, RD / 2);
+const sph = { r: S * 1.7, theta: 0.32, phi: 1.12 };
+function placeCamera() {
+  const s = Math.sin(sph.phi);
+  camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
+                      target.y + sph.r * Math.cos(sph.phi),
+                      target.z + sph.r * s * Math.cos(sph.theta));
+  camera.lookAt(target);
+  walls.wall_back.visible = camera.position.z > 0;
+  walls.wall_left.visible = camera.position.x > 0;
+  walls.wall_right.visible = camera.position.x < RW;
+}
+let anim = null;
+function flyTo(r, theta, phi, t) {
+  theta += 2 * Math.PI * Math.round((sph.theta - theta) / (2 * Math.PI));
+  anim = { from: { ...sph, t: target.clone() }, to: { r, theta, phi, t }, k: 0 };
+}
+function resize() {
+  const w = host.clientWidth, h = host.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.fov = w < h ? 62 : 45;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------------------------------------------------------------- управление
+const el = renderer.domElement;
+const ptrs = new Map();
+let moved = 0, panMode = false, lastPinch = 0, lastMid = null;
+el.addEventListener('contextmenu', e => e.preventDefault());
+el.addEventListener('pointerdown', e => {
+  el.setPointerCapture(e.pointerId);
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved = 0;
+  panMode = e.button === 2 || e.shiftKey;
+  lastPinch = 0; lastMid = null;
+  anim = null;
+});
+function pan(dx, dy) {
+  const k = sph.r * 0.0011;
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+  target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+}
+el.addEventListener('pointermove', e => {
+  hover(e);
+  const p = ptrs.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 1) {
+    if (panMode) pan(dx, dy);
+    else {
+      sph.theta -= dx * 0.006;
+      sph.phi = Math.min(1.62, Math.max(0.08, sph.phi - dy * 0.006));
+    }
+  } else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    if (lastPinch) sph.r = Math.min(30000, Math.max(500, sph.r * lastPinch / dist));
+    if (lastMid) pan(mid.x - lastMid.x, mid.y - lastMid.y);
+    lastPinch = dist; lastMid = mid;
+  }
+});
+function release(e) {
+  if (ptrs.size === 1 && moved < 8) pick(e);
+  ptrs.delete(e.pointerId);
+  lastPinch = 0; lastMid = null;
+}
+el.addEventListener('pointerup', release);
+el.addEventListener('pointercancel', e => ptrs.delete(e.pointerId));
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  anim = null;
+  sph.r = Math.min(30000, Math.max(500, sph.r * Math.exp(e.deltaY * 0.0012)));
+}, { passive: false });
+
+// ---------------------------------------------------------------- выбор деталей
+const ray = new THREE.Raycaster();
+function hit(e) {
+  const r = el.getBoundingClientRect();
+  const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(v, camera);
+  const h = ray.intersectObjects(pickable, false)[0];
+  return h ? groups[h.object.userData.gid] : null;
+}
+const tip = document.getElementById('tip');
+function hover(e) {
+  if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
+  const g = hit(e);
+  el.style.cursor = g ? 'pointer' : 'grab';
+  if (g) {
+    tip.textContent = g.meta.name;
+    tip.style.left = e.clientX + 14 + 'px';
+    tip.style.top = e.clientY + 14 + 'px';
+    tip.style.display = 'block';
+  } else tip.style.display = 'none';
+}
+function pick(e) {
+  const g = hit(e);
+  if (!g) return;
+  g.slideTo = g.slideTo > 0.5 ? 0 : 1;
+  syncButtons();
+}
+
+// ---------------------------------------------------------------- кнопки
+const nav = document.getElementById('nav');
+const setButtons = {};
+for (const [set, label] of DATA.sets) {
+  const b = document.createElement('button');
+  b.textContent = label;
+  b.onclick = () => {
+    const gs = Object.values(groups).filter(g => g.meta.set === set);
+    const open = !gs.some(g => g.slideTo > 0.5);
+    gs.forEach(g => (g.slideTo = open ? 1 : 0));
+    syncButtons();
+  };
+  b.id = 'b_' + set;
+  nav.appendChild(b);
+  setButtons[set] = b;
+}
+function syncButtons() {
+  for (const [set, b] of Object.entries(setButtons))
+    b.classList.toggle('on', Object.values(groups).some(g => g.meta.set === set && g.slideTo > 0.5));
+}
+function addButton(label, fn, on) {
+  const b = document.createElement('button');
+  b.textContent = label; b.onclick = () => fn(b);
+  if (on) b.classList.add('on');
+  nav.appendChild(b);
+  return b;
+}
+addButton('Подсветка', b => {
+  const on = !b.classList.contains('on');
+  b.classList.toggle('on', on);
+  matCache.led && matCache.led.color.setHex(on ? 0xffd36b : 0x6d655c);
+  ledLights.forEach(l => (l.intensity = on ? 0.7 : 0));
+}, true);
+addButton('Вид от входа', () => flyTo(S * 1.45, 0.0, 1.38, new THREE.Vector3(RW / 2, RH * 0.45, RD / 2)));
+addButton('Вид сверху', () => flyTo(S * 1.75, 0.0, 0.3, new THREE.Vector3(RW / 2, 0, RD / 2)));
+
+// ---------------------------------------------------------------- цикл
+let last = performance.now();
+function approach(v, to, step) { return Math.abs(to - v) <= step ? to : v + Math.sign(to - v) * step; }
+function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+function tick(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  const step = dt * 1.6;
+  for (const g of Object.values(groups)) {
+    g.slide = approach(g.slide, g.slideTo, step);
+    const s = ease(g.slide) * g.meta.travel;
+    g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
+  }
+  if (anim) {
+    anim.k = Math.min(1, anim.k + dt * 1.4);
+    const k = ease(anim.k), f = anim.from, t = anim.to;
+    sph.r = f.r + (t.r - f.r) * k;
+    sph.theta = f.theta + (t.theta - f.theta) * k;
+    sph.phi = f.phi + (t.phi - f.phi) * k;
+    target.lerpVectors(f.t, t.t, k);
+    if (anim.k >= 1) anim = null;
+  }
+  placeCamera();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>

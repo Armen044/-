@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Гардеробная с островом</title>
+<style>
+  /* полноэкранная 3D-сцена, карточки сверху, панель кнопок снизу */
+  :root { --bg: #efebe5; --panel: rgba(255,255,255,0.92); --ink: #2b2622; --muted: #6f655c;
+          --accent: #8a6a3f; --line: #d9d1c7; --on-ink: #ffffff; --tip: rgba(30,25,20,0.88); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1d1a17; --panel: rgba(38,34,30,0.92); --ink: #eee6dc;
+      --muted: #b0a597; --accent: #c9a227; --line: #4a423a; --on-ink: #1d1a17; --tip: rgba(0,0,0,0.85); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+               font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+               overflow: hidden; -webkit-user-select: none; user-select: none; }
+  #view { position: fixed; inset: 0; touch-action: none; }
+  header { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 12px; right: 12px; display: flex; justify-content: space-between;
+           align-items: flex-start; gap: 12px; pointer-events: none; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px;
+          box-shadow: 0 4px 18px rgba(60,40,20,0.08); pointer-events: auto; }
+  h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: 0.2px; }
+  .sub { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .hint { font-size: 12.5px; color: var(--muted); line-height: 1.45; max-width: 290px; }
+  nav { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; flex-wrap: wrap;
+        justify-content: center; gap: 8px; width: min(980px, calc(100% - 24px)); }
+  button { font: inherit; font-size: 14px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; min-height: 42px;
+           box-shadow: 0 2px 10px rgba(60,40,20,0.08); }
+  button:hover { border-color: var(--accent); }
+  button.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #tip { position: fixed; pointer-events: none; padding: 5px 9px; border-radius: 7px; font-size: 12.5px;
+         background: var(--tip); color: #fff; display: none; white-space: nowrap; }
+  @media (max-width: 640px) {
+    .hint { display: none; }
+    h1 { font-size: 15px; }
+    button { font-size: 13px; padding: 9px 11px; }
+  }
+</style>
+</head>
+<body>
+<div id="view"></div>
+<header>
+  <div class="card">
+    <h1>Гардеробная с островом</h1>
+    <div class="sub">/*__SUB__*/</div>
+  </div>
+  <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
+    правая кнопка или два пальца — сдвиг. Нажмите на ящик, лоток или стеклянную дверь.</div>
+</header>
+<nav id="nav"></nav>
+<div id="tip"></div>
+
+<script>/*__THREE__*/</script>
+<script>
+const DATA = /*__DATA__*/;
+const RW = DATA.room[0], RD = DATA.room[1], RH = DATA.room[2];
+
+// ---------------------------------------------------------------- сцена
+const host = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+function syncBg() {
+  renderer.setClearColor(new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#efebe5'));
+}
+syncBg();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncBg);
+new MutationObserver(syncBg).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 20, 60000);
+
+// древесная текстура (орех) – рисуется на canvas, без внешних файлов
+function woodTexture(base, dark) {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 512;
+  const g = c.getContext('2d');
+  g.fillStyle = base; g.fillRect(0, 0, 512, 512);
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 140; i++) {
+    const y = rnd() * 512, a = 0.04 + rnd() * 0.10, w = 0.6 + rnd() * 2.2, amp = 2 + rnd() * 7, f = 0.004 + rnd() * 0.01;
+    g.strokeStyle = `rgba(${dark},${a})`; g.lineWidth = w; g.beginPath();
+    for (let x = 0; x <= 512; x += 8) g.lineTo(x, y + Math.sin(x * f + i) * amp);
+    g.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const WOOD = woodTexture('#6a4c38', '40,24,14');
+
+const COLORS = DATA.colors;
+const EDGES = DATA.edges;
+const matCache = {};
+function material(kind) {
+  if (matCache[kind]) return matCache[kind];
+  let m;
+  if (kind === 'led') m = new THREE.MeshBasicMaterial({ color: 0xffd36b });
+  else if (kind === 'glass') m = new THREE.MeshStandardMaterial({ color: 0x9fb2b8, transparent: true, opacity: 0.28,
+                                                                  roughness: 0.05, metalness: 0.1, depthWrite: false });
+  else if (kind === 'vitrine') m = new THREE.MeshStandardMaterial({ color: 0xdde8ea, transparent: true, opacity: 0.22,
+                                                                    roughness: 0.05, depthWrite: false });
+  else {
+    const c = kind.startsWith('cloth') ? new THREE.Color(DATA.cloth[+kind.slice(5)]) : new THREE.Color(COLORS[kind] ?? 0x999999);
+    const metal = ['handle', 'rail', 'frame'].includes(kind);
+    m = new THREE.MeshStandardMaterial({ color: c, roughness: metal ? 0.35 : 0.8, metalness: metal ? 0.5 : 0 });
+    if (DATA.wood.includes(kind)) { m.map = WOOD; m.color = kind === 'carcass' || kind === 'isl' ? new THREE.Color(0xffffff) : c; }
+  }
+  return (matCache[kind] = m);
+}
+// UV в миллиметрах: волокна вдоль длинной стороны каждой грани
+function boxGeo(w, h, d, wood) {
+  const geo = new THREE.BoxGeometry(w, h, d);
+  if (!wood) return geo;
+  const uv = geo.attributes.uv, n = geo.attributes.normal;
+  for (let i = 0; i < uv.count; i++) {
+    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i));
+    const [a, b] = ax > 0.5 ? [d, h] : ay > 0.5 ? [w, d] : [w, h];
+    let u = uv.getX(i) * a / 900, v = uv.getY(i) * b / 900;
+    if (b > a) [u, v] = [v, u];
+    uv.setXY(i, u, v);
+  }
+  return geo;
+}
+
+// подвижные группы (выдвижение по прямой)
+const groups = {};
+for (const [id, meta] of Object.entries(DATA.groups)) {
+  const root = new THREE.Group();
+  scene.add(root);
+  groups[id] = { id, meta, root, slide: 0, slideTo: 0 };
+}
+const pickable = [];
+const walls = {};
+for (const b of DATA.boxes) {
+  const [x0, x1, y0, y1, z0, z1, kind, gid] = b;
+  const wood = DATA.wood.includes(kind);
+  const geo = boxGeo(x1 - x0, z1 - z0, y1 - y0, wood);
+  const mesh = new THREE.Mesh(geo, material(kind));
+  mesh.position.set((x0 + x1) / 2, (z0 + z1) / 2, (y0 + y1) / 2);
+  const see = !kind.startsWith('wall') && !['floor', 'rug', 'glass', 'vitrine'].includes(kind);
+  mesh.castShadow = see;
+  mesh.receiveShadow = kind !== 'glass' && kind !== 'vitrine';
+  let parent = scene;
+  if (gid) {
+    parent = groups[gid].root;
+    mesh.userData.gid = gid;
+    pickable.push(mesh);
+  }
+  parent.add(mesh);
+  if (EDGES[kind] !== undefined) {
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: EDGES[kind] }));
+    e.position.copy(mesh.position);
+    parent.add(e);
+  }
+  if (kind.startsWith('wall')) walls[kind] = mesh;
+}
+
+for (const [cx, cy, r, z0, z1, kind, toward] of DATA.cyls) {
+  const geo = new THREE.CylinderGeometry(r, r, z1 - z0, 48, 1, false, toward > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI);
+  const mesh = new THREE.Mesh(geo, material(kind));
+  mesh.position.set(cx, (z0 + z1) / 2, cy);
+  mesh.castShadow = mesh.receiveShadow = kind !== 'vitrine';
+  scene.add(mesh);
+}
+
+// свет
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a6a50, 1.7));
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(RW * 0.3, RH * 2.2, RD * 1.6);
+sun.target.position.set(RW / 2, 0, RD / 2);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+const S = Math.max(RW, RD);
+Object.assign(sun.shadow.camera, { left: -S, right: S, top: S, bottom: -S, near: 100, far: 20000 });
+sun.shadow.bias = -0.0006;
+scene.add(sun, sun.target);
+const ledLights = [];
+for (const [x, y, z] of DATA.lights) {
+  const p = new THREE.PointLight(0xffc977, 0.7, 2200, 1.5);
+  p.position.set(x, z, y);
+  scene.add(p);
+  ledLights.push(p);
+}
+
+// ---------------------------------------------------------------- камера
+const target = new THREE.Vector3(RW / 2, RH * 0.42, RD / 2);
+const sph = { r: S * 1.7, theta: 0.32, phi: 1.12 };
+function placeCamera() {
+  const s = Math.sin(sph.phi);
+  camera.position.set(target.x + sph.r * s * Math.sin(sph.theta),
+                      target.y + sph.r * Math.cos(sph.phi),
+                      target.z + sph.r * s * Math.cos(sph.theta));
+  camera.lookAt(target);
+  walls.wall_back.visible = camera.position.z > 0;
+  walls.wall_left.visible = camera.position.x > 0;
+  walls.wall_right.visible = camera.position.x < RW;
+}
+let anim = null;
+function flyTo(r, theta, phi, t) {
+  theta += 2 * Math.PI * Math.round((sph.theta - theta) / (2 * Math.PI));
+  anim = { from: { ...sph, t: target.clone() }, to: { r, theta, phi, t }, k: 0 };
+}
+function resize() {
+  const w = host.clientWidth, h = host.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.fov = w < h ? 62 : 45;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------------------------------------------------------------- управление
+const el = renderer.domElement;
+const ptrs = new Map();
+let moved = 0, panMode = false, lastPinch = 0, lastMid = null;
+el.addEventListener('contextmenu', e => e.preventDefault());
+el.addEventListener('pointerdown', e => {
+  el.setPointerCapture(e.pointerId);
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved = 0;
+  panMode = e.button === 2 || e.shiftKey;
+  lastPinch = 0; lastMid = null;
+  anim = null;
+});
+function pan(dx, dy) {
+  const k = sph.r * 0.0011;
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+  target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+}
+el.addEventListener('pointermove', e => {
+  hover(e);
+  const p = ptrs.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 1) {
+    if (panMode) pan(dx, dy);
+    else {
+      sph.theta -= dx * 0.006;
+      sph.phi = Math.min(1.62, Math.max(0.08, sph.phi - dy * 0.006));
+    }
+  } else if (ptrs.size === 2) {
+    const [a, b] = [...ptrs.values()];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    if (lastPinch) sph.r = Math.min(30000, Math.max(500, sph.r * lastPinch / dist));
+    if (lastMid) pan(mid.x - lastMid.x, mid.y - lastMid.y);
+    lastPinch = dist; lastMid = mid;
+  }
+});
+function release(e) {
+  if (ptrs.size === 1 && moved < 8) pick(e);
+  ptrs.delete(e.pointerId);
+  lastPinch = 0; lastMid = null;
+}
+el.addEventListener('pointerup', release);
+el.addEventListener('pointercancel', e => ptrs.delete(e.pointerId));
+el.addEventListener('wheel', e => {
+  e.preventDefault();
+  anim = null;
+  sph.r = Math.min(30000, Math.max(500, sph.r * Math.exp(e.deltaY * 0.0012)));
+}, { passive: false });
+
+// ---------------------------------------------------------------- выбор деталей
+const ray = new THREE.Raycaster();
+function hit(e) {
+  const r = el.getBoundingClientRect();
+  const v = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(v, camera);
+  const h = ray.intersectObjects(pickable, false)[0];
+  return h ? groups[h.object.userData.gid] : null;
+}
+const tip = document.getElementById('tip');
+function hover(e) {
+  if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
+  const g = hit(e);
+  el.style.cursor = g ? 'pointer' : 'grab';
+  if (g) {
+    tip.textContent = g.meta.name;
+    tip.style.left = e.clientX + 14 + 'px';
+    tip.style.top = e.clientY + 14 + 'px';
+    tip.style.display = 'block';
+  } else tip.style.display = 'none';
+}
+function pick(e) {
+  const g = hit(e);
+  if (!g) return;
+  g.slideTo = g.slideTo > 0.5 ? 0 : 1;
+  syncButtons();
+}
+
+// ---------------------------------------------------------------- кнопки
+const nav = document.getElementById('nav');
+const setButtons = {};
+for (const [set, label] of DATA.sets) {
+  const b = document.createElement('button');
+  b.textContent = label;
+  b.onclick = () => {
+    const gs = Object.values(groups).filter(g => g.meta.set === set);
+    const open = !gs.some(g => g.slideTo > 0.5);
+    gs.forEach(g => (g.slideTo = open ? 1 : 0));
+    syncButtons();
+  };
+  b.id = 'b_' + set;
+  nav.appendChild(b);
+  setButtons[set] = b;
+}
+function syncButtons() {
+  for (const [set, b] of Object.entries(setButtons))
+    b.classList.toggle('on', Object.values(groups).some(g => g.meta.set === set && g.slideTo > 0.5));
+}
+function addButton(label, fn, on) {
+  const b = document.createElement('button');
+  b.textContent = label; b.onclick = () => fn(b);
+  if (on) b.classList.add('on');
+  nav.appendChild(b);
+  return b;
+}
+addButton('Подсветка', b => {
+  const on = !b.classList.contains('on');
+  b.classList.toggle('on', on);
+  matCache.led && matCache.led.color.setHex(on ? 0xffd36b : 0x6d655c);
+  ledLights.forEach(l => (l.intensity = on ? 0.7 : 0));
+}, true);
+addButton('Вид от входа', () => flyTo(S * 1.45, 0.0, 1.38, new THREE.Vector3(RW / 2, RH * 0.45, RD / 2)));
+addButton('Вид сверху', () => flyTo(S * 1.75, 0.0, 0.3, new THREE.Vector3(RW / 2, 0, RD / 2)));
+
+// ---------------------------------------------------------------- цикл
+let last = performance.now();
+function approach(v, to, step) { return Math.abs(to - v) <= step ? to : v + Math.sign(to - v) * step; }
+function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+function tick(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  const step = dt * 1.6;
+  for (const g of Object.values(groups)) {
+    g.slide = approach(g.slide, g.slideTo, step);
+    const s = ease(g.slide) * g.meta.travel;
+    g.root.position.set(g.meta.dir[0] * s, 0, g.meta.dir[1] * s);
+  }
+  if (anim) {
+    anim.k = Math.min(1, anim.k + dt * 1.4);
+    const k = ease(anim.k), f = anim.from, t = anim.to;
+    sph.r = f.r + (t.r - f.r) * k;
+    sph.theta = f.theta + (t.theta - f.theta) * k;
+    sph.phi = f.phi + (t.phi - f.phi) * k;
+    target.lerpVectors(f.t, t.t, k);
+    if (anim.k >= 1) anim = null;
+  }
+  placeCamera();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
