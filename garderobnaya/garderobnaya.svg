@@ -156,6 +156,7 @@
 <line x1="249.60" y1="70.00" x2="300.53" y2="70.00" stroke="#555" stroke-width="0.6"/>
 <circle cx="249.20" cy="70.00" r="0.55" fill="#555"/>
 <circle cx="300.93" cy="70.00" r="0.55" fill="#555"/>
+<rect x="262.00" y="187.60" width="38.93" height="1.07" fill="#cdbba6" stroke="#111" stroke-width="0.2" />
 <line x1="182.00" y1="37.07" x2="182.00" y2="206.67" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="2 1"/>
 <line x1="262.00" y1="37.07" x2="262.00" y2="206.67" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="2 1"/>
 <rect x="142.00" y="36.00" width="160.00" height="176.00" fill="none" stroke="#111" stroke-width="0.45" />
@@ -450,6 +451,7 @@
 <line x1="130.67" y1="386.13" x2="167.33" y2="386.13" stroke="#33373b" stroke-width="0.25"/>
 <path d="M167.33,386.13 l-1.6,-0.7 l0,1.4 z" fill="#33373b"/>
 <line x1="215.00" y1="374.67" x2="255.00" y2="374.67" stroke="#111" stroke-width="0.4"/>
+<path d="M217.00,274.00 L253.27,274.00 L253.27,372.67 L217.00,372.67 L217.00,312.00 L217.00,274.00 z" fill="none" stroke="#8b6f4e" stroke-width="0.3" stroke-dasharray="0.8 0.6"/>
 <line x1="95.00" y1="312.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="215.00" y1="312.00" x2="255.00" y2="312.00" stroke="#c0392b" stroke-width="0.3" stroke-dasharray="1.5 1"/>
 <line x1="135.00" y1="272.00" x2="135.00" y2="312.00" stroke="#c0392b" stroke-width="0.15" stroke-dasharray="1.5 1"/>
@@ -634,7 +636,7 @@
 <text x="443.00" y="199.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда (пальто, платья), угловая зона</text>
 <text x="425.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П1</text>
 <text x="433.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">940</text>
-<text x="443.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + полка для обуви Н=350, открыта в угол</text>
+<text x="443.00" y="203.60" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Длинная одежда + угловая Г-образная полка для обуви Н=350</text>
 <text x="425.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="bold" fill="#111">П2</text>
 <text x="433.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">200</text>
 <text x="443.00" y="208.20" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Узкая ниша доски (внутри 176): доска боком, полка утюга Н=1560</text>

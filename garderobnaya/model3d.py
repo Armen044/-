@@ -213,6 +213,12 @@ def build(interactive=False):
     box(W - 310, W - 290, y0, y1, RAIL - 10, RAIL + 10, "rail")
     clothes_y(y0, y1, W - 300, RAIL, 1450)
     box(xf, W, y0, y1, 350, 350 + T, "carcass")
+    # угловая часть полки (Г-образная, заходит в угловую зону З3)
+    box(xf, W - T, 0, y0, 350, 350 + T, "carcass")
+    for k in range(3):
+        x = xf + 90 + k * 150
+        box(x, x + 90, 120, 400, PLINTH + T, PLINTH + T + 110, "shoe")
+        box(x, x + 90, 120, 400, 366, 476, "shoe")
     for k in range(5):
         y = y0 + 40 + k * 180
         box(xf + 120, xf + 400, y, y + 90, PLINTH + T, PLINTH + T + 110, "shoe")
