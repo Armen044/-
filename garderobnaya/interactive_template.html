@@ -94,6 +94,8 @@ const COLORS = {
 };
 const EDGES = { carcass: 0x2a2520, plinth: 0x2a2520, front: 0x2a2520, board: 0x2f5d8a,
                 mirror_frame: 0x111111, dbox: 0x8b7f72, rack: 0x1e2022 };
+Object.assign(COLORS, DATA.colors || {});
+Object.assign(EDGES, DATA.edges || {});
 const LED_ON = 0xffd36b, LED_OFF = 0x6d655c;
 
 const matCache = {};
