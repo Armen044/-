@@ -143,6 +143,25 @@ class View:
             text(cx, self.Z(zb + 45), "выкатной ящик", size=1.7, fill="#fff")
         self.panel_h(x0, x1, z0 + n * h)
 
+    def shoe_shelves(self, x0, x1, zs=(290, 490, 690), z0=PLINTH + T, top=896):
+        """Полки для обуви: обувь на дне и на каждой полке, бортик 30 мм."""
+        for zb in (z0,) + tuple(z + T for z in zs):
+            n = 2
+            sw = (x1 - x0 - 40) / n
+            for i in range(n):
+                sx = x0 + 20 + i * sw
+                e(f'<path d="M{self.X(sx + 10):.2f},{self.Z(zb):.2f} '
+                  f'L{self.X(sx + 10):.2f},{self.Z(zb + 110):.2f} '
+                  f'L{self.X(sx + sw * 0.45):.2f},{self.Z(zb + 70):.2f} '
+                  f'L{self.X(sx + sw - 10):.2f},{self.Z(zb + 35):.2f} '
+                  f'L{self.X(sx + sw - 10):.2f},{self.Z(zb):.2f} z" '
+                  f'fill="#e3dad0" stroke="#8b7f73" stroke-width="0.15"/>')
+        for z in zs:
+            self.panel_h(x0, x1, z)
+            rect(self.X(x0), self.Z(z + T + 30), (x1 - x0) * S, 30 * S, fill="#b9a690", sw=0.15)
+            text((self.X(x0) + self.X(x1)) / 2, self.Z(z) + 2.2, f"полка для обуви Н={z}", size=1.5, fill="#444")
+        self.panel_h(x0, x1, top)
+
     def carcass(self, panels_x):
         # цоколь
         rect(self.X(0), self.Z(PLINTH), self.w * S, PLINTH * S, fill="url(#hatch)", sw=0.2)
@@ -178,9 +197,10 @@ FLOOR_Y = 212
 SIDE = D - DEPTH        # 1140 – длина боковых секций
 
 LM = 120                # левая: ниша выдвижного зеркала (у входа, напротив доски)
-L1 = 450                # левая: ящики + полки
+L1 = 450                # левая: полки для обуви + полки
 L1E = LM + L1           # граница Л1/Л2 от входа = 570
 L2 = SIDE - L1E         # левая: 2 яруса штанг (к углу)
+SHOE_Z = (290, 490, 690)  # Л1: полки для обуви (низ полки от пола), над ними полка 896
 MIR_D, MIR_T, MIR_H = 480, 50, 1405   # зеркало Lexy 480×50×1405 (глубина × толщина × высота)
 MIR_Z = 450             # низ зеркала от пола
 R1 = 940                # правая: длинная одежда (от угла)
@@ -204,8 +224,8 @@ def elevation_left(ox):
     for z in (MIR_Z + MIR_H + 25, MIR_Z - 25):       # механизм (верх/низ)
         rect(cx - mw / 2 - 0.3, v.Z(z) - 0.8, mw + 0.6, 1.6, fill="#33373b", stroke="none")
     text(cx + 0.7, v.Z(MIR_Z + MIR_H / 2), "ЗЕРКАЛО (торец)", size=1.7, rot=-90, fill="#33373b", weight="bold")
-    # Л1 – ящики + полки
-    v.drawers(LM + T / 2, L1E - T / 2)
+    # Л1 – полки для обуви + полки
+    v.shoe_shelves(LM + T / 2, L1E - T / 2, SHOE_Z)
     for z in (1230, 1550, 1870):
         v.shelf(LM + T / 2, L1E - T / 2, z)
     # Л2 – две штанги, открыто в угол
@@ -409,7 +429,6 @@ def build_plan():
     box(W - DEPTH, DEPTH, DEPTH, SIDE)
     # ящики
     box(B1, 0, B2, DEPTH, fill="url(#drw)")
-    box(0, D - L1E, DEPTH, L1, fill="url(#drw)")
     # перегородки
     for xx in (B1, B1 + B2):
         line(*P(xx, 0), *P(xx, DEPTH), w=0.4)
@@ -543,7 +562,7 @@ def build_notes():
     text(x, y, "СЕКЦИИ", size=3.2, weight="bold", anchor="start")
     secs = [
         ("Зр", "120", "Ниша зеркала Lexy (выдвижное поворотное), напротив доски П2"),
-        ("Л1", "450", "4 выкатных ящика + 3 полки с LED (сложенные вещи)"),
+        ("Л1", "450", "Полки для обуви: дно + 3 полки (Н=290/490/690) с бортиком 30 мм, полка 896 + 3 полки с LED"),
         ("Л2", "570", "2 яруса штанг (короткая одежда), открыта в угол"),
         ("З1", "900", "2 яруса штанг (рубашки, юбки, брюки), угловая зона"),
         ("З2", "600", "4 выкатных ящика + 3 полки с LED (сумки)"),

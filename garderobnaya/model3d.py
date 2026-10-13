@@ -8,7 +8,7 @@ import json
 import os
 
 from generate import (T, H, W, D, DEPTH, PLINTH, ANT, RAIL, RAIL_LOW, B1, B2,
-                      L1, L1E, LM, R1, SIDE, BOARD_L, BOARD_W, BOARD_T,
+                      L1, L1E, LM, SHOE_Z, R1, SIDE, BOARD_L, BOARD_W, BOARD_T,
                       MIR_D, MIR_T, MIR_H, MIR_Z)
 
 boxes = []
@@ -167,9 +167,15 @@ def build(interactive=False):
         box(20, DEPTH, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")   # направляющая
     else:
         box(DEPTH - 40, mx + 20, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")
-    # Л1 – ящики + полки
+    # Л1 – полки для обуви + полки
     y0, y1 = yp + T / 2, ym - T / 2
-    drawers_side(y0, y1, DEPTH, +1)
+    for zb in (PLINTH + T,) + tuple(z + T for z in SHOE_Z):
+        if zb != PLINTH + T:
+            box(0, DEPTH - 20, y0, y1, zb - T, zb, "carcass")
+            box(DEPTH - 36, DEPTH - 20, y0, y1, zb, zb + 30, "carcass")     # бортик
+        for k in range(4):                  # 2 пары обуви на полке
+            y = y0 + 20 + k * 100
+            box(140, 420, y, y + 85, zb, zb + 105 - (k % 2) * 20, "shoe")
     box(0, DEPTH, y0, y1, PLINTH + T + 800, PLINTH + 2 * T + 800, "carcass")
     for z in (1230, 1550, 1870):
         shelf_side(y0, y1, 0, DEPTH - 20, z)
