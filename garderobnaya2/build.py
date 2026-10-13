@@ -16,6 +16,7 @@ with open(os.path.join(SRC, "interactive_template.html"), encoding="utf-8") as f
 with open(os.path.join(SRC, "vendor", "three.min.js"), encoding="utf-8") as f:
     three = f.read()
 html = html.replace("глубина шкафов 600 мм", "глубина шкафов 550 мм · обувница Aiden 800")
+html = html.replace("<title>Гардеробная 3D</title>", "<title>Гардеробная с обувницей</title>")
 html = html.replace("/*__THREE__*/", three).replace("/*__DATA__*/", json.dumps(data, separators=(",", ":")))
 out = os.path.join(HERE, "garderobnaya2_3d.html")
 with open(out, "w", encoding="utf-8") as f:
