@@ -15,3 +15,8 @@ node render.js                 # PNG + PDF
 python3 build_interactive.py   # 3D: автономный HTML и версия для ссылки
 node test_interactive.js       # проверка 3D (скриншоты)
 ```
+
+## Реалистичные виды (Blender / Cycles)
+
+`render/vid_obshchiy.jpg`, `vid_speredi.jpg`, `vid_nisha.jpg`, `vid_otkryto.jpg`.
+Сборка: `pip install bpy==5.2.2`, затем `python3 render_cycles.py 64` (≈4 мин на вид на CPU).
