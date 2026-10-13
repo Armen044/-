@@ -11,7 +11,7 @@ const { chromium } = require('/opt/node-tools/node_modules/playwright');
   await p.goto('file://' + dir + '/garderobnaya_3d.html');
   await p.waitForTimeout(2500);
   await p.screenshot({ path: out + '/i1.png' });
-  await p.click('#bRack'); await p.click('#bRack'); await p.click('#bMirror'); await p.click('#bBoard');
+  await p.click('#bDrawers'); await p.click('#bRack'); await p.click('#bRack'); await p.click('#bMirror'); await p.click('#bBoard');
   await p.waitForTimeout(2500);
   await p.screenshot({ path: out + '/i2.png' });
   await p.click('#bMirror'); await p.click('#bTop');

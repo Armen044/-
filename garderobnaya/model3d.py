@@ -8,7 +8,7 @@ import json
 import os
 
 from generate import (T, H, W, D, DEPTH, PLINTH, ANT, RAIL, RAIL_LOW, B1, B2,
-                      L1, L1E, LM, SHOE_Z, R1, SIDE, BOARD_L, BOARD_W, BOARD_T,
+                      L1, L1E, LM, R1, SIDE, BOARD_L, BOARD_W, BOARD_T,
                       MIR_D, MIR_T, MIR_H, MIR_Z,
                       RACK_W, RACK_D, RACK_H, RACK_Z, RACK_TOP, RACK_SHELF, RACK_Y)
 
@@ -34,6 +34,21 @@ def end_group():
     cur[0] = None
 
 
+def drawer_body(x0, x1, y0, y1, z0, z1, axis):
+    """Корпус ящика (боковины, дно, задняя стенка); axis – ось выдвижения."""
+    t = 12
+    if axis == "y":
+        box(x0, x0 + t, y0, y1, z0, z1, "dbox")
+        box(x1 - t, x1, y0, y1, z0, z1, "dbox")
+        box(x0, x1, y0, y0 + t, z0, z1, "dbox")
+        box(x0, x1, y0, y1, z0, z0 + 8, "dbottom")
+    else:
+        box(x0, x1, y0, y0 + t, z0, z1, "dbox")
+        box(x0, x1, y1 - t, y1, z0, z1, "dbox")
+        box(x0, x0 + t, y0, y1, z0, z1, "dbox")
+        box(x0, x1, y0, y1, z0, z0 + 8, "dbottom")
+
+
 def clothes_x(x0, x1, yc, ztop, length, step=75):
     """Одежда на штанге, идущей вдоль x."""
     n = int((x1 - x0 - 40) / step)
@@ -50,6 +65,21 @@ def clothes_y(y0, y1, xc, ztop, length, step=75):
         y = y0 + 40 + i * step
         ln = length - (i * 97 % 3) * 60
         box(xc - 220, xc + 220, y, y + 28, ztop - ln, ztop - 30, "cloth%d" % (i * 3 % len(CLOTH)))
+
+
+def drawers_side(y0, y1, xf, sign):
+    """Ящики в боковой секции; xf – плоскость фасада, sign – направление в проход."""
+    for i in range(4):
+        zb = PLINTH + T + i * 200
+        group("drw_s%d_%d" % (int(y0), i), type="drawer", dir=[sign, 0], travel=450)
+        xa, xb = sorted((xf, xf - sign * 18))
+        box(xa, xb, y0 + 2, y1 - 2, zb + 2, zb + 198, "front")
+        cy = (y0 + y1) / 2
+        xa, xb = sorted((xf, xf + sign * 12))
+        box(xa, xb, cy - 90, cy + 90, zb + 125, zb + 137, "handle")
+        xa, xb = sorted((xf - sign * 18, xf - sign * 518))
+        drawer_body(xa, xb, y0 + 13, y1 - 13, zb + 25, zb + 165, "x")
+        end_group()
 
 
 def shoe_rack(cx, interactive):
@@ -154,15 +184,9 @@ def build(interactive=False):
         box(20, DEPTH, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")   # направляющая
     else:
         box(DEPTH - 40, mx + 20, yc - 10, yc + 10, MIR_Z + MIR_H + 5, MIR_Z + MIR_H + 25, "mirror_frame")
-    # Л1 – полки для обуви + полки
+    # Л1 – ящики для белья + полки
     y0, y1 = yp + T / 2, ym - T / 2
-    for zb in (PLINTH + T,) + tuple(z + T for z in SHOE_Z):
-        if zb != PLINTH + T:
-            box(0, DEPTH - 20, y0, y1, zb - T, zb, "carcass")
-            box(DEPTH - 36, DEPTH - 20, y0, y1, zb, zb + 30, "carcass")     # бортик
-        for k in range(4):                  # 2 пары обуви на полке
-            y = y0 + 20 + k * 100
-            box(140, 420, y, y + 85, zb, zb + 105 - (k % 2) * 20, "shoe")
+    drawers_side(y0, y1, DEPTH, +1)
     box(0, DEPTH, y0, y1, PLINTH + T + 800, PLINTH + 2 * T + 800, "carcass")
     for z in (1230, 1550, 1870):
         shelf_side(y0, y1, 0, DEPTH - 20, z)

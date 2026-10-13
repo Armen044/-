@@ -51,9 +51,10 @@
     <div class="sub">2400 × 1740 × 2640 мм · глубина шкафов 600 мм</div>
   </div>
   <div class="card hint">Вращайте модель мышью или пальцем, колесо / два пальца — масштаб,
-    правая кнопка или два пальца — сдвиг. Нажмите на обувницу, зеркало или гладильную доску.</div>
+    правая кнопка или два пальца — сдвиг. Нажмите на ящик, обувницу, зеркало или гладильную доску.</div>
 </header>
 <nav>
+  <button id="bDrawers">Ящики</button>
   <button id="bRack">Обувница: выдвинуть</button>
   <button id="bMirror">Зеркало: выдвинуть</button>
   <button id="bBoard">Гладильная доска</button>
@@ -261,7 +262,7 @@ function hit(e) {
   const h = ray.intersectObjects(pickable, false)[0];
   return h ? groups[h.object.userData.gid] : null;
 }
-const NAMES = { rack: 'Обувница поворотно-выдвижная ALPHALUX Aiden', mirror: 'Выдвижное поворотное зеркало', board: 'Гладильная доска' };
+const NAMES = { drawer: 'Ящик для белья', rack: 'Обувница поворотно-выдвижная ALPHALUX Aiden', mirror: 'Выдвижное поворотное зеркало', board: 'Гладильная доска' };
 const tip = document.getElementById('tip');
 function hover(e) {
   if (e.pointerType !== 'mouse' || ptrs.size) { tip.style.display = 'none'; return; }
@@ -284,11 +285,13 @@ function pick(e) {
 
 // ---------------------------------------------------------------- действия
 const rack = Object.values(groups).find(g => g.meta.type === 'rack');
+const drawers = Object.values(groups).filter(g => g.meta.type === 'drawer');
 const mirror = Object.values(groups).find(g => g.meta.type === 'mirror');
 const board = Object.values(groups).find(g => g.meta.type === 'board');
 function setOpen(g, open) { g.slideTo = open ? 1 : 0; }
 function cycle(g) { g.state = (g.state + 1) % 3; }
 function syncButtons() {
+  bDrawers.classList.toggle('on', drawers.some(d => d.slideTo > 0.5));
   bRack.textContent = ['Обувница: выдвинуть', 'Обувница: повернуть', 'Обувница: убрать'][rack.state];
   bRack.classList.toggle('on', rack.state > 0);
   bMirror.textContent = ['Зеркало: выдвинуть', 'Зеркало: повернуть', 'Зеркало: убрать'][mirror.state];
@@ -296,10 +299,12 @@ function syncButtons() {
   bBoard.classList.toggle('on', board.slideTo > 0.5);
 }
 const bRack = document.getElementById('bRack');
+const bDrawers = document.getElementById('bDrawers');
 const bMirror = document.getElementById('bMirror');
 const bBoard = document.getElementById('bBoard');
 const bLed = document.getElementById('bLed');
 bRack.onclick = () => { cycle(rack); syncButtons(); };
+bDrawers.onclick = () => { const open = !drawers.some(d => d.slideTo > 0.5); drawers.forEach(d => setOpen(d, open)); syncButtons(); };
 bMirror.onclick = () => { cycle(mirror); syncButtons(); };
 bBoard.onclick = () => { setOpen(board, board.slideTo < 0.5); syncButtons(); };
 bLed.onclick = () => {
