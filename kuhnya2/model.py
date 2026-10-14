@@ -47,7 +47,7 @@ def build():
     box(PENCIL[1], CORNER_X[0], 0, BD + 20, CB, TOP, "top")
     box(CORNER_X[0], WM, 0, BD, CB, TOP, "top")
     # варочная панель и мойка
-    box(450, 950, 40, 560, TOP, TOP + 6, "hob")
+    box(HOB_X[0] + 50, HOB_X[1] - 50, 40, 560, TOP, TOP + 6, "hob")
     box(2900, 3300, 80, 520, TOP - 2, TOP + 2, "sink")
     box(3310, 3340, 120, 160, TOP, TOP + 260, "tap")
     # ---- верхние шкафы
@@ -62,22 +62,21 @@ def build():
         box(xa, xb, y0, y1, PL, H, "carcass")
         box(xa + 40, xa + 60, y0, y1, 0, PL, "grill")
     box(xa - FT, xb, OVEN_Y[1], OVEN_Y[1] + 18, 0, H, "veneer")   # торец справа – шпон
-    fx(*FRIDGE_Y, *FR_LOW)
-    fx(*FRIDGE_Y, *FR_UP)
-    fx(*FRIDGE_Y, *TOP_DOOR)
-    fx(*OVEN_Y, *OV_DRW)
+    fx(*FRIDGE_Y, *FR_LOW, "veneer")
+    fx(*FRIDGE_Y, *FR_UP, "veneer")
+    fx(*OVEN_Y, *OV_DRW, "veneer")
     box(xa - 30, xa, OVEN_Y[0], OVEN_Y[1], *OV_GOLA, "gola")
     fx(*OVEN_Y, *OVEN, "oven")
     fx(*OVEN_Y, *MW, "mw")
-    fx(*OVEN_Y, *OV_DOOR)
-    fx(*OVEN_Y, *TOP_DOOR)
+    fx(*OVEN_Y, *OV_DOOR, "veneer")
     # угловой верхний на правой стене: планка 50 + шкаф 550
     y0, y1 = CORNER_UP_Y
     box(xa, xb, y0, y1, UB, H, "carcass")
-    box(xa - FT, xa, y0, y0 + 50, UB, H, "filler")
-    fx(y0 + 50, y1, UB, H)
+    box(xa - FT, xa, y0, y0 + 50, UB, H, "veneer")
+    fx(y0 + 50, y1, UB, H, "veneer")
     # ---- планка 130 под натяжной потолок по периметру
     box(PENCIL[0], PENCIL[1], 0, BD + FT, H, HT, "strip")
-    box(PENCIL[1], CORNER_X[0], UD - FT, UD, H, HT, "strip")
-    box(CORNER_X[0] - FT, CORNER_X[0], 0, OVEN_Y[1] + 18, H, HT, "strip")
+    box(PENCIL[1], STRIP_END, UD - FT, UD, H, HT, "strip")
+    box(STRIP_END - FT, STRIP_END, 0, UD - FT, H, HT, "strip")             # загиб к стене
+    box(CORNER_X[0] - FT, CORNER_X[0], 0, OVEN_Y[1] + 18, H, HT, "strip")   # правая стена (над угловым и колоннами)
     return boxes
