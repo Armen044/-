@@ -69,11 +69,11 @@ def build():
     fx(*OVEN_Y, *OVEN, "oven")
     fx(*OVEN_Y, *MW, "mw")
     fx(*OVEN_Y, *OV_DOOR, "veneer")
-    # угловой верхний на правой стене: планка 50 + шкаф 550
+    # угловой верхний на правой стене: планка 20 + шкаф 580
     y0, y1 = CORNER_UP_Y
     box(xa, xb, y0, y1, UB, H, "carcass")
-    box(xa - FT, xa, y0, y0 + 50, UB, H, "veneer")
-    fx(y0 + 50, y1, UB, H, "veneer")
+    box(xa - FT, xa, y0, y0 + CORNER_FILL, UB, H, "veneer")
+    fx(y0 + CORNER_FILL, y1, UB, H, "veneer")
     # ---- планка 130 под натяжной потолок по периметру
     box(PENCIL[0], PENCIL[1], 0, BD + FT, H, HT, "strip")
     box(PENCIL[1], STRIP_END, UD - FT, UD, H, HT, "strip")
