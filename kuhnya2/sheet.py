@@ -40,6 +40,21 @@ def glass_marks(x0, x1, z0, z1, X, Z):
         line(cx - 1, cy + 3, cx + 3, cy - 1, w=0.15, color="#6c8a94")
 
 
+def swing(xa, xb, ya, yb, side):
+    """Обозначение открывания: линии от углов со стороны петель к середине противоположной стороны.
+    Координаты листа: xa < xb, ya – верх, yb – низ; side: 'L', 'R', 'B' (откидная вниз)."""
+    st = dict(w=0.18, color="#9a9a9a", dash="1.4 0.9")
+    if side == "L":
+        line(xa, ya, xb, (ya + yb) / 2, **st)
+        line(xa, yb, xb, (ya + yb) / 2, **st)
+    elif side == "R":
+        line(xb, ya, xa, (ya + yb) / 2, **st)
+        line(xb, yb, xa, (ya + yb) / 2, **st)
+    else:
+        line(xa, yb, (xa + xb) / 2, ya, **st)
+        line(xb, yb, (xa + xb) / 2, ya, **st)
+
+
 # ===========================================================================
 def front_view(ox, fy):
     X = lambda x: ox + x * S                 # noqa: E731
@@ -61,6 +76,15 @@ def front_view(ox, fy):
         zs_ = UP_SHELVES if k == "door" else [DRY_SHELF] if k == "dry" else []
         for zz in zs_:
             line(X(xa + 20), Z(zz), X(xb - 20), Z(zz), w=0.2, color="#8a8a8a", dash="1.2 0.8")
+    # открывание (сторона петель)
+    for z0, z1 in ((PL + GAP, 1298), (1302, H - 4)):
+        swing(X(19), X(399), Z(z1), Z(z0), "L")
+    for (xa, xb, k), left in zip(UPPERS, UP_HINGE_LEFT):
+        swing(X(xa + 1), X(xb - 1), Z(H - 1), Z(UB + 1), "L" if left else "R")
+    sx = [b for b in BASES if b[2] == "sink"][0]
+    swing(X(sx[0] + 1), X(sx[1] - 1), Z(GOLA_TOP[0]), Z(PL + 2), "L" if SINK_HINGE_LEFT else "R")
+    dw = [b for b in BASES if b[2] == "dw"][0]
+    swing(X(dw[0] + 1), X(dw[1] - 1), Z(GOLA_TOP[0]), Z(PL + 2), "B")
     # скрытый внутренний ящик в верхнем ящике 3-го модуля
     rect(X(1640), Z(DR_UP[1] - 40), 520 * S, 150 * S, fill="none", stroke="#c0392b", sw=0.25, dash="1.2 0.7")
     # вытяжка, сушка
@@ -137,6 +161,11 @@ def right_view(ox, fy):
     text(U(sum(FRIDGE_Y) / 2), Z(FR_SHELF) + 3, "полка над холодильником", size=1.5, fill="#4a3220")
     for zz in OV_SHELVES:
         line(U(OVEN_Y[0] + 20), Z(zz), U(OVEN_Y[1] - 20), Z(zz), w=0.2, color="#6b4a2b", dash="1.2 0.8")
+    # открывание: угловой – петли у основной стены, холодильник и духовка – петли со стороны большего y
+    swing(U(CORNER_FILL + 1), U(599), Z(H - 1), Z(UB + 1), "L")
+    for z0, z1 in ((FR_LOW[0], FR_LOW[1]), (FR_UP[0], H - 2)):
+        swing(U(FRIDGE_Y[0] + 1), U(FRIDGE_Y[1] - 1), Z(z1), Z(z0), "R")
+    swing(U(OVEN_Y[0] + 1), U(OVEN_Y[1] - 1), Z(H - 2), Z(OV_DOOR[0]), "R")
     text(U(WR / 2 + 300), Z(HT) - 9, "все фасады правой стены — ШПОН", size=2.2, weight="bold", fill="#7a5530")
     text(U(300), Z(2000), "угловой", size=1.7, fill="#555")
     text(U(300), Z(2000) + 2.8, f"верхний {600 - CORNER_FILL}", size=1.7, fill="#555")
@@ -331,6 +360,10 @@ def notes():
         yy = y + 5 + i * 4.6
         rect(x, yy - 2.6, 9, 3.6, fill=FILL[k], sw=0.25)
         text(x + 12, yy, s, size=2.0, anchor="start")
+    yy = y + 5 + 5 * 4.6
+    rect(x, yy - 2.6, 9, 3.6, fill="#fff", sw=0.25)
+    swing(x, x + 9, yy - 2.6, yy + 1, "L")
+    text(x + 12, yy, "Открывание: вершина треугольника — сторона ручки, основание — петли", size=2.0, anchor="start")
     # штамп
     bx, by, bw, bh = 405, 362, 180, 46
     rect(bx, by, bw, bh, sw=0.5)

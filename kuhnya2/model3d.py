@@ -128,7 +128,9 @@ def sink(x0, x1):
     cyl(3310, 540 - 400, 28, TOP, TOP + 40, "tap")
     cyl(3310, 140, 14, TOP + 40, TOP + 300, "tap")
     box(3200, 3324, 132, 148, TOP + 280, TOP + 300, "tap")
-    group("sinkdoor", set="doors", name="Дверь под мойку", type="hinge", pivot=[x0 + 1, Y1], angle=-100)
+    hx = x0 + 1 if SINK_HINGE_LEFT else x1 - 1
+    group("sinkdoor", set="doors", name="Дверь под мойку", type="hinge", pivot=[hx, Y1],
+          angle=-100 if SINK_HINGE_LEFT else 100)
     box(x0 + 1, x1 - 1, Y1, Y1 + FT, PL + 2, GOLA_TOP[0] - 1, "enamel")
     end()
 
@@ -225,7 +227,7 @@ def fridge_col():
     box(fx0 + 30, fx1 - 60, y0 + 60, y1 - 60, 560, 700, "fridgeIn")
     for i, (z0, z1, nm) in enumerate(((FR_LOW[0], FR_LOW[1], "Холодильник: морозильная камера (фасад шпон)"),
                                       (FR_UP[0] - 2, H - 2, "Холодильник: фасад цельный 1680 (шпон)"))):
-        group(f"fr{i}", set="tech", name=nm, type="hinge", pivot=[XF, y0 + 1], angle=-95)
+        group(f"fr{i}", set="tech", name=nm, type="hinge", pivot=[XF, y1 - 1], angle=95)
         box(XF, XF + FT, y0 + 1, y1 - 1, z0, z1, "oak")
         dz1 = min(z1, FR_SHELF - 20) if i else z1
         box(XF + FT, XF + 60, y0 + 30, y1 - 30, z0 + 20, dz1 - 20, "fridgeIn")    # дверь холодильника
@@ -263,7 +265,7 @@ def oven_col():
     for k in range(3):
         box(XF + 80 + k * 140, XF + 200 + k * 140, y0 + 100, y1 - 100, zb + 16, zb + 40 + k * 10, "dark")
     end()
-    group("ovdoor", set="doors", name="Шкаф над СВЧ (цельный фасад 920, шпон)", type="hinge", pivot=[XF, y0 + 1], angle=-100)
+    group("ovdoor", set="doors", name="Шкаф над СВЧ (цельный фасад 920, шпон)", type="hinge", pivot=[XF, y1 - 1], angle=100)
     box(XF, XF + FT, y0 + 1, y1 - 1, OV_DOOR[0] - 2, H - 2, "oak")
     end()
 
@@ -325,7 +327,7 @@ def build():
         cyl(600 + k * 60, 240, 35, TOP + 90, TOP + 150, "fruit")
     # верхние
     for i, (x0, x1, kind) in enumerate(UPPERS):
-        upper(x0, x1, kind, hinge_left=(i < 2))
+        upper(x0, x1, kind, hinge_left=UP_HINGE_LEFT[i])
     # правая стена
     fridge_col()
     oven_col()
