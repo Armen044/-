@@ -329,6 +329,12 @@
 <text x="357.00" y="165.50" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#555">ящик выкатной</text>
 <line x1="284.00" y1="90.00" x2="311.00" y2="90.00" stroke="#6b4a2b" stroke-width="0.2" stroke-dasharray="1.2 0.8"/>
 <line x1="284.00" y1="73.50" x2="311.00" y2="73.50" stroke="#6b4a2b" stroke-width="0.2" stroke-dasharray="1.2 0.8"/>
+<line x1="313.00" y1="79.50" x2="341.00" y2="79.50" stroke="#6b4a2b" stroke-width="0.2" stroke-dasharray="1.2 0.8"/>
+<line x1="339.00" y1="55.50" x2="339.00" y2="81.00" stroke="#111" stroke-width="0.18"/>
+<line x1="338.10" y1="57.90" x2="339.90" y2="56.10" stroke="#111" stroke-width="0.35"/>
+<line x1="338.10" y1="80.40" x2="339.90" y2="78.60" stroke="#111" stroke-width="0.35"/>
+<text x="338.20" y="68.25" font-size="1.5" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 338.20 68.25)">450</text>
+<text x="327.00" y="82.50" font-size="1.5" text-anchor="middle" font-weight="normal" fill="#4a3220">полка над холодильником</text>
 <line x1="343.00" y1="87.50" x2="371.00" y2="87.50" stroke="#6b4a2b" stroke-width="0.2" stroke-dasharray="1.2 0.8"/>
 <line x1="343.00" y1="72.00" x2="371.00" y2="72.00" stroke="#6b4a2b" stroke-width="0.2" stroke-dasharray="1.2 0.8"/>
 <text x="342.00" y="41.50" font-size="2.2" text-anchor="middle" font-weight="bold" fill="#7a5530">все фасады правой стены — ШПОН</text>
@@ -811,7 +817,7 @@
 <text x="285.00" y="245.60" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Высота низа 920 = цоколь 100 + корпус 780 + столешница 40; столешница 3600 до правой стены</text>
 <text x="285.00" y="250.00" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Фартук 600 — плитка (после кухни); над мойкой верхнего шкафа нет</text>
 <text x="285.00" y="254.40" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Верхний ряд 980: 1-й и 3-й — по 2 полки; 2-й — встроенная вытяжка над варкой; 4-й — сушка + полка</text>
-<text x="285.00" y="258.80" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Правая стена — ФАСАДЫ ШПОН: угловой верхний 580 + планка 20 (2 полки); холодильник: 716 + 1684</text>
+<text x="285.00" y="258.80" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Правая стена — ФАСАДЫ ШПОН: угловой верхний 580 + планка 20 (2 полки); холодильник: 716 + 1684, над ним полка (отсек 450)</text>
 <text x="285.00" y="263.20" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Колонна духовки: ящик выкатной + Gola, духовка 600, СВЧ 380, над СВЧ один фасад 920 (2 полки)</text>
 <text x="285.00" y="267.60" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Планка 130 под натяжной потолок по периметру; над верхними — до сушки и загиб к стене; общая высота 2630</text>
 <text x="285.00" y="272.00" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">Все полки на чертеже — лёгкий пунктир; стеклянные полки витрины — голубой пунктир</text>
