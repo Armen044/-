@@ -3,7 +3,7 @@ const { chromium } = require('/opt/node-tools/node_modules/playwright');
 const fs = require('fs');
 (async () => {
   const dir = __dirname;
-  const sheets = ['kuhnya2'];
+  const sheets = ['kuhnya2', 'kuhnya2_list2'];
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   const p = await b.newPage({ viewport: { width: 2245, height: 1588 }, deviceScaleFactor: 2 });
   for (const s of sheets) {

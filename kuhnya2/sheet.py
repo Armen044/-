@@ -244,7 +244,7 @@ def plan_view(ox, oy):
 
 
 # ===========================================================================
-def iso_view(ox, oy, s=1 / 26):
+def iso_view(ox, oy, s=1 / 26, labels=True):
     """Вид с угла (аксонометрия): смотрим из комнаты на угол между стенами."""
     el = math.radians(28)
     c, si = math.cos(el), math.sin(el)
@@ -306,6 +306,9 @@ def iso_view(ox, oy, s=1 / 26):
         poly([P(x0, y0, z0), P(x0, y1, z0), P(x0, y1, z1), P(x0, y0, z1)], shade(f), sw)  # левый торец (−x)
         poly([P(x0, y0, z1), P(x1, y0, z1), P(x1, y1, z1), P(x0, y1, z1)], light(f), sw)  # верх
     # подписи
+    if not labels:
+        text(*P(WM / 2, -200, HT + 650), "ВИД С УГЛА", size=3.6, weight="bold")
+        return
     leader(*P(0, 300, 1100), 404, 150, "эмаль", anchor="end", size=1.9)
     leader(*P(200, BD + FT, 1900), 404, 128, "стекло в\nалюм. раме", anchor="end", size=1.9)
     leader(*P(3700, WR + 18, 900), 566, 196, "шпон", size=1.9)
@@ -382,6 +385,79 @@ def notes():
     text(bx + 150, by + 42.5, "1 (А2)", size=3.2, weight="bold")
 
 
+VARIANTS = [
+    ("ВАРИАНТ 1", 420000, [("Корпус", "ЛДСП Egger 16 мм"), ("Фурнитура", "Firmax (ящики Smartline, петли с доводчиком)"),
+                           ("Фасады", "МДФ эмаль (белая матовая) и шпон дуба"), ("Столешница", "не входит")]),
+    ("ВАРИАНТ 2", 380000, [("Корпус", "ЛДСП Kronospan 16 мм"), ("Фурнитура", "Firmax (ящики Smartline, петли с доводчиком)"),
+                           ("Фасады", "МДФ эмаль (белая матовая) и шпон дуба"), ("Столешница", "не входит")]),
+    ("ВАРИАНТ 3", 590000, [("Корпус", "ЛДСП Egger 16 мм"), ("Фурнитура", "Blum (ящики, петли с доводчиком)"),
+                           ("Фасады", "МДФ эмаль (белая матовая) и шпон дуба"), ("Столешница", "не входит")]),
+]
+
+
+def rub(v):
+    return f"{v:,}".replace(",", " ") + " ₽"
+
+
+def price_sheet():
+    text(297, 32, "СТОИМОСТЬ КУХНИ — 3 ВАРИАНТА", size=7, weight="bold")
+    text(297, 41, f"Кухня угловая {WM} × {WR} × {HT} мм · проект, детализация и 3D — по листу 1", size=3.2, fill="#444")
+    cw, ch, gap = 168, 150, 12
+    x0 = (594 - 3 * cw - 2 * gap) / 2
+    y0 = 56
+    for i, (title, price, rows) in enumerate(VARIANTS):
+        x = x0 + i * (cw + gap)
+        rect(x, y0, cw, ch, fill="#fbfaf8", stroke="#222", sw=0.5)
+        rect(x, y0, cw, 16, fill="#222", stroke="#222", sw=0.5)
+        text(x + cw / 2, y0 + 10.8, title, size=5.2, weight="bold", fill="#fff")
+        yy = y0 + 30
+        for k, v in rows:
+            text(x + 8, yy, k, size=3.2, anchor="start", fill="#777")
+            text(x + 8, yy + 6, v, size=3.6, anchor="start", weight="bold" if k in ("Корпус", "Фурнитура") else "normal")
+            line(x + 8, yy + 10, x + cw - 8, yy + 10, w=0.2, color="#ddd")
+            yy += 20
+        text(x + cw / 2, y0 + ch - 24, "Стоимость", size=3.4, fill="#777")
+        text(x + cw / 2, y0 + ch - 10, rub(price), size=11, weight="bold")
+    # что входит
+    y = y0 + ch + 18
+    text(x0, y, "В СТОИМОСТЬ ВХОДИТ", size=4.2, weight="bold", anchor="start")
+    inc = ["изготовление корпусов, фасадов и наполнения по проекту (лист 1, деталировка)",
+           "фурнитура по выбранному варианту: петли с доводчиком, ящики, профиль Gola, сушка, полкодержатели, крепёж",
+           "пенал-витрина: двери — стекло в алюминиевой раме, стеклянные полки",
+           "планка 130 под натяжной потолок, цоколь с вентиляционными решётками",
+           "доставка и монтаж"]
+    for k, t in enumerate(inc):
+        text(x0, y + 8 + k * 6.5, "•  " + t, size=3.3, anchor="start")
+    xr = 330
+    text(xr, y, "НЕ ВХОДИТ", size=4.2, weight="bold", anchor="start")
+    exc = ["столешница (3600 × 600 × 40, по выбору заказчика)",
+           "бытовая техника: варочная панель, вытяжка, духовка, СВЧ, холодильник, ПММ",
+           "мойка и смеситель",
+           "фартук (плитка), натяжной потолок, электрика и сантехника"]
+    for k, t in enumerate(exc):
+        text(xr, y + 8 + k * 6.5, "•  " + t, size=3.3, anchor="start")
+    text(x0, y + 50, "Разница вариантов: 1 и 2 — ЛДСП Egger / Kronospan при одинаковой фурнитуре Firmax; "
+         "3 — ЛДСП Egger и фурнитура Blum.", size=3.1, anchor="start", fill="#444")
+    text(x0, y + 57, "Цены действительны на дату расчёта; окончательная стоимость — после замера и согласования проекта.",
+         size=3.1, anchor="start", fill="#444")
+    # вид с угла
+    iso_view(40, 395, s=1 / 34, labels=False)
+    # штамп
+    bx, by, bw, bh = 405, 362, 180, 46
+    rect(bx, by, bw, bh, sw=0.5)
+    line(bx, by + 14, bx + bw, by + 14, w=0.3)
+    line(bx, by + 30, bx + bw, by + 30, w=0.3)
+    line(bx + 120, by + 14, bx + 120, by + bh, w=0.3)
+    text(bx + bw / 2, by + 6.5, "КУХНЯ УГЛОВАЯ", size=4.2, weight="bold")
+    text(bx + bw / 2, by + 11.5, "Стоимость — 3 варианта комплектации", size=2.4)
+    text(bx + 3, by + 20, f"Габариты {WM} × {WR} × {HT} мм", size=2.4, anchor="start")
+    text(bx + 3, by + 26, "Фасады: МДФ эмаль + шпон дуба", size=2.4, anchor="start")
+    text(bx + 3, by + 36, "Цены в рублях, без столешницы", size=2.4, anchor="start")
+    text(bx + 3, by + 42, "Доставка и монтаж включены", size=2.4, anchor="start")
+    text(bx + 150, by + 20.5, "Лист", size=2.3)
+    text(bx + 150, by + 28, "2 (А2)", size=3.6, weight="bold")
+
+
 def main():
     g.out.clear()
     e('<svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" '
@@ -399,6 +475,20 @@ def main():
     notes()
     e('</svg>')
     with open(os.path.join(HERE, "kuhnya2.svg"), "w", encoding="utf-8") as f:
+        f.write("\n".join(g.out))
+    # лист 2 – стоимость
+    g.out.clear()
+    e('<svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" '
+      f'font-family="{g.FONT}">')
+    g.defs()
+    e('<defs><pattern id="tile" width="5" height="5" patternUnits="userSpaceOnUse">'
+      '<rect width="5" height="5" fill="#f1f3f4"/><path d="M0,0 H5 M0,0 V5" stroke="#d3d8db" stroke-width="0.2"/>'
+      '</pattern></defs>')
+    rect(0, 0, 594, 420, fill="#fff", stroke="none")
+    rect(10, 5, 579, 410, sw=0.6)
+    price_sheet()
+    e('</svg>')
+    with open(os.path.join(HERE, "kuhnya2_list2.svg"), "w", encoding="utf-8") as f:
         f.write("\n".join(g.out))
 
 
