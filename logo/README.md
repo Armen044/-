@@ -11,3 +11,10 @@
 Шрифты (OFL): Cormorant Garamond Medium, Montserrat SemiBold — `fonts/`.
 
 Пересборка: `python3 export_logo.py && node render.js`.
+
+## Выбранный цветной вариант: 9 «Молочный и латунь»
+
+`export/molochnyy-latun/` — квадратный и горизонтальный: `.svg` и `.pdf` (вектор, текст в кривых),
+`.png` 3000 px на прозрачном фоне, `-na-fone.png` на фоне #E9E4DC.
+Цвета: шкаф #F4F0E8, обводка #8C7B66, линии дверей #B9AD9C, ручки #B8925A, текст #5E5244.
+Пересборка: `python3 export_color.py && node render_dir.js export/molochnyy-latun "#E9E4DC"`.
