@@ -60,7 +60,7 @@ POSTS.append(("01-znakomstvo", f'''<div class="post" style="background:{FILL};al
 <div class="cap" style="font-size:30px;letter-spacing:.6em;margin:22px 0 0 .6em">Мебель</div>
 <div style="width:120px;height:2px;background:{BRASS};margin:64px 0 54px"></div>
 <div class="disp" style="font-size:58px;text-align:center">Мебель на заказ под ключ<br>для квартир и домов</div>
-<div style="font-size:28px;margin-top:40px;letter-spacing:.08em">Краснодар и край · Москва · Ростов</div>
+<div style="font-size:28px;margin-top:40px;letter-spacing:.08em">Замер · 3D-проект · производство · монтаж</div>
 </div>'''))
 
 # 2. Рендер: общий вид
@@ -100,7 +100,7 @@ POSTS.append(("05-nisha-podsvetka", photo_post(f"{RENDER}/vid_nisha.jpg", "3D-п
 # 6. Бесплатный замер
 POSTS.append(("06-besplatnyy-zamer", f'''<div class="post" style="background:{DARK};color:{FILL};align-items:center;justify-content:center;text-align:center">
 <svg viewBox="0 0 100 100" width="210" height="210">{ICONS["zamer"][1].replace(TEXT, FILL)}</svg>
-<div class="cap" style="color:{BRASS};margin-top:56px">Краснодар и край · Москва · Ростов</div>
+<div class="cap" style="color:{BRASS};margin-top:56px">Запишитесь на замер</div>
 <div class="disp" style="font-size:130px;margin-top:30px">Бесплатный<br>замер</div>
 <div style="font-size:32px;line-height:1.45;margin-top:40px;opacity:.9">Приедем, обмерим помещение<br>и обсудим будущую мебель</div>
 <div style="margin-top:70px;border:2px solid {BRASS};border-radius:60px;padding:24px 56px;font-weight:600;font-size:44px;letter-spacing:.06em">{PHONE}</div>
@@ -110,18 +110,21 @@ POSTS.append(("06-besplatnyy-zamer", f'''<div class="post" style="background:{DA
 # 7. Рендер: открытые шкафы
 POSTS.append(("07-detskaya-napolnenie", photo_post(f"{RENDER}/vid_otkryto.jpg", "3D-проект · наполнение", "center 45%")))
 
-# 8. География
-cities = [("Краснодар и край", "производство, замер, монтаж"), ("Ростов-на-Дону", "замер, доставка и монтаж"),
-          ("Москва", "доставка и монтаж")]
-pins = "".join(f'<div style="display:flex;gap:32px;align-items:center;padding:56px 0;border-top:1px solid rgba(94,82,68,.25)">'
-               f'<svg viewBox="0 0 40 52" width="58"><path fill="{BRASS}" d="M20,0 C9,0 0,9 0,20 C0,35 20,52 20,52 C20,52 40,35 40,20 C40,9 31,0 20,0 Z"/>'
-               f'<circle cx="20" cy="20" r="7" fill="{FILL}"/></svg>'
-               f'<div><div class="disp" style="font-size:78px">{c}</div><div style="font-size:30px;margin-top:8px;opacity:.85">{d}</div></div></div>'
-               for c, d in cities)
-POSTS.append(("08-geografiya", f'''<div class="post" style="padding:96px 80px 0">
-<div class="cap brass">Где мы работаем</div>
-<div class="disp" style="font-size:86px;margin:22px 0 56px">Производство<br>в Краснодаре</div>
-{pins}
+# 8. Почему мы
+why = [("Собственное производство", "контролируем качество и сроки сами"),
+       ("Бесплатный замер", "приезжаем, обмеряем, советуем"),
+       ("3D-проект", "видите мебель до изготовления"),
+       ("Всё в одном стиле", "мебель для всей квартиры или дома"),
+       ("Гарантия", "отвечаем за мебель и монтаж")]
+wrows = "".join(f'<div style="display:flex;gap:30px;align-items:center;padding:30px 0;border-top:1px solid rgba(94,82,68,.25)">'
+                f'<svg viewBox="0 0 40 40" width="52"><circle cx="20" cy="20" r="19" fill="{BRASS}"/>'
+                f'<path d="M11,20.5 L17.5,27 L29,14" fill="none" stroke="{FILL}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+                f'<div><div style="font-weight:600;font-size:36px">{t}</div><div style="font-size:27px;margin-top:4px;opacity:.85">{d}</div></div></div>'
+                for t, d in why)
+POSTS.append(("08-pochemu-my", f'''<div class="post" style="padding:96px 80px 0">
+<div class="cap brass">Почему выбирают нас</div>
+<div class="disp" style="font-size:86px;margin:22px 0 44px">Мебель, которая<br>служит годами</div>
+{wrows}
 {foot()}</div>'''))
 
 # 9. Рендер: вид спереди (горизонтальный кадр -> по центру, сверху и снизу поля)
