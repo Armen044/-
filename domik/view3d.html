@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Каркас домика 3D</title>
+<style>
+html,body{margin:0;height:100%;background:#f4f3f0;font-family:DejaVu Sans,Arial,sans-serif;overflow:hidden}
+canvas{display:block;touch-action:none}
+#ui{position:fixed;left:12px;top:12px;background:#fffd;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;box-shadow:0 1px 4px #0002}
+#ui b{font-size:14px}.sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+#ui label{display:block;cursor:pointer}
+body.static #ui{display:none}
+</style>
+<script src="vendor/three.min.js"></script>
+<script src="model.js"></script>
+</head>
+<body>
+<div id="ui"><b>Каркас: труба 80×80</b><br>
+<label><input type="checkbox" data-k="верхняя обвязка" checked> <span class="sw" style="background:#7d8590"></span>верхняя обвязка</label>
+<label><input type="checkbox" data-k="нижняя обвязка" checked> <span class="sw" style="background:#4f565e"></span>нижняя обвязка</label>
+<label><input type="checkbox" data-k="стойка" checked> <span class="sw" style="background:#2f6f9f"></span>стойки (шаг ≤ 2000)</label>
+<label><input type="checkbox" data-k="перемычка" checked> <span class="sw" style="background:#d9822b"></span>перемычки над проёмами</label>
+<label><input type="checkbox" data-k="подоконный ригель" checked> <span class="sw" style="background:#3fa36b"></span>подоконные ригели</label>
+<span style="color:#777">мышь/палец — вращать, колесо/щипок — масштаб</span></div>
+<script>
+const P = new URLSearchParams(location.search);
+const view = P.get('view');            // sw | ne | top — статичный кадр для чертежа
+if (view) document.body.classList.add('static');
+const W = view ? 2000 : innerWidth, H = view ? 1400 : innerHeight;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(view ? 1 : devicePixelRatio);
+renderer.setSize(W, H);
+renderer.setClearColor(view ? 0xffffff : 0xf4f3f0);
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const COL = { 'верхняя обвязка': 0x7d8590, 'нижняя обвязка': 0x4f565e, 'стойка': 0x2f6f9f,
+              'перемычка': 0xd9822b, 'подоконный ригель': 0x3fa36b };
+const groups = {};
+const C = { x: 4700, y: 2450 };        // центр плана
+for (const [x0, x1, y0, y1, z0, z1, kind] of MODEL) {
+  const g = new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0);
+  const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: COL[kind], metalness: 0.35, roughness: 0.55 }));
+  m.position.set((x0 + x1) / 2 - C.x, (z0 + z1) / 2, -((y0 + y1) / 2 - C.y));
+  m.castShadow = m.receiveShadow = true;
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(g), new THREE.LineBasicMaterial({ color: 0x1d2228 }));
+  m.add(e);
+  (groups[kind] ??= new THREE.Group()).add(m);
+}
+Object.values(groups).forEach(g => scene.add(g));
+document.querySelectorAll('[data-k]').forEach(cb => cb.onchange = () => { groups[cb.dataset.k].visible = cb.checked; });
+
+// фундаментная плита-подложка (контур дома)
+const floorShape = new THREE.Shape([[0, 0], [5400, 0], [5400, -1400], [9400, -1400], [9400, 6300], [0, 6300]]
+  .map(([x, y]) => new THREE.Vector2(x - C.x, y - C.y)));
+const floor = new THREE.Mesh(new THREE.ShapeGeometry(floorShape), new THREE.MeshStandardMaterial({ color: 0xd8d2c6, side: THREE.DoubleSide }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = -2; floor.receiveShadow = true;
+scene.add(floor);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(60000, 60000), new THREE.ShadowMaterial({ opacity: 0.12 }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -4; ground.receiveShadow = true; scene.add(ground);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8478, 0.9));
+const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+sun.position.set(-6000, 12000, 8000); sun.castShadow = true;
+Object.assign(sun.shadow.camera, { left: -9000, right: 9000, top: 9000, bottom: -9000, near: 100, far: 40000 });
+sun.shadow.mapSize.set(2048, 2048); scene.add(sun);
+
+const cam = new THREE.PerspectiveCamera(32, W / H, 50, 100000);
+let az = -2.35, el = 0.55, dist = 19000;   // по умолчанию — с юго-запада
+if (view === 'ne') az = 0.75;
+if (view === 'top') { el = 1.45; az = -1.5708; dist = 17500; }
+const target = new THREE.Vector3(0, 1100, 0);
+function place() {
+  cam.position.set(target.x + dist * Math.cos(el) * Math.cos(az), target.y + dist * Math.sin(el), target.z - dist * Math.cos(el) * Math.sin(az));
+  cam.lookAt(target);
+}
+place();
+
+// вращение мышью/пальцем, масштаб колесом/щипком
+let drag = null, pinch = null;
+const el0 = renderer.domElement;
+el0.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; el0.setPointerCapture(e.pointerId); });
+el0.addEventListener('pointermove', e => {
+  if (!drag || pinch) return;
+  az -= (e.clientX - drag.x) * 0.006; el = Math.min(1.5, Math.max(0.05, el + (e.clientY - drag.y) * 0.005));
+  drag = { x: e.clientX, y: e.clientY }; place(); draw();
+});
+el0.addEventListener('pointerup', () => drag = null);
+el0.addEventListener('wheel', e => { e.preventDefault(); dist = Math.min(60000, Math.max(4000, dist * (1 + e.deltaY * 0.001))); place(); draw(); }, { passive: false });
+el0.addEventListener('touchmove', e => {
+  if (e.touches.length !== 2) { pinch = null; return; }
+  const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  if (pinch) { dist = Math.min(60000, Math.max(4000, dist * pinch / d)); place(); draw(); }
+  pinch = d;
+}, { passive: true });
+el0.addEventListener('touchend', () => pinch = null);
+addEventListener('resize', () => {
+  if (view) return;
+  renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); draw();
+});
+function draw() { renderer.render(scene, cam); }
+draw();
+window.DONE = true;
+</script>
+</body>
+</html>
