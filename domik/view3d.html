@@ -19,6 +19,7 @@ body.static #ui{display:none}
 <div id="ui"><b>Каркас: труба 80×80</b><br>
 <label><input type="checkbox" data-k="верхняя обвязка" checked> <span class="sw" style="background:#7d8590"></span>верхняя обвязка</label>
 <label><input type="checkbox" data-k="нижняя обвязка" checked> <span class="sw" style="background:#4f565e"></span>нижняя обвязка</label>
+<label><input type="checkbox" data-k="обвязка под перегородку" checked> <span class="sw" style="background:#9a6b3a"></span>обвязка под перегородки</label>
 <label><input type="checkbox" data-k="стойка" checked> <span class="sw" style="background:#2f6f9f"></span>стойки (шаг ≤ 2000)</label>
 <label><input type="checkbox" data-k="перемычка" checked> <span class="sw" style="background:#d9822b"></span>перемычки над проёмами</label>
 <label><input type="checkbox" data-k="подоконный ригель" checked> <span class="sw" style="background:#3fa36b"></span>подоконные ригели</label>
@@ -37,7 +38,7 @@ document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 const COL = { 'верхняя обвязка': 0x7d8590, 'нижняя обвязка': 0x4f565e, 'стойка': 0x2f6f9f,
-              'перемычка': 0xd9822b, 'подоконный ригель': 0x3fa36b };
+              'перемычка': 0xd9822b, 'обвязка под перегородку': 0x9a6b3a, 'подоконный ригель': 0x3fa36b };
 const groups = {};
 const C = { x: 4700, y: 2450 };        // центр плана
 for (const [x0, x1, y0, y1, z0, z1, kind] of MODEL) {
@@ -55,8 +56,8 @@ document.querySelectorAll('[data-k]').forEach(cb => cb.onchange = () => { groups
 // фундаментная плита-подложка (контур дома)
 const floorShape = new THREE.Shape([[0, 0], [5400, 0], [5400, -1400], [9400, -1400], [9400, 6300], [0, 6300]]
   .map(([x, y]) => new THREE.Vector2(x - C.x, y - C.y)));
-const floor = new THREE.Mesh(new THREE.ShapeGeometry(floorShape), new THREE.MeshStandardMaterial({ color: 0xd8d2c6, side: THREE.DoubleSide }));
-floor.rotation.x = -Math.PI / 2; floor.position.y = -2; floor.receiveShadow = true;
+const floor = new THREE.Mesh(new THREE.ShapeGeometry(floorShape), new THREE.MeshStandardMaterial({ color: 0xbcd4e6, side: THREE.DoubleSide, transparent: true, opacity: 0.18, depthWrite: false }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = 81;
 scene.add(floor);
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(60000, 60000), new THREE.ShadowMaterial({ opacity: 0.12 }));
 ground.rotation.x = -Math.PI / 2; ground.position.y = -4; ground.receiveShadow = true; scene.add(ground);
