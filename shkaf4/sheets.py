@@ -10,9 +10,36 @@ import generate as g                                       # noqa: E402
 from generate import e, text, line, rect, dim_h, dim_v, leader, LED   # noqa: E402
 from geom import *                                          # noqa: E402,F403
 
-S = 1 / 12
-FY = 262
-OX = 30
+S = 1 / 10
+FY = 318
+OX = 40
+F = 1.7                     # увеличение шрифта
+
+_text = g.text
+
+
+def text(x, y, s, size=2.6, **kw):
+    _text(x, y, s, size=size * F, **kw)
+
+
+def leader(x1, y1, x2, y2, label, anchor="start", size=2.3):
+    line(x1, y1, x2, y2, w=0.18)
+    e(f'<circle cx="{x1:.2f}" cy="{y1:.2f}" r="0.5" fill="#111"/>')
+    dx = 0.8 if anchor == "start" else -0.8
+    for i, t in enumerate(label.split("\n")):
+        text(x2 + dx, y2 + 1.2 + i * (size * F + 0.8), t, size=size, anchor=anchor)
+
+
+g.text = text
+_dh, _dv = dim_h, dim_v
+
+
+def dim_h(*a, size=2.4, **kw):
+    _dh(*a, size=max(size, 1.6), **kw)
+
+
+def dim_v(*a, size=2.4, **kw):
+    _dv(*a, size=max(size, 1.6), **kw)
 BODY, BODY_D, FACE, THK = "#efe7dc", "#e2d6c6", "#f3f1ee", "#ddd3c4"
 
 
@@ -58,7 +85,7 @@ def stamp(title, sub, sheet, extra):
     for k, s in enumerate(extra):
         text(bx + 3, by + 20 + k * 6 + (4 if k > 1 else 0), s, size=2.4, anchor="start")
     text(bx + 150, by + 20.5, "Масштаб", size=2.3)
-    text(bx + 150, by + 26.5, "1:12", size=3.6, weight="bold")
+    text(bx + 150, by + 26.5, "1:10", size=3.6, weight="bold")
     text(bx + 150, by + 36.5, "Лист", size=2.3)
     text(bx + 150, by + 42.5, sheet, size=3.2, weight="bold")
 
@@ -188,10 +215,10 @@ def sheet1():
     for xm, s in ((X_M2, "МОДУЛЬ 2 — ящики + полки"), (X_M1, "МОДУЛЬ 1 — 2 штанги")):
         text(X(xm + MOD / 2), Z(LEGS + H_LOW + H_ANT - 120), "АНТРЕСОЛЬ 1100 × 630", size=2.0, weight="bold", fill="#555")
         text(X(xm + MOD / 2), Z(LEGS + H_LOW - 150), s, size=2.2, weight="bold")
-    section(372, FY)
-    groove_detail(460, 70)
-    notes1(445, 190)
-    stamp("ШКАФ С АНТРЕСОЛЬЮ И ТУМБОЙ", "Общий вид без фасадов, разрез, паз подсветки", "1 (А2)",
+    section(452, FY)
+    groove_detail(55, 60)
+    notes1(40, 350)
+    stamp("ШКАФ С АНТРЕСОЛЬЮ И ТУМБОЙ", "Общий вид, разрез, паз подсветки", "1 (А2)",
           [f"Габариты {W_ALL} × {DEPTH} × {H_ALL}", "Корпус ЛДСП 16, задняя ЛДСП 16", "Размеры в мм",
            "Ножки 80, отступ 50 от лица"])
     save("sheet1.svg")
@@ -281,128 +308,99 @@ def notes1(x, y):
         "7. Глубина: корпус 560 + задняя ЛДСП 16 + фасад 20 = 596. Левая боковина 580 — до лица фасадов.",
     ]
     for k, s in enumerate(rows):
-        text(x, y + 6 + k * 4.4, s, size=2.0, anchor="start")
+        text(x, y + 7 + k * 5.1, s, size=2.0, anchor="start")
 
 
 # ===========================================================================
-def swing(xa, xb, ya, yb, side):
-    st = dict(w=0.18, color="#9a9a9a", dash="1.4 0.9")
-    if side == "L":
-        line(xa, ya, xb, (ya + yb) / 2, **st)
-        line(xa, yb, xb, (ya + yb) / 2, **st)
-    elif side == "R":
-        line(xb, ya, xa, (ya + yb) / 2, **st)
-        line(xb, yb, xa, (ya + yb) / 2, **st)
-    else:                                   # крышка вверх: петли сзади (сверху на виде)
-        line(xa, yb, (xa + xb) / 2, ya, **st)
-        line(xb, yb, (xa + xb) / 2, ya, **st)
+# Лист 2: модули как в эскизе заказчика – рисунок модуля, рядом список деталей.
+# Подчёркивание размера = кромка: одна черта – по одной стороне этого размера, две – по двум.
+MODULES = [
+    ("МОДУЛЬ 1 — нижний правый, 2 штанги", (1100, 1930, 560), "rails", [
+        ((1914, 1), (560, 0), 2, "паз"), ((1100, 1), (560, 2), 1, ""), ((1068, 1), (560, 0), 2, ""),
+        ((1930, 0), (1100, 0), 1, "задняя стенка")]),
+    ("МОДУЛЬ 2 — нижний левый, ящики + полки", (1100, 1930, 560), "drawers", [
+        ((1914, 1), (560, 0), 1, "паз"), ((1914, 1), (580, 2), 1, "паз"), ((1100, 1), (560, 2), 1, ""),
+        ((1068, 1), (560, 0), 3, ""), ((1068, 1), (490, 0), 1, ""),
+        ((800, 1), (480, 0), 2, "утолщение под ящики"), ((800, 1), (80, 0), 4, "утолщение под ящики"),
+        ((440, 1), (130, 2), 8, ""), ((994, 2), (101, 0), 8, ""), ((994, 2), (440, 0), 4, ""),
+        ((998, 2), (165, 2), 4, ""), ((1930, 0), (1084, 0), 1, "задняя стенка")]),
+    ("АНТРЕСОЛИ — 2 модуля", (1100, 630, 560), "ant", [
+        ((630, 1), (560, 2), 3, "паз"), ((1068, 1), (560, 0), 4, ""), ((630, 2), (580, 2), 1, "паз"),
+        ((1100, 0), (630, 0), 1, "задняя стенка"), ((1084, 0), (630, 0), 1, "задняя стенка")]),
+    ("ТУМБА — крышка открывается вверх", (1568, 420, 580), "tumba", [
+        ((1568, 1), (404, 2), 2, ""), ((548, 1), (404, 0), 2, ""), ((1568, 2), (580, 2), 1, "дно")]),
+]
+
+
+def module_sketch(x, y, W, H, D, kind, sc):
+    """Косоугольная проекция: фронт W × H, глубина под 45° с коэфф. 0,5. (x, y) – левый нижний угол фронта."""
+    dx, dy = D * sc * 0.5 * 0.7, -D * sc * 0.5 * 0.7
+    w, h = W * sc, H * sc
+    st = 'fill="none" stroke="#1d2a6b" stroke-width="0.45" stroke-linejoin="round"'
+    e(f'<path d="M{x},{y} h{w} v{-h} h{-w} z M{x},{y - h} l{dx},{dy} h{w} l{-dx},{-dy} '
+      f'M{x + w},{y} l{dx},{dy} v{-h}" {st}/>')
+    if kind == "rails":
+        for zz in (H - 330,):
+            line(x, y - zz * sc, x + w, y - zz * sc, w=0.4, color="#1d2a6b")
+        for zz in (1538, 800):
+            yy = y - zz * sc
+            line(x + 3, yy, x + w - 3, yy, w=0.4, color="#1d2a6b")
+            for xx in (x + 3, x + w - 3):
+                e(f'<circle cx="{xx:.2f}" cy="{yy:.2f}" r="1.0" fill="#fff" stroke="#1d2a6b" stroke-width="0.4"/>')
+    elif kind == "drawers":
+        for zz in (816, 1207, 1598):
+            line(x, y - zz * sc, x + w, y - zz * sc, w=0.4, color="#1d2a6b")
+        for a, b in DR_FRONTS:
+            rect(x + 3.5, y - b * sc, w - 7, (b - a) * sc, stroke="#1d2a6b", sw=0.35)
+        rect(x + 1.2, y - 816 * sc, 2.3, 800 * sc, stroke="#1d2a6b", sw=0.3)
+        rect(x + w - 3.5, y - 816 * sc, 2.3, 800 * sc, stroke="#1d2a6b", sw=0.3)
+    elif kind == "tumba":
+        for k in range(3):
+            xx = x + 10 + k * (w - 20) / 2
+            line(xx, y, xx, y + 4, w=0.5, color="#1d2a6b")
+    # размеры
+    dim_h(x, x + w, y + 6, str(W), ext_from=y + 0.5, size=2.4)
+    dim_v(y - h + dy, y + dy, x + w + dx + 6, str(H), ext_from=x + w + dx, size=2.4)
+    text(x + w + dx * 0.5 + 2.5, y + dy * 0.5 + 2, str(D), size=2.4, anchor="start", rot=-45)
+
+
+def part_line(x, y, a, b, qty, note, fs=3.6):
+    """Строка «1914 × 560 — 2 шт — паз» с подчёркиванием (кромка)."""
+    cw = 0.62 * fs * F                     # ширина цифры (DejaVu Sans)
+    def num(xx, v, n):
+        sv = str(v)
+        text(xx, y, sv, size=fs, anchor="start", fill="#1d2a6b")
+        wv = len(sv) * cw
+        for k in range(n):
+            line(xx, y + 1.3 + k * 1.1, xx + wv, y + 1.3 + k * 1.1, w=0.35, color="#1d2a6b")
+        return xx + wv
+    xx = num(x, *a)
+    text(xx + 1.8, y, "×", size=fs, anchor="start", fill="#1d2a6b")
+    xx = num(xx + 2.4 + cw * 1.2, *b)
+    tail = f" — {qty} шт" + (f" — {note}" if note else "")
+    text(xx + 1, y, tail, size=fs, anchor="start", fill="#1d2a6b")
 
 
 def sheet2():
     frame()
-    text(OX + W_ALL * S / 2, 22, "ФАСАДЫ — РАЗМЕРЫ, ЗАЗОРЫ 3 мм, ПЕТЛИ", size=3.8, weight="bold")
-    text(OX + W_ALL * S / 2, 27, "пунктиром за фасадами — полки и ящики (петли не попадают на полки)", size=2.0, fill="#555")
-    line(X(0) - 4, Z(0), X(W_ALL) + 4, Z(0), w=0.5)
-    r(0, FILL, 0, LEGS + TUMBA_H + FAC, fill=THK)
-    r(W_ALL - FILL, W_ALL, 0, H_ALL, fill=THK)
-    # тумба: фальш-фасад и крышка
-    t0 = X_TUMBA
-    legs(t0, t0 + TUMBA_W, 3)
-    r(t0 + GAP, t0 + TUMBA_W - GAP, LEGS, LEGS + FALSE_FRONT[1], fill=FACE, sw=0.3)
-    r(t0 + GAP, t0 + TUMBA_W - GAP, LEGS + TUMBA_H, LEGS + TUMBA_H + FAC, fill="#e9e4dc", sw=0.3)
-    text(X(t0 + TUMBA_W / 2), Z(LEGS + 230), f"ФАЛЬШ-ФАСАД {FALSE_FRONT[0]} × {FALSE_FRONT[1]}", size=2.2, weight="bold")
-    text(X(t0 + TUMBA_W / 2), Z(LEGS + 230) + 3.5, f"над ним зазор 3, крышка-фасад {LID[0]} × {LID[1]}", size=1.9)
-    text(X(t0 + TUMBA_W / 2), Z(LEGS + 230) + 6.5, "открывание вверх: 3 петли сзади + 2 газлифта", size=1.9)
-    # фасады шкафа
-    for i, (dx, w) in enumerate(zip(DOOR_X, DOOR_W)):
-        x0 = X_WARD + dx
-        side = "L" if i % 2 == 0 else "R"
-        for zb, h, hinges in ((LEGS, DOOR_LOW_H, HINGE_LOW), (LEGS + H_LOW + 1, DOOR_ANT_H, HINGE_ANT)):
-            r(x0, x0 + w, zb, zb + h, fill=FACE, sw=0.3)
-            swing(X(x0), X(x0 + w), Z(zb + h), Z(zb), side)
-            hx = x0 + 22 if side == "L" else x0 + w - 22
-            for hz in hinges:
-                e(f'<circle cx="{X(hx):.2f}" cy="{Z(zb + hz):.2f}" r="{17.5 * S:.2f}" fill="#fff" stroke="#c0392b" stroke-width="0.25"/>')
-            # размеры петель от низа фасада – на 1-м фасаде каждого ряда и на 3-м
-            if i in (0, 3):
-                xd = X(x0 + (w + 40 if side == "R" else -40)) + (2 if side == "R" else -2)
-                pts = [0] + hinges + [h]
-                for a, b in zip(pts, pts[1:]):
-                    dim_v(Z(zb + b), Z(zb + a), xd, str(b - a), size=1.4)
-        text(X(x0 + w / 2), Z(LEGS + 1000), f"{w} × {DOOR_LOW_H}", size=2.0, weight="bold")
-        text(X(x0 + w / 2), Z(LEGS + H_LOW + 330), f"{w} × {DOOR_ANT_H}", size=1.9, weight="bold")
-        text(X(x0 + w / 2), Z(LEGS + 900), "петли вкладные" if i == 0 else "петли накладные", size=1.5, fill="#c0392b")
-    # полки и ящики за фасадами (поверх – пунктир)
-    st = dict(w=0.3, color="#8c7b62", dash="1.6 0.9")
-    for xm, shelves in ((X_M2, [SH_DRW] + SH_M2), (X_M1, SH_M1)):
-        for zz in [0, H_LOW - T] + shelves:
-            line(X(xm + T), Z(LEGS + zz + T / 2), X(xm + MOD - T), Z(LEGS + zz + T / 2), **st)
-        for zz in (H_LOW + T / 2, H_TOT - T / 2):
-            line(X(xm + T), Z(LEGS + zz), X(xm + MOD - T), Z(LEGS + zz), **st)
-    for a, b in DR_FRONTS:
-        rect(X(X_M2 + T + THICK + 3), Z(LEGS + b), (MOD - 2 * T - 2 * THICK - 6) * S, (b - a) * S,
-             fill="none", stroke="#8c7b62", sw=0.2, dash="1 0.6")
-    # размеры по ширине
-    y1 = FY + 5
-    pts = [0, FILL, X_TUMBA + GAP, X_TUMBA + TUMBA_W - GAP]
-    for dx, w in zip(DOOR_X, DOOR_W):
-        pts += [X_WARD + dx, X_WARD + dx + w]
-    pts += [W_ALL - FILL, W_ALL]
-    labs = []
-    for a, b in zip(pts, pts[1:]):
-        if b - a > 0:
-            dim_h(X(a), X(b), y1 + (0 if b - a > 50 else 0), str(b - a), ext_from=FY + 0.5, size=1.6 if b - a < 50 else 2.0)
-    dim_h(X(0), X(W_ALL), y1 + 7, str(W_ALL), size=2.4)
-    # высоты справа
-    xr = X(W_ALL) + 14
-    zs = [0, LEGS, LEGS + DOOR_LOW_H, LEGS + H_LOW + 1, H_ALL]
-    for a, b in zip(zs, zs[1:]):
-        dim_v(Z(b), Z(a), xr, str(b - a), ext_from=X(W_ALL), size=1.8)
-    dim_v(Z(H_ALL), Z(0), xr + 6, str(H_ALL), ext_from=X(W_ALL), size=2.3)
-    xl = X(0) - 5
-    for a, b in ((0, LEGS), (LEGS, LEGS + FALSE_FRONT[1]), (LEGS + FALSE_FRONT[1], LEGS + TUMBA_H),
-                 (LEGS + TUMBA_H, LEGS + TUMBA_H + FAC)):
-        dim_v(Z(b), Z(a), xl, str(b - a), ext_from=X(0), size=1.6)
-    table2(380, 40)
-    stamp("ШКАФ С АНТРЕСОЛЬЮ И ТУМБОЙ", "Фасады: размеры, зазоры, петли", "2 (А2)",
-          ["Фасады толщиной 20, зазор 3", "Петли — от низа фасада до оси чашки", "Размеры в мм",
-           "Полки за фасадами — пунктир"])
+    text(297, 20, "МОДУЛИ ШКАФА — ДЕТАЛИ (ЛДСП 16)", size=4.6, weight="bold")
+    text(297, 27, "подчёркнутый размер — кромка по этой стороне: одна черта — 1 сторона, две — 2 стороны; "
+         "«паз» — паз 16 под подсветку, 100 от лица", size=2.1, fill="#444")
+    cells = [(22, 36), (306, 36), (22, 262), (306, 262)]
+    for (title, (W, H, D), kind, parts), (cx, cy) in zip(MODULES, cells):
+        text(cx, cy + 4, title, size=3.0, weight="bold", anchor="start")
+        sc = {"rails": 0.086, "drawers": 0.086, "ant": 0.085, "tumba": 0.072}[kind]
+        hy = cy + 22 + H * sc + D * sc * 0.35
+        module_sketch(cx + 6, hy, W, H, D, kind, sc)
+        px = cx + (132 if kind != "tumba" else 160)
+        n = len(parts)
+        fs, step = (3.6, 15) if n < 9 else (3.0, 13.2)
+        y0 = cy + 22 if kind != "tumba" else cy + 30
+        for k, (a, b, q, nt) in enumerate(parts):
+            part_line(px, y0 + k * step, a, b, q, nt, fs=fs)
+    line(297, 40, 297, 410, w=0.25, color="#999")
+    line(15, 256, 579, 256, w=0.25, color="#999")
     save("sheet2.svg")
-
-
-def table2(x, y):
-    text(x, y, "СПЕЦИФИКАЦИЯ ФАСАДОВ", size=3.0, weight="bold", anchor="start")
-    rows = [("Ф1", "нижний, левый", f"{DOOR_W[0]} × {DOOR_LOW_H}", 1, "вкладные 5"),
-            ("Ф2", "нижний", f"{DOOR_W[1]} × {DOOR_LOW_H}", 1, "накладные 5"),
-            ("Ф3–Ф4", "нижние", f"{DOOR_W[2]} × {DOOR_LOW_H}", 2, "накладные 5 + 5"),
-            ("А1", "антресоль, левый", f"{DOOR_W[0]} × {DOOR_ANT_H}", 1, "вкладные 2"),
-            ("А2", "антресоль", f"{DOOR_W[1]} × {DOOR_ANT_H}", 1, "накладные 2"),
-            ("А3–А4", "антресоль", f"{DOOR_W[2]} × {DOOR_ANT_H}", 2, "накладные 2 + 2"),
-            ("Т1", "крышка тумбы", f"{LID[0]} × {LID[1]}", 1, "3 петли + 2 газлифта"),
-            ("Т2", "фальш-фасад тумбы", f"{FALSE_FRONT[0]} × {FALSE_FRONT[1]}", 1, "глухой, на конфирматы/стяжки")]
-    cols = [0, 18, 52, 86, 98]
-    hdr = ["Поз.", "Фасад", "Размер", "Кол.", "Петли"]
-    rect(x, y + 3, 150, 6, fill="#eee", sw=0.25)
-    for c, h in zip(cols, hdr):
-        text(x + c + 1.5, y + 7.2, h, size=2.1, anchor="start", weight="bold")
-    for k, row in enumerate(rows):
-        yy = y + 9 + k * 6
-        rect(x, yy, 150, 6, fill="none", sw=0.2)
-        for c, v in zip(cols, row):
-            text(x + c + 1.5, yy + 4.2, str(v), size=2.1, anchor="start")
-    y2 = y + 9 + len(rows) * 6 + 10
-    text(x, y2, "ПЕТЛИ — РАССТОЯНИЕ ОТ НИЗА ФАСАДА ДО ОСИ ЧАШКИ", size=2.8, weight="bold", anchor="start")
-    text(x, y2 + 6, "Нижние фасады 1928: " + " · ".join(str(v) for v in HINGE_LOW), size=2.2, anchor="start")
-    text(x, y2 + 11, "Антресоль 629: " + " · ".join(str(v) for v in HINGE_ANT), size=2.2, anchor="start")
-    text(x, y2 + 16, "Чашка Ø35, отступ 22 от края фасада (по оси).", size=2.0, anchor="start", fill="#444")
-    text(x, y2 + 21, "Полки (от низа модуля): ящики до 816, полка 816–832; 1207–1223; 1598–1614; крыша 1914.",
-         size=2.0, anchor="start", fill="#444")
-    text(x, y2 + 26, "Ближайшая петля к полке — не ближе 150 мм по оси: 1020 / 1207, 1410 / 1598, 1810 / 1914.",
-         size=2.0, anchor="start", fill="#444")
-    text(x, y2 + 31, "Ф1 и А1 — вкладные петли: левая боковина 580 выступает до лица фасадов.",
-         size=2.0, anchor="start", fill="#444")
-    text(x, y2 + 36, "Открывание: вершина треугольника — сторона открывания, основание — петли.",
-         size=2.0, anchor="start", fill="#444")
 
 
 if __name__ == "__main__":
