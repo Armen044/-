@@ -1,0 +1,390 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" font-family="DejaVu Sans, Arial, sans-serif">
+<defs><marker id="arr" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4,2 L0,4 z" fill="#33373b"/></marker><pattern id="hatch" width="1.2" height="1.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="1.2" stroke="#777" stroke-width="0.25"/></pattern><pattern id="wall" width="1.6" height="1.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.6" height="1.6" fill="#e3e3e3"/><line x1="0" y1="0" x2="0" y2="1.6" stroke="#666" stroke-width="0.3"/></pattern><pattern id="drw" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="2" height="2" fill="#efe6da"/><line x1="0" y1="0" x2="0" y2="2" stroke="#b39b7f" stroke-width="0.25"/></pattern></defs>
+<rect x="0.00" y="0.00" width="594.00" height="420.00" fill="#fff" stroke="none" stroke-width="0.25" />
+<rect x="10.00" y="5.00" width="579.00" height="410.00" fill="none" stroke="#111" stroke-width="0.6" />
+<text x="188.33" y="22.00" font-size="3.8" text-anchor="middle" font-weight="bold" fill="#111">ОБЩИЙ ВИД БЕЗ ФАСАДОВ — НАПОЛНЕНИЕ И РАЗМЕРЫ</text>
+<line x1="26.00" y1="262.00" x2="350.67" y2="262.00" stroke="#111" stroke-width="0.5"/>
+<rect x="30.00" y="218.67" width="1.33" height="43.33" fill="#ddd3c4" stroke="#222" stroke-width="0.18" />
+<rect x="345.33" y="42.00" width="1.33" height="220.00" fill="#ddd3c4" stroke="#222" stroke-width="0.18" />
+<rect x="36.33" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="95.00" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="153.67" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="31.33" y="220.33" width="130.67" height="35.00" fill="#faf7f2" stroke="#222" stroke-width="0.18" />
+<rect x="31.33" y="254.00" width="130.67" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="31.58" y="218.67" width="130.17" height="1.67" fill="#f3f1ee" stroke="#222" stroke-width="0.18" />
+<text x="96.67" y="236.17" font-size="2.4" text-anchor="middle" font-weight="bold" fill="#111">ТУМБА 1568 × 580 × 420</text>
+<text x="96.67" y="239.67" font-size="1.9" text-anchor="middle" font-weight="normal" fill="#555">крышка-фасад открывается вверх</text>
+<text x="96.67" y="242.67" font-size="1.9" text-anchor="middle" font-weight="normal" fill="#555">спереди фальш-фасад (зазор 3)</text>
+<rect x="167.00" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="245.33" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="162.00" y="94.50" width="91.67" height="160.83" fill="#faf7f2" stroke="#222" stroke-width="0.18" />
+<rect x="162.00" y="94.50" width="1.33" height="160.83" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="252.33" y="94.50" width="1.33" height="160.83" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="254.00" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="94.50" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="162.00" y="42.00" width="91.67" height="52.50" fill="#faf7f2" stroke="#222" stroke-width="0.18" />
+<rect x="162.00" y="42.00" width="1.33" height="52.50" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="252.33" y="42.00" width="1.33" height="52.50" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="93.17" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="42.00" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<line x1="163.46" y1="186.00" x2="163.46" y2="95.83" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="163.46" y1="93.17" x2="163.46" y2="43.33" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="252.21" y1="186.00" x2="252.21" y2="95.83" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="252.21" y1="93.17" x2="252.21" y2="43.33" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<rect x="183.82" y="96.13" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="183.82" y="91.47" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="229.65" y="96.13" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="229.65" y="91.47" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="258.67" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="337.00" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#222" stroke-width="0.1" />
+<rect x="253.67" y="94.50" width="91.67" height="160.83" fill="#faf7f2" stroke="#222" stroke-width="0.18" />
+<rect x="253.67" y="94.50" width="1.33" height="160.83" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="344.00" y="94.50" width="1.33" height="160.83" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="255.00" y="254.00" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="255.00" y="94.50" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="253.67" y="42.00" width="91.67" height="52.50" fill="#faf7f2" stroke="#222" stroke-width="0.18" />
+<rect x="253.67" y="42.00" width="1.33" height="52.50" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="344.00" y="42.00" width="1.33" height="52.50" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="255.00" y="93.17" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="255.00" y="42.00" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<line x1="255.12" y1="254.00" x2="255.12" y2="95.83" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="255.12" y1="93.17" x2="255.12" y2="43.33" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="343.88" y1="254.00" x2="343.88" y2="95.83" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<line x1="343.88" y1="93.17" x2="343.88" y2="43.33" stroke="#f0a800" stroke-width="0.6" stroke-dasharray="1.4 0.7"/>
+<rect x="275.48" y="96.13" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="275.48" y="91.47" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="321.32" y="96.13" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="321.32" y="91.47" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="163.33" y="187.33" width="2.67" height="66.67" fill="#ddd3c4" stroke="#222" stroke-width="0.15" />
+<rect x="249.67" y="187.33" width="2.67" height="66.67" fill="#ddd3c4" stroke="#222" stroke-width="0.15" />
+<rect x="166.25" y="240.25" width="83.17" height="13.75" fill="#e9dfd2" stroke="#222" stroke-width="0.18" />
+<rect x="166.25" y="223.58" width="83.17" height="13.75" fill="#e9dfd2" stroke="#222" stroke-width="0.18" />
+<rect x="166.25" y="206.92" width="83.17" height="13.75" fill="#e9dfd2" stroke="#222" stroke-width="0.18" />
+<rect x="166.25" y="190.25" width="83.17" height="13.75" fill="#e9dfd2" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="186.00" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="153.42" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="163.33" y="120.83" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<rect x="255.00" y="120.83" width="89.00" height="1.33" fill="#efe7dc" stroke="#222" stroke-width="0.18" />
+<line x1="255.83" y1="127.17" x2="343.17" y2="127.17" stroke="#444" stroke-width="0.6"/>
+<circle cx="255.83" cy="127.17" r="0.6" fill="#444"/>
+<circle cx="343.17" cy="127.17" r="0.6" fill="#444"/>
+<text x="278.67" y="126.17" font-size="1.7" text-anchor="start" font-weight="normal" fill="#444">штанга, ось 1538 от дна модуля</text>
+<line x1="255.83" y1="188.67" x2="343.17" y2="188.67" stroke="#444" stroke-width="0.6"/>
+<circle cx="255.83" cy="188.67" r="0.6" fill="#444"/>
+<circle cx="343.17" cy="188.67" r="0.6" fill="#444"/>
+<text x="278.67" y="187.67" font-size="1.7" text-anchor="start" font-weight="normal" fill="#444">штанга, ось 800 от дна модуля</text>
+<line x1="30.00" y1="262.50" x2="30.00" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="31.33" y1="262.50" x2="31.33" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="28.50" y1="267.00" x2="32.83" y2="267.00" stroke="#111" stroke-width="0.18"/>
+<line x1="29.10" y1="267.90" x2="30.90" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<line x1="30.43" y1="267.90" x2="32.23" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<text x="30.67" y="266.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">16</text>
+<line x1="31.33" y1="262.50" x2="31.33" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="162.00" y1="262.50" x2="162.00" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="29.83" y1="267.00" x2="163.50" y2="267.00" stroke="#111" stroke-width="0.18"/>
+<line x1="30.43" y1="267.90" x2="32.23" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<line x1="161.10" y1="267.90" x2="162.90" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<text x="96.67" y="266.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">1568</text>
+<line x1="162.00" y1="262.50" x2="162.00" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="253.67" y1="262.50" x2="253.67" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="160.50" y1="267.00" x2="255.17" y2="267.00" stroke="#111" stroke-width="0.18"/>
+<line x1="161.10" y1="267.90" x2="162.90" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<line x1="252.77" y1="267.90" x2="254.57" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<text x="207.83" y="266.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">1100</text>
+<line x1="253.67" y1="262.50" x2="253.67" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="345.33" y1="262.50" x2="345.33" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="252.17" y1="267.00" x2="346.83" y2="267.00" stroke="#111" stroke-width="0.18"/>
+<line x1="252.77" y1="267.90" x2="254.57" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<line x1="344.43" y1="267.90" x2="346.23" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<text x="299.50" y="266.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">1100</text>
+<line x1="345.33" y1="262.50" x2="345.33" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="346.67" y1="262.50" x2="346.67" y2="268.50" stroke="#111" stroke-width="0.15"/>
+<line x1="343.83" y1="267.00" x2="348.17" y2="267.00" stroke="#111" stroke-width="0.18"/>
+<line x1="344.43" y1="267.90" x2="346.23" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<line x1="345.77" y1="267.90" x2="347.57" y2="266.10" stroke="#111" stroke-width="0.35"/>
+<text x="346.00" y="266.20" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111">16</text>
+<line x1="28.50" y1="279.00" x2="348.17" y2="279.00" stroke="#111" stroke-width="0.18"/>
+<line x1="29.10" y1="279.90" x2="30.90" y2="278.10" stroke="#111" stroke-width="0.35"/>
+<line x1="345.77" y1="279.90" x2="347.57" y2="278.10" stroke="#111" stroke-width="0.35"/>
+<text x="188.33" y="278.20" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111">3800</text>
+<line x1="161.83" y1="273.00" x2="253.83" y2="273.00" stroke="#111" stroke-width="0.18"/>
+<line x1="162.43" y1="273.90" x2="164.23" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<line x1="251.43" y1="273.90" x2="253.23" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<text x="207.83" y="272.20" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111">1068</text>
+<line x1="253.50" y1="273.00" x2="345.50" y2="273.00" stroke="#111" stroke-width="0.18"/>
+<line x1="254.10" y1="273.90" x2="255.90" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<line x1="343.10" y1="273.90" x2="344.90" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<text x="299.50" y="272.20" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111">1068</text>
+<line x1="346.67" y1="255.33" x2="353.17" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="346.67" y1="262.00" x2="353.17" y2="262.00" stroke="#111" stroke-width="0.15"/>
+<line x1="351.67" y1="253.83" x2="351.67" y2="263.50" stroke="#111" stroke-width="0.18"/>
+<line x1="350.77" y1="256.23" x2="352.57" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<line x1="350.77" y1="262.90" x2="352.57" y2="261.10" stroke="#111" stroke-width="0.35"/>
+<text x="350.87" y="258.67" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 350.87 258.67)">80</text>
+<line x1="346.67" y1="94.50" x2="353.17" y2="94.50" stroke="#111" stroke-width="0.15"/>
+<line x1="346.67" y1="255.33" x2="353.17" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="351.67" y1="93.00" x2="351.67" y2="256.83" stroke="#111" stroke-width="0.18"/>
+<line x1="350.77" y1="95.40" x2="352.57" y2="93.60" stroke="#111" stroke-width="0.35"/>
+<line x1="350.77" y1="256.23" x2="352.57" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<text x="350.87" y="174.92" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 350.87 174.92)">1930</text>
+<line x1="346.67" y1="42.00" x2="353.17" y2="42.00" stroke="#111" stroke-width="0.15"/>
+<line x1="346.67" y1="94.50" x2="353.17" y2="94.50" stroke="#111" stroke-width="0.15"/>
+<line x1="351.67" y1="40.50" x2="351.67" y2="96.00" stroke="#111" stroke-width="0.18"/>
+<line x1="350.77" y1="42.90" x2="352.57" y2="41.10" stroke="#111" stroke-width="0.35"/>
+<line x1="350.77" y1="95.40" x2="352.57" y2="93.60" stroke="#111" stroke-width="0.35"/>
+<text x="350.87" y="68.25" font-size="2.0" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 350.87 68.25)">630</text>
+<line x1="346.67" y1="42.00" x2="359.17" y2="42.00" stroke="#111" stroke-width="0.15"/>
+<line x1="346.67" y1="262.00" x2="359.17" y2="262.00" stroke="#111" stroke-width="0.15"/>
+<line x1="357.67" y1="40.50" x2="357.67" y2="263.50" stroke="#111" stroke-width="0.18"/>
+<line x1="356.77" y1="42.90" x2="358.57" y2="41.10" stroke="#111" stroke-width="0.35"/>
+<line x1="356.77" y1="262.90" x2="358.57" y2="261.10" stroke="#111" stroke-width="0.35"/>
+<text x="356.87" y="152.00" font-size="2.4" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 356.87 152.00)">2640</text>
+<line x1="30.00" y1="255.33" x2="23.50" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="30.00" y1="262.00" x2="23.50" y2="262.00" stroke="#111" stroke-width="0.15"/>
+<line x1="25.00" y1="253.83" x2="25.00" y2="263.50" stroke="#111" stroke-width="0.18"/>
+<line x1="24.10" y1="256.23" x2="25.90" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<line x1="24.10" y1="262.90" x2="25.90" y2="261.10" stroke="#111" stroke-width="0.35"/>
+<text x="24.20" y="258.67" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 24.20 258.67)">80</text>
+<line x1="30.00" y1="220.33" x2="23.50" y2="220.33" stroke="#111" stroke-width="0.15"/>
+<line x1="30.00" y1="255.33" x2="23.50" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="25.00" y1="218.83" x2="25.00" y2="256.83" stroke="#111" stroke-width="0.18"/>
+<line x1="24.10" y1="221.23" x2="25.90" y2="219.43" stroke="#111" stroke-width="0.35"/>
+<line x1="24.10" y1="256.23" x2="25.90" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<text x="24.20" y="237.83" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 24.20 237.83)">420</text>
+<line x1="30.00" y1="218.67" x2="23.50" y2="218.67" stroke="#111" stroke-width="0.15"/>
+<line x1="30.00" y1="220.33" x2="23.50" y2="220.33" stroke="#111" stroke-width="0.15"/>
+<line x1="25.00" y1="217.17" x2="25.00" y2="221.83" stroke="#111" stroke-width="0.18"/>
+<line x1="24.10" y1="219.57" x2="25.90" y2="217.77" stroke="#111" stroke-width="0.35"/>
+<line x1="24.10" y1="221.23" x2="25.90" y2="219.43" stroke="#111" stroke-width="0.35"/>
+<text x="24.20" y="219.50" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 24.20 219.50)">20</text>
+<line x1="246.92" y1="252.50" x2="246.92" y2="255.50" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="254.90" x2="247.82" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="254.90" x2="247.82" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="254.00" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 254.00)">0</text>
+<line x1="246.92" y1="238.75" x2="246.92" y2="255.50" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="241.15" x2="247.82" y2="239.35" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="254.90" x2="247.82" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="247.12" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 247.12)">165</text>
+<line x1="246.92" y1="235.83" x2="246.92" y2="241.75" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="238.23" x2="247.82" y2="236.43" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="241.15" x2="247.82" y2="239.35" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="238.79" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 238.79)">35</text>
+<line x1="246.92" y1="222.08" x2="246.92" y2="238.83" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="224.48" x2="247.82" y2="222.68" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="238.23" x2="247.82" y2="236.43" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="230.46" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 230.46)">165</text>
+<line x1="246.92" y1="219.17" x2="246.92" y2="225.08" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="221.57" x2="247.82" y2="219.77" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="224.48" x2="247.82" y2="222.68" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="222.12" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 222.12)">35</text>
+<line x1="246.92" y1="205.42" x2="246.92" y2="222.17" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="207.82" x2="247.82" y2="206.02" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="221.57" x2="247.82" y2="219.77" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="213.79" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 213.79)">165</text>
+<line x1="246.92" y1="202.50" x2="246.92" y2="208.42" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="204.90" x2="247.82" y2="203.10" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="207.82" x2="247.82" y2="206.02" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="205.46" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 205.46)">35</text>
+<line x1="246.92" y1="188.75" x2="246.92" y2="205.50" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="191.15" x2="247.82" y2="189.35" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="204.90" x2="247.82" y2="203.10" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="197.12" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 197.12)">165</text>
+<line x1="246.92" y1="185.83" x2="246.92" y2="191.75" stroke="#111" stroke-width="0.18"/>
+<line x1="246.02" y1="188.23" x2="247.82" y2="186.43" stroke="#111" stroke-width="0.35"/>
+<line x1="246.02" y1="191.15" x2="247.82" y2="189.35" stroke="#111" stroke-width="0.35"/>
+<text x="246.12" y="188.79" font-size="1.3" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 246.12 188.79)">35</text>
+<text x="207.83" y="247.00" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#555">внутренние ящики, фасады 998 × 165</text>
+<text x="207.83" y="230.33" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#555">щель под пальцы 35</text>
+<line x1="182.83" y1="153.25" x2="182.83" y2="187.50" stroke="#111" stroke-width="0.18"/>
+<line x1="181.93" y1="155.65" x2="183.73" y2="153.85" stroke="#111" stroke-width="0.35"/>
+<line x1="181.93" y1="186.90" x2="183.73" y2="185.10" stroke="#111" stroke-width="0.35"/>
+<text x="182.03" y="170.38" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 182.03 170.38)">375</text>
+<line x1="182.83" y1="120.67" x2="182.83" y2="154.92" stroke="#111" stroke-width="0.18"/>
+<line x1="181.93" y1="123.07" x2="183.73" y2="121.27" stroke="#111" stroke-width="0.35"/>
+<line x1="181.93" y1="154.32" x2="183.73" y2="152.52" stroke="#111" stroke-width="0.35"/>
+<text x="182.03" y="137.79" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 182.03 137.79)">375</text>
+<line x1="182.83" y1="94.33" x2="182.83" y2="122.33" stroke="#111" stroke-width="0.18"/>
+<line x1="181.93" y1="96.73" x2="183.73" y2="94.93" stroke="#111" stroke-width="0.35"/>
+<line x1="181.93" y1="121.73" x2="183.73" y2="119.93" stroke="#111" stroke-width="0.35"/>
+<text x="182.03" y="108.33" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 182.03 108.33)">300</text>
+<line x1="172.00" y1="185.83" x2="172.00" y2="255.50" stroke="#111" stroke-width="0.18"/>
+<line x1="171.10" y1="188.23" x2="172.90" y2="186.43" stroke="#111" stroke-width="0.35"/>
+<line x1="171.10" y1="254.90" x2="172.90" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<text x="171.20" y="220.67" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 171.20 220.67)">800</text>
+<text x="173.00" y="185.83" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">полка 490 (утоплена)</text>
+<line x1="324.50" y1="94.33" x2="324.50" y2="122.33" stroke="#111" stroke-width="0.18"/>
+<line x1="323.60" y1="96.73" x2="325.40" y2="94.93" stroke="#111" stroke-width="0.35"/>
+<line x1="323.60" y1="121.73" x2="325.40" y2="119.93" stroke="#111" stroke-width="0.35"/>
+<text x="323.70" y="108.33" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 323.70 108.33)">300</text>
+<line x1="332.83" y1="125.67" x2="332.83" y2="255.50" stroke="#111" stroke-width="0.18"/>
+<line x1="331.93" y1="128.07" x2="333.73" y2="126.27" stroke="#111" stroke-width="0.35"/>
+<line x1="331.93" y1="254.90" x2="333.73" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<text x="332.03" y="190.58" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 332.03 190.58)">1522</text>
+<line x1="270.33" y1="187.17" x2="270.33" y2="255.50" stroke="#111" stroke-width="0.18"/>
+<line x1="269.43" y1="189.57" x2="271.23" y2="187.77" stroke="#111" stroke-width="0.35"/>
+<line x1="269.43" y1="254.90" x2="271.23" y2="253.10" stroke="#111" stroke-width="0.35"/>
+<text x="269.53" y="221.33" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 269.53 221.33)">784</text>
+<line x1="207.83" y1="41.83" x2="207.83" y2="94.67" stroke="#111" stroke-width="0.18"/>
+<line x1="206.93" y1="44.23" x2="208.73" y2="42.43" stroke="#111" stroke-width="0.35"/>
+<line x1="206.93" y1="94.07" x2="208.73" y2="92.27" stroke="#111" stroke-width="0.35"/>
+<text x="207.03" y="68.25" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 207.03 68.25)">598</text>
+<line x1="299.50" y1="41.83" x2="299.50" y2="94.67" stroke="#111" stroke-width="0.18"/>
+<line x1="298.60" y1="44.23" x2="300.40" y2="42.43" stroke="#111" stroke-width="0.35"/>
+<line x1="298.60" y1="94.07" x2="300.40" y2="92.27" stroke="#111" stroke-width="0.35"/>
+<text x="298.70" y="68.25" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 298.70 68.25)">598</text>
+<line x1="164.67" y1="205.33" x2="130.33" y2="147.00" stroke="#111" stroke-width="0.18"/>
+<circle cx="164.67" cy="205.33" r="0.45" fill="#111"/>
+<text x="129.53" y="147.90" font-size="1.8" text-anchor="end" font-weight="normal" fill="#111">Утолщение 16 + 16 по бокам ящиков</text>
+<text x="129.53" y="150.30" font-size="1.8" text-anchor="end" font-weight="normal" fill="#111">(панель 800×480 на планках 800×80),</text>
+<text x="129.53" y="152.70" font-size="1.8" text-anchor="end" font-weight="normal" fill="#111">отступ 80 от лица — место под петли</text>
+<line x1="255.17" y1="147.00" x2="278.67" y2="151.17" stroke="#111" stroke-width="0.18"/>
+<circle cx="255.17" cy="147.00" r="0.45" fill="#111"/>
+<text x="279.47" y="152.07" font-size="1.7" text-anchor="start" font-weight="normal" fill="#111">LED-профиль в пазу боковины</text>
+<line x1="322.42" y1="96.83" x2="297.00" y2="113.67" stroke="#111" stroke-width="0.18"/>
+<circle cx="322.42" cy="96.83" r="0.45" fill="#111"/>
+<text x="297.80" y="114.57" font-size="1.6" text-anchor="start" font-weight="normal" fill="#111">датчик открывания на крыше</text>
+<text x="297.80" y="116.77" font-size="1.6" text-anchor="start" font-weight="normal" fill="#111">нижнего модуля (на каждый фасад)</text>
+<line x1="322.42" y1="92.17" x2="297.00" y2="78.67" stroke="#111" stroke-width="0.18"/>
+<circle cx="322.42" cy="92.17" r="0.45" fill="#111"/>
+<text x="297.80" y="79.57" font-size="1.6" text-anchor="start" font-weight="normal" fill="#111">датчик на дне антресоли</text>
+<text x="345.20" y="153.67" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#555" transform="rotate(-90 345.20 153.67)">фальш-панель 16</text>
+<text x="29.87" y="240.33" font-size="1.5" text-anchor="middle" font-weight="normal" fill="#555" transform="rotate(-90 29.87 240.33)">фальш 16</text>
+<text x="207.83" y="52.00" font-size="2.0" text-anchor="middle" font-weight="bold" fill="#555">АНТРЕСОЛЬ 1100 × 630</text>
+<text x="207.83" y="107.00" font-size="2.2" text-anchor="middle" font-weight="bold" fill="#111">МОДУЛЬ 2 — ящики + полки</text>
+<text x="299.50" y="52.00" font-size="2.0" text-anchor="middle" font-weight="bold" fill="#555">АНТРЕСОЛЬ 1100 × 630</text>
+<text x="299.50" y="107.00" font-size="2.2" text-anchor="middle" font-weight="bold" fill="#111">МОДУЛЬ 1 — 2 штанги</text>
+<text x="396.83" y="22.00" font-size="3.4" text-anchor="middle" font-weight="bold" fill="#111">РАЗРЕЗ А–А</text>
+<text x="396.83" y="26.50" font-size="1.9" text-anchor="middle" font-weight="normal" fill="#111">по модулю 2, вид слева</text>
+<line x1="369.00" y1="262.00" x2="424.67" y2="262.00" stroke="#111" stroke-width="0.5"/>
+<rect x="370.00" y="42.00" width="2.00" height="220.00" fill="url(#wall)" stroke="#111" stroke-width="0.2" />
+<rect x="372.00" y="42.00" width="1.33" height="213.33" fill="#efe7dc" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="42.00" width="46.67" height="213.33" fill="#faf7f2" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="254.00" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="94.50" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="93.17" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="42.00" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="153.42" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="120.83" width="46.67" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="379.17" y="186.00" width="40.83" height="1.33" fill="#e2d6c6" stroke="#111" stroke-width="0.2" />
+<rect x="373.33" y="187.33" width="40.00" height="66.67" fill="none" stroke="#111" stroke-width="0.2" stroke-dasharray="1 0.6" />
+<rect x="382.00" y="243.17" width="36.67" height="10.83" fill="#f3ece2" stroke="#111" stroke-width="0.15" />
+<rect x="418.67" y="240.25" width="1.33" height="13.75" fill="#e9dfd2" stroke="#111" stroke-width="0.2" />
+<rect x="382.00" y="226.50" width="36.67" height="10.83" fill="#f3ece2" stroke="#111" stroke-width="0.15" />
+<rect x="418.67" y="223.58" width="1.33" height="13.75" fill="#e9dfd2" stroke="#111" stroke-width="0.2" />
+<rect x="382.00" y="209.83" width="36.67" height="10.83" fill="#f3ece2" stroke="#111" stroke-width="0.15" />
+<rect x="418.67" y="206.92" width="1.33" height="13.75" fill="#e9dfd2" stroke="#111" stroke-width="0.2" />
+<rect x="382.00" y="193.17" width="36.67" height="10.83" fill="#f3ece2" stroke="#111" stroke-width="0.15" />
+<rect x="418.67" y="190.25" width="1.33" height="13.75" fill="#e9dfd2" stroke="#111" stroke-width="0.2" />
+<rect x="420.00" y="94.67" width="1.67" height="160.67" fill="#f3f1ee" stroke="#111" stroke-width="0.25" />
+<rect x="420.00" y="42.00" width="1.67" height="52.42" fill="#f3f1ee" stroke="#111" stroke-width="0.25" />
+<rect x="412.50" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#111" stroke-width="0.1" />
+<rect x="375.83" y="255.33" width="3.33" height="6.67" fill="#555" stroke="#111" stroke-width="0.1" />
+<line x1="415.83" y1="262.00" x2="415.83" y2="267.50" stroke="#111" stroke-width="0.15"/>
+<line x1="420.00" y1="262.00" x2="420.00" y2="267.50" stroke="#111" stroke-width="0.15"/>
+<line x1="414.33" y1="266.00" x2="421.50" y2="266.00" stroke="#111" stroke-width="0.18"/>
+<line x1="414.93" y1="266.90" x2="416.73" y2="265.10" stroke="#111" stroke-width="0.35"/>
+<line x1="419.10" y1="266.90" x2="420.90" y2="265.10" stroke="#111" stroke-width="0.35"/>
+<text x="417.92" y="265.20" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111">50</text>
+<line x1="411.67" y1="254.00" x2="411.67" y2="43.33" stroke="#f0a800" stroke-width="0.5" stroke-dasharray="1.4 0.7"/>
+<line x1="411.67" y1="42.00" x2="411.67" y2="36.50" stroke="#111" stroke-width="0.15"/>
+<line x1="420.00" y1="42.00" x2="420.00" y2="36.50" stroke="#111" stroke-width="0.15"/>
+<line x1="410.17" y1="38.00" x2="421.50" y2="38.00" stroke="#111" stroke-width="0.18"/>
+<line x1="410.77" y1="38.90" x2="412.57" y2="37.10" stroke="#111" stroke-width="0.35"/>
+<line x1="419.10" y1="38.90" x2="420.90" y2="37.10" stroke="#111" stroke-width="0.35"/>
+<text x="415.83" y="37.20" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111">100</text>
+<rect x="414.00" y="96.13" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<rect x="414.00" y="91.47" width="2.20" height="1.40" fill="#c0392b" stroke="none" stroke-width="0.25" />
+<line x1="372.00" y1="262.50" x2="372.00" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="373.33" y1="262.50" x2="373.33" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="370.50" y1="273.00" x2="374.83" y2="273.00" stroke="#111" stroke-width="0.18"/>
+<line x1="371.10" y1="273.90" x2="372.90" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<line x1="372.43" y1="273.90" x2="374.23" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<text x="372.67" y="272.20" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111">16</text>
+<line x1="373.33" y1="262.50" x2="373.33" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="420.00" y1="262.50" x2="420.00" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="371.83" y1="273.00" x2="421.50" y2="273.00" stroke="#111" stroke-width="0.18"/>
+<line x1="372.43" y1="273.90" x2="374.23" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<line x1="419.10" y1="273.90" x2="420.90" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<text x="396.67" y="272.20" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111">560</text>
+<line x1="420.00" y1="262.50" x2="420.00" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="421.67" y1="262.50" x2="421.67" y2="274.50" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="273.00" x2="423.17" y2="273.00" stroke="#111" stroke-width="0.18"/>
+<line x1="419.10" y1="273.90" x2="420.90" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<line x1="420.77" y1="273.90" x2="422.57" y2="272.10" stroke="#111" stroke-width="0.35"/>
+<text x="420.83" y="272.20" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111">20</text>
+<line x1="370.50" y1="279.00" x2="423.17" y2="279.00" stroke="#111" stroke-width="0.18"/>
+<line x1="371.10" y1="279.90" x2="372.90" y2="278.10" stroke="#111" stroke-width="0.35"/>
+<line x1="420.77" y1="279.90" x2="422.57" y2="278.10" stroke="#111" stroke-width="0.35"/>
+<text x="396.83" y="278.20" font-size="1.9" text-anchor="middle" font-weight="normal" fill="#111">596</text>
+<line x1="421.67" y1="42.00" x2="427.17" y2="42.00" stroke="#111" stroke-width="0.15"/>
+<line x1="421.67" y1="94.50" x2="427.17" y2="94.50" stroke="#111" stroke-width="0.15"/>
+<line x1="425.67" y1="40.50" x2="425.67" y2="96.00" stroke="#111" stroke-width="0.18"/>
+<line x1="424.77" y1="42.90" x2="426.57" y2="41.10" stroke="#111" stroke-width="0.35"/>
+<line x1="424.77" y1="95.40" x2="426.57" y2="93.60" stroke="#111" stroke-width="0.35"/>
+<text x="424.87" y="68.25" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 424.87 68.25)">630</text>
+<line x1="421.67" y1="94.50" x2="427.17" y2="94.50" stroke="#111" stroke-width="0.15"/>
+<line x1="421.67" y1="255.33" x2="427.17" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="425.67" y1="93.00" x2="425.67" y2="256.83" stroke="#111" stroke-width="0.18"/>
+<line x1="424.77" y1="95.40" x2="426.57" y2="93.60" stroke="#111" stroke-width="0.35"/>
+<line x1="424.77" y1="256.23" x2="426.57" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<text x="424.87" y="174.92" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 424.87 174.92)">1930</text>
+<line x1="421.67" y1="255.33" x2="427.17" y2="255.33" stroke="#111" stroke-width="0.15"/>
+<line x1="421.67" y1="262.00" x2="427.17" y2="262.00" stroke="#111" stroke-width="0.15"/>
+<line x1="425.67" y1="253.83" x2="425.67" y2="263.50" stroke="#111" stroke-width="0.18"/>
+<line x1="424.77" y1="256.23" x2="426.57" y2="254.43" stroke="#111" stroke-width="0.35"/>
+<line x1="424.77" y1="262.90" x2="426.57" y2="261.10" stroke="#111" stroke-width="0.35"/>
+<text x="424.87" y="258.67" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 424.87 258.67)">80</text>
+<text x="510.00" y="48.00" font-size="3.0" text-anchor="middle" font-weight="bold" fill="#111">УЗЕЛ Б — ПАЗ ПОД ПОДСВЕТКУ</text>
+<text x="510.00" y="52.50" font-size="1.9" text-anchor="middle" font-weight="normal" fill="#111">сечение боковины, вид сверху, М 1:2</text>
+<rect x="460.00" y="70.00" width="90.00" height="8.00" fill="#efe7dc" stroke="#111" stroke-width="0.3" />
+<rect x="492.00" y="74.00" width="8.00" height="4.00" fill="#fff" stroke="#111" stroke-width="0.25" />
+<rect x="492.50" y="74.00" width="7.00" height="1.00" fill="#d9d9d9" stroke="#111" stroke-width="0.15" />
+<rect x="493.00" y="75.00" width="6.00" height="1.00" fill="#f0a800" stroke="none" stroke-width="0.25" />
+<rect x="550.00" y="55.00" width="10.00" height="35.00" fill="#f3f1ee" stroke="#111" stroke-width="0.3" />
+<text x="555.00" y="100.00" font-size="1.7" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 555.00 100.00)">фасад 20</text>
+<line x1="500.00" y1="78.00" x2="500.00" y2="85.50" stroke="#111" stroke-width="0.15"/>
+<line x1="550.00" y1="78.00" x2="550.00" y2="85.50" stroke="#111" stroke-width="0.15"/>
+<line x1="498.50" y1="84.00" x2="551.50" y2="84.00" stroke="#111" stroke-width="0.18"/>
+<line x1="499.10" y1="84.90" x2="500.90" y2="83.10" stroke="#111" stroke-width="0.35"/>
+<line x1="549.10" y1="84.90" x2="550.90" y2="83.10" stroke="#111" stroke-width="0.35"/>
+<text x="525.00" y="83.20" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111">100</text>
+<line x1="492.00" y1="78.00" x2="492.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="500.00" y1="78.00" x2="500.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="490.50" y1="89.00" x2="501.50" y2="89.00" stroke="#111" stroke-width="0.18"/>
+<line x1="491.10" y1="89.90" x2="492.90" y2="88.10" stroke="#111" stroke-width="0.35"/>
+<line x1="499.10" y1="89.90" x2="500.90" y2="88.10" stroke="#111" stroke-width="0.35"/>
+<text x="496.00" y="88.20" font-size="1.8" text-anchor="middle" font-weight="normal" fill="#111">16</text>
+<line x1="457.00" y1="68.50" x2="457.00" y2="79.50" stroke="#111" stroke-width="0.18"/>
+<line x1="456.10" y1="70.90" x2="457.90" y2="69.10" stroke="#111" stroke-width="0.35"/>
+<line x1="456.10" y1="78.90" x2="457.90" y2="77.10" stroke="#111" stroke-width="0.35"/>
+<text x="456.20" y="74.00" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 456.20 74.00)">16</text>
+<text x="470.00" y="67.00" font-size="1.7" text-anchor="start" font-weight="normal" fill="#111">боковина ЛДСП 16 (внутренняя грань снизу)</text>
+<line x1="496.00" y1="76.00" x2="472.00" y2="98.00" stroke="#111" stroke-width="0.18"/>
+<circle cx="496.00" cy="76.00" r="0.45" fill="#111"/>
+<text x="471.20" y="98.90" font-size="1.7" text-anchor="end" font-weight="normal" fill="#111">паз 16 × 8 по всей длине боковины,</text>
+<text x="471.20" y="101.20" font-size="1.7" text-anchor="end" font-weight="normal" fill="#111">профиль врезной 16 + LED-лента</text>
+<text x="445.00" y="190.00" font-size="3.0" text-anchor="start" font-weight="bold" fill="#111">ПРИМЕЧАНИЯ</text>
+<text x="445.00" y="196.00" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">1. Все размеры полок и ящиков — в свету (между ЛДСП). Отсчёт высот — от низа модуля.</text>
+<text x="445.00" y="200.40" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">2. Ящики внутренние: 4 шт, фасады 998 × 165, щель под пальцы 35 между фасадами.</text>
+<text x="445.00" y="204.80" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">3. В модуле с ящиками утолщение по бокам 16 + 16: панель 800×480 на планках 800×80,</text>
+<text x="445.00" y="209.20" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">    отступ 80 от лица — ящики не задевают петли фасадов.</text>
+<text x="445.00" y="213.60" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">4. Подсветка: паз 16 в боковинах по всей длине, 100 от лица; профиль врезной 16 + лента.</text>
+<text x="445.00" y="218.00" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">    В модуле 2 лента — выше полки над ящиками.</text>
+<text x="445.00" y="222.40" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">5. Датчики открывания фасадов: на крыше нижних модулей и на дне антресолей — по 1 на фасад.</text>
+<text x="445.00" y="226.80" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">6. Ножки 80, отступ 50 от лица корпуса. Фальш-панели 16 по бокам (справа — на всю высоту).</text>
+<text x="445.00" y="231.20" font-size="2.0" text-anchor="start" font-weight="normal" fill="#111">7. Глубина: корпус 560 + задняя ЛДСП 16 + фасад 20 = 596. Левая боковина 580 — до лица фасадов.</text>
+<rect x="405.00" y="362.00" width="180.00" height="46.00" fill="none" stroke="#111" stroke-width="0.5" />
+<line x1="405.00" y1="376.00" x2="585.00" y2="376.00" stroke="#111" stroke-width="0.3"/>
+<line x1="405.00" y1="392.00" x2="585.00" y2="392.00" stroke="#111" stroke-width="0.3"/>
+<line x1="525.00" y1="376.00" x2="525.00" y2="408.00" stroke="#111" stroke-width="0.3"/>
+<text x="495.00" y="368.50" font-size="4.0" text-anchor="middle" font-weight="bold" fill="#111">ШКАФ С АНТРЕСОЛЬЮ И ТУМБОЙ</text>
+<text x="495.00" y="373.50" font-size="2.3" text-anchor="middle" font-weight="normal" fill="#111">Общий вид без фасадов, разрез, паз подсветки</text>
+<text x="408.00" y="382.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Габариты 3800 × 596 × 2640</text>
+<text x="408.00" y="388.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Корпус ЛДСП 16, задняя ЛДСП 16</text>
+<text x="408.00" y="398.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Размеры в мм</text>
+<text x="408.00" y="404.00" font-size="2.4" text-anchor="start" font-weight="normal" fill="#111">Ножки 80, отступ 50 от лица</text>
+<text x="555.00" y="382.50" font-size="2.3" text-anchor="middle" font-weight="normal" fill="#111">Масштаб</text>
+<text x="555.00" y="388.50" font-size="3.6" text-anchor="middle" font-weight="bold" fill="#111">1:12</text>
+<text x="555.00" y="398.50" font-size="2.3" text-anchor="middle" font-weight="normal" fill="#111">Лист</text>
+<text x="555.00" y="404.50" font-size="3.2" text-anchor="middle" font-weight="bold" fill="#111">1 (А2)</text>
+</svg>
