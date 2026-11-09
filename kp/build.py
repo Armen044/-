@@ -69,14 +69,14 @@ body { margin: 0; font-family: 'DejaVu Sans', Arial, sans-serif; color: #2b2622;
 .badge { background: #2b2622; color: #fff; padding: 2.5mm 4mm; font-size: 10pt; font-weight: 700; text-align: right;
          line-height: 1.5; }
 .item { margin-bottom: 7mm; break-inside: avoid; }
-.item h2 { font-size: 13pt; margin: 0 0 1mm; }
+.item h2 { font-size: 13pt; margin: 0 0 2.5mm; }
 .item .desc { font-size: 9.5pt; color: #3d362f; margin-bottom: 2.5mm; line-height: 1.4; }
 .body { display: flex; gap: 5mm; align-items: stretch; }
 .photo { width: 72mm; flex: none; }
 .photo img { width: 100%; height: 52mm; object-fit: cover; display: block; border-radius: 1.5mm; }
 .vars { flex: 1; min-width: 0; display: flex; gap: 3mm; }
 .var { flex: 1; min-width: 0; border: 0.3mm solid #cfc6bb; border-radius: 1.5mm; padding: 3mm 3.5mm; background: #faf8f5; }
-.vn { font-size: 8.5pt; color: #4a423a; margin-bottom: 1.5mm; line-height: 1.35; }
+.vn { font-size: 8.5pt; color: #3d362f; margin-bottom: 2.5mm; line-height: 1.4; }
 .vt { font-size: 9pt; font-weight: 700; color: #8a6a3f; text-transform: uppercase; margin-bottom: 2mm; }
 .row { display: flex; justify-content: space-between; gap: 2mm; font-size: 9pt; padding: 1.2mm 0;
        border-bottom: 0.2mm solid #e6dfd6; }
@@ -99,13 +99,16 @@ th { font-size: 8.5pt; color: #6f655c; text-transform: uppercase; }
 
 def head(n, total):
     return (f'<div class="head"><div><h1>КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</h1>'
-            f'<div class="sub">Мебель по индивидуальному проекту · лист {n} из {total}</div></div>'
+            f'<div class="sub">Мебель по индивидуальному проекту</div></div>'
             f'<div class="badge">ЛДСП Egger<br>Фурнитура Blum<br><span style="font-weight:400;font-size:8.5pt">во всех вариантах</span></div></div>')
 
 
 def item_html(name, desc, photo, v1, v2):
     ph = f'<div class="photo">{img(photo)}</div>' if photo else ""
-    d = f'<div class="desc">{desc}</div>'
+    d = ""
+    v1 = ((desc + " " + v1[0]).strip(), v1[1])
+    if v2:
+        v2 = ((desc + " " + v2[0]).strip(), v2[1])
     vs = variant("Вариант 1", v1) + variant("Вариант 2", v2) if v2 else variant("Стоимость", v1)
     return (f'<div class="item"><h2>{name}</h2>{d}<div class="body">{ph}'
             f'<div class="vars">{vs}</div></div></div>')
@@ -120,9 +123,9 @@ def main():
     total_pages = 3
     pages = []
     for k, chunk in enumerate(pages_items):
-        pages.append(f'<div class="page">{head(k + 1, total_pages)}'
+        pages.append(f'<div class="page">{head(k + 1, total_pages) if k == 0 else ""}'
                      + "".join(item_html(*it) for it in chunk) + '</div>')
-    summary = (f'<div class="page">{head(3, total_pages)}<div class="totals" style="border:none;margin:0;padding:0">'
+    summary = (f'<div class="page"><div class="totals" style="border:none;margin:0;padding:0">'
                f'<h2>Сводная стоимость</h2>'
                f'<table><tr><th>Позиция</th><th class="n">Вариант 1</th><th class="n">Вариант 2</th></tr>{rows}'
                f'<tr><td><b>ИТОГО</b></td><td class="n"><b>{rub(t1)}</b></td><td class="n"><b>{rub(t2)}</b></td></tr></table>'
