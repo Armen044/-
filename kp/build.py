@@ -4,20 +4,37 @@ import base64
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ITEMS = [  # (название, описание, фото, [(вариант 1, цена)], [(вариант 2, цена)])
-    ("Шкаф в прихожую", "", "prihozhaya_c.jpg",
-     [("Фасады ЛДСП", 340000)], [("Фасады шпон", 556000)]),
-    ("Кухня с островом", "без столешницы", "kuhnya_c.jpg",
-     [("ЛДСП и фрезерованная эмаль", 715000)], [("Шпон и фрезерованная эмаль", 985000)]),
-    ("ТВ-тумба", "", "tv_c.jpg",
-     [("ЛДСП, максимальная длина 2750 мм", 85000)], [("Эмаль, длина 3 м (как на чертеже)", 148000)]),
-    ("Спальня гостевая: стеновые панели и шкаф", "", "spalnya_c.jpg",
-     [("Шкаф ЛДСП", 155000), ("Стеновые панели ЛДСП", 54000)],
-     [("Шкаф эмаль", 235000), ("Стеновые панели шпон", 125000)]),
-    ("Гардеробная", "как на визуализации, с подсветкой, без остекления", "garderob_c.jpg",
-     [("Гардеробная", 315000)], [("Гардеробная", 315000)]),
-    ("Санузел", "тумба под раковину (без столешницы), шкаф под стиральную и сушильную машину, инсоляция",
-     "sanuzel_c.jpg", [("ЛДСП и эмаль", 255000)], [("Шпон и эмаль", 320000)]),
+ITEMS = [  # (название, описание, фото, вариант 1, вариант 2 | None); вариант = (примечание, [(строка, цена)])
+    ("Шкаф в прихожую",
+     "Корпус ЛДСП Egger, фурнитура Blum с доводчиками. Мягкая подушка — ткань на выбор по каталогу. "
+     "Освещение: подключение и профиль (без ленты).",
+     "prihozhaya_c.jpg",
+     ("", [("Фасады ЛДСП", 340000)]), ("", [("Фасады шпон", 556000)])),
+    ("Кухонный гарнитур с островом",
+     "Без камня (столешница не входит). Корпус ЛДСП Egger, фурнитура Blum, выкатные ящики Merivobox, "
+     "профиль Gola чёрный.",
+     "kuhnya_c.jpg",
+     ("", [("ЛДСП и фрезерованная эмаль", 715000)]), ("", [("Шпон и фрезерованная эмаль", 985000)])),
+    ("ТВ-тумба",
+     "Фурнитура Blum: ящики скрытого монтажа с доводчиком.",
+     "tv_c.jpg",
+     ("Длина 2750 мм. Корпус и фасады ЛДСП Egger, столешница эмаль.", [("ТВ-тумба", 104000)]),
+     ("Длина 3000 мм. Корпус ЛДСП Egger, фасады МДФ эмаль, столешница эмаль.", [("ТВ-тумба", 148000)])),
+    ("Спальня гостевая: стеновые панели и шкаф",
+     "Корпус шкафа ЛДСП Egger, фурнитура Blum с доводчиками.",
+     "spalnya_c.jpg",
+     ("", [("Шкаф ЛДСП", 155000), ("Стеновые панели ЛДСП", 54000)]),
+     ("", [("Шкаф эмаль", 235000), ("Стеновые панели шпон", 125000)])),
+    ("Гардеробная",
+     "Как на визуализации, без остекления. Корпус ЛДСП Egger, фурнитура Blum с доводчиками. "
+     "Подсветка: подключение и профиль (без ленты).",
+     "garderob_c.jpg",
+     ("", [("Гардеробная", 315000)]), None),
+    ("Санузел",
+     "Тумба под раковину (без столешницы), шкаф под стиральную и сушильную машину, инсоляция. "
+     "Корпус ЛДСП Egger, фурнитура Blum с доводчиками.",
+     "sanuzel_c.jpg",
+     ("", [("ЛДСП и эмаль", 255000)]), ("", [("Шпон и эмаль", 320000)])),
 ]
 
 
@@ -30,11 +47,13 @@ def img(name):
     return f'<img src="data:image/jpeg;base64,{data}">'
 
 
-def variant(title, rows):
+def variant(title, v):
+    note, rows = v
+    nt = f'<div class="vn">{note}</div>' if note else ""
     lines = "".join(f'<div class="row"><span>{n}</span><b>{rub(p)}</b></div>' for n, p in rows)
     total = sum(p for _, p in rows)
     tot = f'<div class="row sum"><span>Итого</span><b>{rub(total)}</b></div>' if len(rows) > 1 else ""
-    return f'<div class="var"><div class="vt">{title}</div>{lines}{tot}</div>'
+    return f'<div class="var"><div class="vt">{title}</div>{nt}{lines}{tot}</div>'
 
 
 CSS = """
@@ -51,12 +70,13 @@ body { margin: 0; font-family: 'DejaVu Sans', Arial, sans-serif; color: #2b2622;
          line-height: 1.5; }
 .item { margin-bottom: 7mm; break-inside: avoid; }
 .item h2 { font-size: 13pt; margin: 0 0 1mm; }
-.item .desc { font-size: 9pt; color: #6f655c; margin-bottom: 2.5mm; }
+.item .desc { font-size: 9.5pt; color: #3d362f; margin-bottom: 2.5mm; line-height: 1.4; }
 .body { display: flex; gap: 5mm; align-items: stretch; }
 .photo { width: 72mm; flex: none; }
 .photo img { width: 100%; height: 52mm; object-fit: cover; display: block; border-radius: 1.5mm; }
 .vars { flex: 1; min-width: 0; display: flex; gap: 3mm; }
 .var { flex: 1; min-width: 0; border: 0.3mm solid #cfc6bb; border-radius: 1.5mm; padding: 3mm 3.5mm; background: #faf8f5; }
+.vn { font-size: 8.5pt; color: #4a423a; margin-bottom: 1.5mm; line-height: 1.35; }
 .vt { font-size: 9pt; font-weight: 700; color: #8a6a3f; text-transform: uppercase; margin-bottom: 2mm; }
 .row { display: flex; justify-content: space-between; gap: 2mm; font-size: 9pt; padding: 1.2mm 0;
        border-bottom: 0.2mm solid #e6dfd6; }
@@ -85,16 +105,17 @@ def head(n, total):
 
 def item_html(name, desc, photo, v1, v2):
     ph = f'<div class="photo">{img(photo)}</div>' if photo else ""
-    d = f'<div class="desc">{desc}</div>' if desc else '<div class="desc">&nbsp;</div>'
+    d = f'<div class="desc">{desc}</div>'
+    vs = variant("Вариант 1", v1) + variant("Вариант 2", v2) if v2 else variant("Стоимость", v1)
     return (f'<div class="item"><h2>{name}</h2>{d}<div class="body">{ph}'
-            f'<div class="vars">{variant("Вариант 1", v1)}{variant("Вариант 2", v2)}</div></div></div>')
+            f'<div class="vars">{vs}</div></div></div>')
 
 
 def main():
-    t1 = sum(p for it in ITEMS for _, p in it[3])
-    t2 = sum(p for it in ITEMS for _, p in it[4])
-    rows = "".join(f'<tr><td>{n}</td><td class="n">{rub(sum(p for _, p in a))}</td>'
-                   f'<td class="n">{rub(sum(p for _, p in b))}</td></tr>' for n, _, _, a, b in ITEMS)
+    t1 = sum(p for it in ITEMS for _, p in it[3][1])
+    t2 = sum(p for it in ITEMS for _, p in (it[4] or it[3])[1])
+    rows = "".join(f'<tr><td>{n}</td><td class="n">{rub(sum(p for _, p in a[1]))}</td>'
+                   f'<td class="n">{rub(sum(p for _, p in (b or a)[1]))}</td></tr>' for n, _, _, a, b in ITEMS)
     pages_items = [ITEMS[:3], ITEMS[3:]]
     total_pages = 3
     pages = []
@@ -109,8 +130,8 @@ def main():
                f'<div class="m">ЛДСП Egger, фурнитура Blum; фасады ЛДСП / ЛДСП и эмаль</div></div>'
                f'<div class="tc"><div class="l">Общая стоимость — вариант 2</div><div class="v">{rub(t2)}</div>'
                f'<div class="m">ЛДСП Egger, фурнитура Blum; фасады шпон / эмаль / шпон и эмаль</div></div></div>'
-               f'<div class="note">Столешницы, бытовая техника, сантехника и остекление в стоимость не входят. '
-               f'Гардеробная в обоих вариантах — по визуализации, с подсветкой, без остекления. '
+               f'<div class="note">Камень (столешницы), бытовая техника, сантехника, LED-лента и остекление в стоимость не входят. '
+               f'Гардеробная — один вариант, входит в обе суммы. '
                f'Окончательная стоимость — после замера и согласования проекта.</div></div></div>')
     pages.append(summary)
     html = (f"<!doctype html><html lang='ru'><head><meta charset='utf-8'><style>{CSS}</style></head>"
