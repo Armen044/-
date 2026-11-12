@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "garderobnaya"))
 import generate as g                                       # noqa: E402
 from generate import e, line, rect, LED                    # noqa: E402
 
-F = 1.6
+F = 2.1
 _t = g.text
 
 
@@ -22,7 +22,7 @@ def text(x, y, s, size=2.6, **kw):
 g.text = text
 dim_h, dim_v = g.dim_h, g.dim_v
 
-S = 1 / 15
+S = 1 / 12
 T, D, H, PL = 16, 530, 2530, 70
 TOP = H - T                    # низ крыши 2514
 ANT = 2100                     # полка антресоли (низ)
@@ -34,7 +34,7 @@ WOOD, BODY, DARK = "#c9a27c", "#ead8c4", "#5b4636"
 # задняя стена: [левый ряд 530] 304 | 16 | шкаф 600 | 16 | 304 [правый ряд 530]
 # 5 отдельных шкафов: 2 угловых (Г-образных), 500 (полки), 600 (обувь), 200 (гладильная доска);
 # на стыках шкафов – две боковины 16 + 16; в правом угловом комод 700 стоит отдельно (без перегородки)
-C1, C2, C3 = 304, 528, 228                      # угловые зоны (было 334 / 558 / 258, −30)
+C1, C2, C3 = 330, 528, 228                      # угловые зоны у шкафа 600 – по 330; левая 528, правая 228
 SHELF_D = 510                                   # глубина полок (корпус 514 = 530 − задняя 16)
 BW = D + C1 + T + 600 + T + C1 + D              # 2340 (шкаф 600 – габарит со своими боковинами)
 BX1 = D + C1                                   # боковина углового + боковина обувного
@@ -310,12 +310,11 @@ def main():
     rect(0, 0, 594, 420, fill="#fff", stroke="none")
     rect(10, 5, 579, 410, sw=0.6)
     text(297, 20, "РАЗВЁРТКИ СТЕН. ГАРДЕРОБНАЯ", size=4.4, weight="bold")
-    fy = 210
-    for v, t_ in ((back_wall(40, fy), "РАЗВЁРТКА 1–2 (задняя стена)"), (left_wall(255, fy), "РАЗВЁРТКА 3–1 (левая стена)"),
-                  (right_wall(400, fy), "РАЗВЁРТКА 2–4 (правая стена)")):
-        text(v.X(v.w / 2), v.Z(0) + 28, t_, size=2.4, weight="bold")
-    plan(60, 285)
-    notes(190, 270)
+    fy = 300
+    for v, t_ in ((back_wall(38, fy), "РАЗВЁРТКА 1–2 (задняя стена)"), (left_wall(262, fy), "РАЗВЁРТКА 3–1 (левая стена)"),
+                  (right_wall(412, fy), "РАЗВЁРТКА 2–4 (правая стена)")):
+        text(v.X(v.w / 2), v.Z(0) + 30, t_, size=2.2, weight="bold")
+
     bx, by, bw, bh = 405, 362, 180, 46
     rect(bx, by, bw, bh, sw=0.5)
     line(bx, by + 14, bx + bw, by + 14, w=0.3)
@@ -325,7 +324,7 @@ def main():
     text(bx + 3, by + 22, "Высота 2530, глубина 530, цоколь 70", size=2.0, anchor="start")
     text(bx + 3, by + 30, "Корпус ЛДСП 16", size=2.0, anchor="start")
     text(bx + 3, by + 38, "Размеры в мм", size=2.0, anchor="start")
-    text(bx + 150, by + 24, "Масштаб 1:15", size=2.0)
+    text(bx + 150, by + 24, "Масштаб 1:12", size=1.6)
     text(bx + 150, by + 34, "Лист 1", size=2.6, weight="bold")
     e('</svg>')
     open(os.path.join(HERE, "sheet1.svg"), "w", encoding="utf-8").write("\n".join(g.out))
