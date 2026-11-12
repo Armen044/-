@@ -78,41 +78,41 @@ def sheet1():
 
 
 def sheet2():
-    s = 0.1                      # лист горизонтально: 2800 × 2070
+    """Фасады вдоль длины листа: 1782 по 2800, ширины 415 / 30 / 415 / 330 / 415 / 30 / 415 по 2070."""
+    s = 0.1
     ox, oy = 55, 40
     W, H = SW, SH
     X = lambda v: ox + v * s       # noqa: E731
     Y = lambda v: oy + v * s       # noqa: E731
     rect(X(0), Y(0), W * s, H * s, fill=OFF, sw=0.5)
     grain(X(0), Y(0), W * s, H * s, False)
-    y0 = H - 1782
-    rect(X(0), Y(0), W * s, y0 * s, fill=OFF, sw=0.3)
+    L = 1782
     seq = [(415, "Ф1"), (30, None), (415, "Ф2"), (330, None), (415, "Ф3"), (30, None), (415, "Ф4")]
-    x = 0
-    xs = [0]
+    y = 0
+    ys = [0]
     for w, name in seq:
         if name:
-            rect(X(x), Y(y0), w * s, 1782 * s, fill=PART, sw=0.5)
-            text(X(x + w / 2), Y(y0 + 860), name, size=3.2, weight="bold")
-            text(X(x + w / 2), Y(y0 + 860) + 7, "415 × 1782", size=1.9)
+            rect(X(0), Y(y), L * s, w * s, fill=PART, sw=0.5)
+            grain(X(0), Y(y), L * s, w * s, False)
+            text(X(L / 2), Y(y + w / 2) + 1.5, f"{name}   1782 × 415", size=2.6, weight="bold")
         else:
-            rect(X(x), Y(y0), w * s, 1782 * s, fill=WASTE, sw=0.25)
+            rect(X(0), Y(y), L * s, w * s, fill=WASTE, sw=0.25)
             if w == 330:
-                text(X(x + w / 2), Y(y0 + 900), "330 — место стеклянного фасада", size=1.6, rot=-90, fill="#555")
-        x += w
-        xs.append(x)
-    text(X((x + W) / 2), Y(y0 + 900), f"остаток {W - x} × 1782", size=2.0, fill="#777")
-    text(X(W / 2), Y(y0 / 2) + 1.5, f"остаток {W} × {y0}", size=2.0, fill="#777")
-    for a, b in zip(xs, xs[1:]):
-        dim_h(X(a), X(b), Y(H) + 6, str(b - a), ext_from=Y(H), size=2.0)
-    dim_h(X(x), X(W), Y(H) + 6, str(W - x), ext_from=Y(H), size=2.0)
-    dim_h(X(0), X(x), Y(H) + 13, str(x), size=2.2)
-    dim_h(X(0), X(W), Y(H) + 20, str(W), size=2.4)
-    dim_v(Y(0), Y(y0), X(W) + 6, str(y0), ext_from=X(W), size=2.0)
-    dim_v(Y(y0), Y(H), X(W) + 6, "1782", ext_from=X(W), size=2.2)
-    dim_v(Y(0), Y(H), X(W) + 13, str(H), ext_from=X(W), size=2.4)
+                text(X(L / 2), Y(y + w / 2) + 1.2, "330 — место стеклянного фасада", size=1.8, fill="#555")
+        y += w
+        ys.append(y)
+    rect(X(0), Y(y), L * s, (H - y) * s, fill=WASTE, sw=0.25)
+    text(X((L + W) / 2), Y(H / 2), f"остаток {W - L} × {H}", size=2.0, fill="#777")
+    for a, b in zip(ys, ys[1:]):
+        dim_v(Y(a), Y(b), X(0) - 5, str(b - a), ext_from=X(0), size=1.8)
+    dim_v(Y(y), Y(H), X(0) - 5, str(H - y), ext_from=X(0), size=1.5)
+    dim_v(Y(0), Y(y), X(0) - 13, str(y), size=2.1)
+    dim_v(Y(0), Y(H), X(W) + 7, str(H), ext_from=X(W), size=2.4)
+    dim_h(X(0), X(L), Y(H) + 6, str(L), ext_from=Y(H), size=2.2)
+    dim_h(X(L), X(W), Y(H) + 6, str(W - L), ext_from=Y(H), size=2.2)
+    dim_h(X(0), X(W), Y(H) + 13, str(W), size=2.4)
     legend(40, 282)
-    text(255, 282, "Фасады выкроены подряд — рисунок декора непрерывный", size=1.7, anchor="start", fill="#555")
+    text(255, 282, "Длина фасадов — по длине листа; выкроены подряд, декор непрерывный", size=1.7, anchor="start", fill="#555")
 
 
 def main():
