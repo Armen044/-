@@ -83,7 +83,12 @@ def one_sheet(ox, oy, s, title, parts, cut_top):
                 text(X(x + w / 2) + 1, Y(y0 + h / 2), "330 — стекло", size=1.6, rot=-90, fill="#555")
         x += w
         xs.append(x)
-    rect(X(x), Y(y0), (W - x) * s, h * s, fill=WASTE, sw=0.25)
+    if W - x > 200:
+        rect(X(x), Y(y0), (W - x) * s, h * s, fill=OFF, sw=0.3)
+        grain(X(x), Y(y0), (W - x) * s, h * s, True)
+        text(X((x + W) / 2), Y(y0 + h / 2), f"остаток {W - x} × {h}", size=2.0, fill="#777")
+    else:
+        rect(X(x), Y(y0), (W - x) * s, h * s, fill=WASTE, sw=0.25)
     ry0, ry1 = (h, H) if cut_top else (0, H - h)
     text(X(W / 2), Y((ry0 + ry1) / 2), f"остаток {W} × {ry1 - ry0}", size=2.0, fill="#777")
     # стык текстуры
@@ -130,10 +135,33 @@ def both():
          size=1.6, anchor="start", fill="#555")
 
 
+def both2():
+    """Правый шкаф 433: фасад и видимая боковина 210, верхняя часть 1782 и нижняя 1154."""
+    s = 0.068
+    oy = 52
+    up = [(430, "Фасад", 1782), (210, "Бок", 1782)]
+    low = [(433, "Фасад", 1154), (210, "Бок", 1154)]
+    X4, Y4 = one_sheet(62, oy, s, "ЛИСТ 4 — верх правого шкафа (вырезается СНИЗУ)", up, cut_top=False)
+    X3, Y3 = one_sheet(262, oy, s, "ЛИСТ 3 — низ правого шкафа (вырезается СВЕРХУ)", low, cut_top=True)
+    ya, yb = Y4(SW), Y3(0)
+    xa, xb = X4(SH) + 16, X3(0) - 10
+    e(f'<path d="M{xa:.2f},{ya - 20:.2f} C{xa + 18:.2f},{ya - 20:.2f} {xb - 18:.2f},{yb + 20:.2f} {xb:.2f},{yb + 20:.2f}" '
+      f'fill="none" stroke="#c0392b" stroke-width="0.5" marker-end="url(#arr)"/>')
+    text((xa + xb) / 2 + 3, (ya + yb) / 2 - 2, "стык текстуры:", size=1.8, fill="#c0392b", weight="bold")
+    text((xa + xb) / 2 + 3, (ya + yb) / 2 + 3.5, "низ верхних →", size=1.7, fill="#c0392b")
+    text((xa + xb) / 2 + 3, (ya + yb) / 2 + 8, "верх нижних", size=1.7, fill="#c0392b")
+    legend(48, 286)
+    text(240, 286, "Листы из одной пачки, текстура вдоль 2800 · размеры в мм, без учёта пропила",
+         size=1.6, anchor="start", fill="#555")
+
+
 def main():
     page("РАСКРОЙ ЛДСП 2800 × 2070 — ОБШИВКА ИНСТАЛЛЯЦИИ",
          "декор дерево: фасады над коробом, текстура совпадает по стыку", both)
     open(os.path.join(HERE, "sheet1.svg"), "w", encoding="utf-8").write("\n".join(g.out))
+    page("РАСКРОЙ ЛДСП 2800 × 2070 — ПРАВЫЙ ШКАФ 433",
+         "фасад и боковина: верхняя часть 1782 над нижней 1154, текстура совпадает по стыку", both2)
+    open(os.path.join(HERE, "sheet2.svg"), "w", encoding="utf-8").write("\n".join(g.out))
 
 
 if __name__ == "__main__":
