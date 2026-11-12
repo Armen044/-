@@ -21,7 +21,7 @@ def text(x, y, s, size=2.6, **kw):
 g.text = text
 dim_h, dim_v = g.dim_h, g.dim_v
 
-S = 1 / 12
+S = 1 / 13
 T, PL = 16, 70
 LOW, ANT = 2350, 550
 H = PL + LOW + ANT                    # 2970
@@ -29,9 +29,13 @@ DESK_L, DESK_H, TOP_T = 2700, 750, 32
 DESK = DESK_H + TOP_T                 # 782
 PED = 800
 SEC = 600
-TB_W, TB_D, TB_H = 2150, 350, DESK    # низкая тумба
-X_NICHE = DESK_L - SEC                # ниша над правым краем стола
-X_W = DESK_L                          # шкаф
+TOP_L = DESK_L + 50                   # столешница 2750: заходит на 50 под нишу шкафа
+TB_W, TB_D, TB_HH = 2150, 350, 300    # тумба подвесная, высота 300
+TB_Z0 = DESK - TB_HH                  # низ тумбы (верх на уровне стола 782)
+TB_H = DESK
+X_NICHE = DESK_L                      # ниша шкафа 600 – от конца стола 2700
+N1 = X_NICHE + SEC
+X_W = N1                              # секции шкафа
 X_TB = X_W + 2 * SEC                  # тумба
 W_ALL = X_TB + TB_W
 BODY, BACK, FRONT, TOPC = "#e9e6e1", "#fbfaf8", "#f4f2ee", "#4a3b31"
@@ -82,23 +86,25 @@ def interior(v):
         z0 = T + 4 + i * (DESK_H - 2 * T) / 3
         v.r(T + 6, PED - T - 6, z0, z0 + (DESK_H - 2 * T) / 3 - 8, fill="#efe9e1", sw=0.25)
     text(v.X(PED / 2), v.Z(DESK_H / 2), "тумба 800, 3 ящика", size=1.6, weight="bold")
-    v.r(0, DESK_L, DESK_H, DESK, fill=TOPC, sw=0.3)
+    v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
     # под нишей – открытая полка под столом
-    v.box(X_NICHE, DESK_L, 0, DESK_H)
-    zs = [380]
-    v.shelf(X_NICHE + T, DESK_L - T, zs[0])
-    v.gaps(DESK_L - T - 4, [T, zs[0], zs[0] + T, DESK_H - T])
+    v.r(X_NICHE + 40, N1 - 40, 0, PL, fill="url(#hatch)", sw=0.15)
+    v.box(X_NICHE, N1, PL, DESK_H)
+    zs = [420]
+    v.shelf(X_NICHE + T, N1 - T, zs[0])
+    v.gaps(N1 - T - 4, [PL + T, zs[0], zs[0] + T, DESK_H - T])
     text(v.X((PED + X_NICHE) / 2), v.Z(DESK_H / 2), "место для ног", size=1.6, fill="#777")
+    v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
     # ---- открытая ниша над столом с LED + антресоль
     z0, z1 = DESK, PL + LOW
-    v.box(X_NICHE, DESK_L, z0, z1, fill="#fff6dc")
+    v.box(X_NICHE, N1, z0, z1, fill="#fff6dc")
     ns = even(z0 + T, z1 - T, 4)
     for z in ns:
-        v.shelf(X_NICHE + T, DESK_L - T, z, led=True)
-    v.gaps(DESK_L - T - 4, [z0 + T] + [p for z in ns for p in (z, z + T)] + [z1 - T])
+        v.shelf(X_NICHE + T, N1 - T, z, led=True)
+    v.gaps(N1 - T - 4, [z0 + T] + [p for z in ns for p in (z, z + T)] + [z1 - T])
     text(v.X(X_NICHE + SEC / 2), v.Z((z0 + z1) / 2) + 2, "ниша, LED", size=1.6, weight="bold", fill="#8a6a3f")
-    v.box(X_NICHE, DESK_L, PL + LOW, H)
-    v.gaps(DESK_L - T - 4, [PL + LOW + T, H - T])
+    v.box(X_NICHE, N1, PL + LOW, H)
+    v.gaps(N1 - T - 4, [PL + LOW + T, H - T])
     # ---- шкаф 2 × 600
     for k in range(2):
         x0, x1 = X_W + k * SEC, X_W + (k + 1) * SEC
@@ -125,13 +131,12 @@ def interior(v):
         v.gaps(x1 - T - 4, [PL + LOW + T, H - T])
         text(v.X((x0 + x1) / 2), v.Z(H) + 5, f"секция {k + 1} — 600", size=1.6, weight="bold", fill="#8a6a3f")
     # ---- низкая тумба 2150 × 350
-    v.box(X_TB, W_ALL, PL, TB_H)
-    v.r(X_TB + 40, W_ALL - 40, 0, PL, fill="url(#hatch)", sw=0.15)
+    v.box(X_TB, W_ALL, TB_Z0, TB_H)
     for k in range(1, 3):
         xx = X_TB + k * TB_W / 3
-        v.r(xx - T / 2, xx + T / 2, PL + T, TB_H - T)
-    v.shelf(X_TB + T, W_ALL - T, PL + T + (TB_H - PL - 2 * T) / 2 - T / 2)
-    text(v.X(X_TB + TB_W / 2), v.Z(TB_H) - 4, f"тумба {TB_W} × {TB_D} × {TB_H}", size=1.7, weight="bold")
+        v.r(xx - T / 2, xx + T / 2, TB_Z0 + T, TB_H - T)
+    v.gaps(W_ALL - T - 4, [TB_Z0 + T, TB_H - T])
+    text(v.X(X_TB + TB_W / 2), v.Z(TB_H) - 4, f"тумба подвесная {TB_W} × {TB_D} × {TB_HH}", size=1.7, weight="bold")
 
 
 def fronts(v):
@@ -142,10 +147,11 @@ def fronts(v):
     for i in range(3):
         z0 = i * DESK_H / 3
         v.r(G, PED - G, z0 + G, z0 + DESK_H / 3 - G, fill=FRONT, sw=0.35)
-    v.r(X_NICHE, DESK_L, 0, DESK_H, fill=BACK, sw=0.3)
-    v.r(0, DESK_L, DESK_H, DESK, fill=TOPC, sw=0.3)
-    v.r(X_NICHE, DESK_L, DESK, PL + LOW, fill="#fff6dc", sw=0.3)
-    v.r(X_NICHE + G, DESK_L - G, PL + LOW + G, H - G, fill=FRONT, sw=0.35)
+    v.r(X_NICHE, N1, PL, DESK_H, fill=BACK, sw=0.3)
+    v.r(X_NICHE + 40, N1 - 40, 0, PL, fill="url(#hatch)", sw=0.15)
+    v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
+    v.r(X_NICHE, N1, DESK, PL + LOW, fill="#fff6dc", sw=0.3)
+    v.r(X_NICHE + G, N1 - G, PL + LOW + G, H - G, fill=FRONT, sw=0.35)
     # шкаф
     for k in range(2):
         x0, x1 = X_W + k * SEC, X_W + (k + 1) * SEC
@@ -153,18 +159,18 @@ def fronts(v):
         v.r(x0 + G, x1 - G, PL + G, PL + LOW - G, fill=FRONT, sw=0.4)
         v.r(x0 + G, x1 - G, PL + LOW + G, H - G, fill=FRONT, sw=0.4)
     # тумба
-    v.r(X_TB + 40, W_ALL - 40, 0, PL, fill="url(#hatch)", sw=0.15)
     for k in range(3):
         a = X_TB + k * TB_W / 3
-        v.r(a + G, a + TB_W / 3 - G, PL + G, TB_H - G, fill=FRONT, sw=0.4)
+        v.r(a + G, a + TB_W / 3 - G, TB_Z0 + G, TB_H - G, fill=FRONT, sw=0.4)
+    v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
 
 
 def dims(v):
     y = v.Z(0)
-    xs = [0, PED, X_NICHE, DESK_L, X_W + SEC, X_TB, W_ALL]
+    xs = [0, PED, X_NICHE, N1, X_W + SEC, X_TB, W_ALL]
     for a, b in zip(xs, xs[1:]):
         dim_h(v.X(a), v.X(b), y + 5, str(b - a), ext_from=y + 0.5, size=1.9)
-    dim_h(v.X(0), v.X(DESK_L), y + 11, f"{DESK_L} столешница", size=1.9)
+    dim_h(v.X(0), v.X(TOP_L), y + 11, f"{TOP_L} столешница (50 под шкаф)", size=1.9)
     dim_h(v.X(0), v.X(W_ALL), y + 17, str(W_ALL), size=2.2)
     xr = v.X(X_TB) - 3
     for a, b in ((0, PL), (PL, PL + LOW), (PL + LOW, H)):
@@ -173,6 +179,8 @@ def dims(v):
     dim_v(v.Z(DESK_H), v.Z(0), v.X(0) - 4, str(DESK_H), ext_from=v.X(0), size=1.8)
     dim_v(v.Z(DESK), v.Z(DESK_H), v.X(0) - 4, str(TOP_T), ext_from=v.X(0), size=1.4)
     dim_v(v.Z(DESK), v.Z(0), v.X(0) - 10, str(DESK), ext_from=v.X(0), size=1.8)
+    dim_v(v.Z(TB_H), v.Z(TB_Z0), v.X(W_ALL) + 5, str(TB_HH), ext_from=v.X(W_ALL), size=1.8)
+    dim_v(v.Z(TB_Z0), v.Z(0), v.X(W_ALL) + 5, str(TB_Z0), ext_from=v.X(W_ALL), size=1.8)
 
 
 
@@ -181,10 +189,10 @@ def stamp(sheet):
     rect(bx, by, bw, bh, sw=0.5)
     line(bx, by + 14, bx + bw, by + 14, w=0.3)
     text(bx + bw / 2, by + 7, "ШКАФ СО СТОЛОМ", size=3.0, weight="bold")
-    text(bx + bw / 2, by + 12, f"развёртка, М 1:12 · лист {sheet}", size=1.6)
+    text(bx + bw / 2, by + 12, f"развёртка, М 1:13 · лист {sheet}", size=1.6)
     text(bx + 3, by + 21, f"Шкаф 2 × 600: {LOW} + антресоль {ANT} + цоколь {PL} = {H}", size=1.6, anchor="start")
-    text(bx + 3, by + 28, f"Стол {DESK_L}, высота {DESK_H} + {TOP_T}, тумба {PED}", size=1.6, anchor="start")
-    text(bx + 3, by + 35, f"Тумба низкая {TB_W} × {TB_D}; ЛДСП 16", size=1.6, anchor="start")
+    text(bx + 3, by + 28, f"Стол {TOP_L} (2700 + 50 под шкаф), {DESK_H} + {TOP_T}, тумба {PED}", size=1.6, anchor="start")
+    text(bx + 3, by + 35, f"Тумба подвесная {TB_W} × {TB_D} × {TB_HH}; ЛДСП 16", size=1.6, anchor="start")
     text(bx + 3, by + 42, "Размеры в мм", size=1.6, anchor="start")
 
 
@@ -196,7 +204,7 @@ def page(name, title, fn, sheet):
     rect(0, 0, 594, 420, fill="#fff", stroke="none")
     rect(10, 5, 579, 410, sw=0.6)
     text(297, 20, title, size=4.0, weight="bold")
-    v = V(45, 320)
+    v = V(38, 320)
     fn(v)
     dims(v)
     stamp(sheet)
