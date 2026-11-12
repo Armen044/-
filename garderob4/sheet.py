@@ -31,11 +31,14 @@ SHOE_N = 11
 WOOD, BODY, DARK = "#c9a27c", "#ead8c4", "#5b4636"
 
 # задняя стена: [секция слева 550 под левым рядом] 334 | 16 | 600 | 16 | 334 [550 под правым рядом]
-BW = D + 334 + T + 600 + T + 334 + D           # 2400
-BX1 = D + 334                                   # перегородка 1
-BX2 = BX1 + T + 600                             # перегородка 2
-LW = D + 558 + T + 500 + T                      # левая стена 1640
-RW = D + 258 + T + 700 + T + 200 + T            # правая стена 1756
+# 5 отдельных шкафов: 2 угловых (Г-образных), 500 (полки), 600 (обувь), 200 (гладильная доска);
+# на стыках шкафов – две боковины 16 + 16; в правом угловом комод 700 стоит отдельно (без перегородки)
+BW = D + 334 + 2 * T + 600 + 2 * T + 334 + D   # 2432
+BX1 = D + 334                                   # боковина углового + боковина обувного
+BX2 = BX1 + 2 * T + 600                         # боковина обувного + боковина углового
+SH0, SH1 = BX1 + 2 * T, BX2                     # обувной шкаф в свету 600
+LW = T + 500 + 2 * T + 558 + D                  # левая стена 1656
+RW = D + 258 + 700 + 2 * T + 200 + T            # правая стена 1756
 
 
 class V:
@@ -95,6 +98,9 @@ class V:
         for a, b in zip(xs, xs[1:]):
             dim_h(self.X(a), self.X(b), y, str(round(b - a)), ext_from=ext, size=size if b - a > 40 else 1.4)
 
+    def cab(self, x0, x1, s):
+        text((self.X(x0) + self.X(x1)) / 2, self.Z(H) + 5, s, size=1.8, weight="bold", fill="#8a6a3f")
+
     def mark(self, x, s):
         cx, cy = self.X(x), self.Z(H) - 12
         e(f'<line x1="{cx:.2f}" y1="{cy - 4:.2f}" x2="{cx:.2f}" y2="{self.Z(H) - 1:.2f}" stroke="#c0392b" stroke-width="0.3"/>')
@@ -119,22 +125,25 @@ def back_wall(ox, fy):
     v.base()
     v.section(0, D)
     v.section(BW - D, BW)
-    v.panel(BX1)
-    v.panel(BX2)
+    for x in (BX1, BX1 + T, BX2, BX2 + T):
+        v.panel(x)
     hanging(v, D, BX1)
-    hanging(v, BX2 + T, BW - D)
+    hanging(v, BX2 + 2 * T, BW - D)
     # обувные полки в центре
     step = (ANT - PL - T) / (SHOE_N + 1)
     zs = [round(PL + T + step * (i + 1)) for i in range(SHOE_N)]
     for z in zs:
-        v.shelf(BX1 + T, BX2, z)
-    v.shelf(BX1 + T, BX2, ANT)
-    v.hdims([0, D, BX1, BX1 + T, BX2, BX2 + T, BW - D, BW], v.Z(0) + 5, v.Z(0) + 0.5)
+        v.shelf(SH0, SH1, z)
+    v.shelf(SH0, SH1, ANT)
+    v.hdims([0, D, BX1, SH0, SH1, BX2 + 2 * T, BW - D, BW], v.Z(0) + 5, v.Z(0) + 0.5)
     dim_h(v.X(0), v.X(BW), v.Z(0) + 12, str(BW), size=2.4)
     v.vdims([0, PL, RAIL_LOW, RAIL_UP, ANT, TOP, H], v.X(0) - 5, v.X(0))
     dim_v(v.Z(H), v.Z(0), v.X(0) - 12, str(H), ext_from=v.X(0), size=2.4)
-    v.vdims([PL + T, zs[0]] + [zs[1]], v.X(BX2) - 3, None, size=1.5)
-    text(v.X((BX1 + BX2) / 2), v.Z(ANT) - 13, f"{SHOE_N} полок для обуви, шаг {round(step)}", size=1.6, weight="bold")
+    v.vdims([PL + T, zs[0]] + [zs[1]], v.X(SH1) - 3, None, size=1.5)
+    text(v.X((SH0 + SH1) / 2), v.Z(ANT) - 13, f"{SHOE_N} полок для обуви, шаг {round(step)}", size=1.6, weight="bold")
+    v.cab(D, BX1, "ш.1 угловой")
+    v.cab(SH0, SH1, "ш.2 обувь 600")
+    v.cab(BX2 + 2 * T, BW - D, "ш.3 угловой")
     v.mark(0, "1")
     v.mark(BW, "2")
     return v
@@ -145,9 +154,10 @@ def left_wall(ox, fy):
     v = V(ox, fy, LW)
     v.base()
     x_sh0, x_sh1 = T, T + 500                 # открытые полки у входа
-    x_c0 = x_sh1 + T                           # угловая зона 558
+    x_c0 = x_sh1 + 2 * T                       # угловая зона 558
     v.panel(0)
     v.panel(x_sh1)
+    v.panel(x_sh1 + T)
     v.section(LW - D, LW)
     step = (ANT - PL - T) / 8
     for i in range(1, 8):
@@ -160,6 +170,8 @@ def left_wall(ox, fy):
     dim_h(v.X(0), v.X(LW), v.Z(0) + 12, str(LW), size=2.4)
     v.vdims([0, PL, RAIL_UP, ANT, TOP, H], v.X(LW) + 5, v.X(LW))
     v.vdims([PL + T, round(PL + T + step)], v.X(x_sh1) - 3, None, size=1.5)
+    v.cab(T, x_sh1, "ш.4 полки 500")
+    v.cab(x_c0, LW - D, "ш.1 угловой")
     v.mark(0, "3")
     v.mark(LW, "1")
     return v
@@ -170,14 +182,13 @@ def right_wall(ox, fy):
     v = V(ox, fy, RW)
     v.base()
     v.section(0, D)
-    x_h0 = D + 258 + T                         # ниша 700
-    x_h1 = x_h0 + 700
-    x_n0 = x_h1 + T                            # ниша 200 (гладильная доска)
-    v.panel(D + 258)
+    x_h0 = D + 258                             # комод 700 (отдельно стоящий)
+    x_h1 = x_h0 + 700                          # = конец углового шкафа (958 в свету)
+    x_n0 = x_h1 + 2 * T                        # шкаф 200 (гладильная доска)
     v.panel(x_h1)
+    v.panel(x_h1 + T)
     v.panel(RW - T)
-    # угол 258 – продолжение штанг задней стены
-    v.shelf(D, D + 258, ANT)
+    v.shelf(D, x_h0, ANT)
     # 700: комод + штанга
     v.r(x_h0, x_h1, PL + T, DR_TOP)
     for i in range(4):
@@ -186,18 +197,20 @@ def right_wall(ox, fy):
         cx = v.X((x_h0 + x_h1) / 2)
         line(cx - 5, v.Z(z0 + 140), cx + 5, v.Z(z0 + 140), w=0.5, color="#222")
     v.shelf(x_h0, x_h1, DR_TOP, led=False)
-    hanging(v, x_h0, x_h1, double=False, length=1100)
-    text(v.X((x_h0 + x_h1) / 2), v.Z(DR_TOP / 2 + 40), "КОМОД — 4 ящика", size=1.8, weight="bold")
+    hanging(v, D, x_h1, double=False, length=1100)
+    text(v.X((x_h0 + x_h1) / 2), v.Z(DR_TOP / 2 + 40), "КОМОД (отдельно), 4 ящика", size=1.8, weight="bold")
     # 200: гладильная доска + 2 полки сверху
     for z in (1750, 1950):
         v.shelf(x_n0, RW - T, z, led=False)
     v.shelf(x_n0, RW - T, ANT)
     v.r(x_n0 + 40, x_n0 + 110, PL + T + 20, PL + T + 1400, fill="#cfe0ef", sw=0.25)
     text(v.X(x_n0 + 100), v.Z(800), "гладильная доска", size=1.5, rot=-90, fill="#2f5d8a")
-    v.hdims([0, D, D + 258, x_h0, x_h1, x_n0, RW - T, RW], v.Z(0) + 5, v.Z(0) + 0.5)
+    v.hdims([0, D, x_h0, x_h1, x_n0, RW - T, RW], v.Z(0) + 5, v.Z(0) + 0.5)
     dim_h(v.X(0), v.X(RW), v.Z(0) + 12, str(RW), size=2.4)
     v.vdims([0, PL, DR_TOP + T, RAIL_UP, ANT, TOP, H], v.X(RW) + 5, v.X(RW))
     v.vdims([PL + T, 1750, 1950, ANT], v.X(x_n0) - 3, None, size=1.5)
+    v.cab(D, x_h1, "ш.3 угловой (комод отдельно)")
+    v.cab(x_n0, RW - T, "ш.5")
     v.mark(0, "2")
     v.mark(RW, "4")
     return v
@@ -234,7 +247,8 @@ def notes(x, y):
     y2 = y + 38
     text(x, y2, "ПРИМЕЧАНИЕ", size=2.6, weight="bold", anchor="start")
     rows = ["1. Корпус ЛДСП 16, глубина 550, высота 2530, цоколь 70.",
-            "2. Размеры ниш по полу — в свету (по 3D-модели): 334 / 600 / 334; 558 / 500; 258 / 700 / 200.",
+            "2. 5 отдельных шкафов: 2 угловых, 500 (полки), 600 (обувь), 200 (гладильная доска); на стыках 16 + 16.",
+            "   Размеры ниш — в свету: 334 / 600 / 334; 558 / 500; 258 + 700 / 200. Комод 700 — отдельно стоящий.",
             "3. Высоты полок и штанг — уточнить по месту; штанги 2 яруса: 2030 и 1050.",
             "4. Подсветка — в каждой открытой полке и под полкой антресоли."]
     for k, s in enumerate(rows):
