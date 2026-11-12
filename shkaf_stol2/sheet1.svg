@@ -4,14 +4,26 @@
 <rect x="10.00" y="5.00" width="579.00" height="410.00" fill="none" stroke="#111" stroke-width="0.6" />
 <text x="297.00" y="20.00" font-size="7.6" text-anchor="middle" font-weight="bold" fill="#111">ШКАФ СО СТОЛОМ И ТУМБОЙ — ВИД С ФАСАДАМИ</text>
 <line x1="34.00" y1="320.00" x2="553.54" y2="320.00" stroke="#111" stroke-width="0.5"/>
-<rect x="38.00" y="262.31" width="61.54" height="57.69" fill="#e9e6e1" stroke="#111" stroke-width="0.35" />
-<rect x="38.00" y="262.31" width="1.23" height="57.69" fill="#e9e6e1" stroke="#111" stroke-width="0.25" />
-<rect x="98.31" y="262.31" width="1.23" height="57.69" fill="#e9e6e1" stroke="#111" stroke-width="0.25" />
-<rect x="39.23" y="318.77" width="59.08" height="1.23" fill="#e9e6e1" stroke="#111" stroke-width="0.25" />
-<rect x="39.23" y="262.31" width="59.08" height="1.23" fill="#e9e6e1" stroke="#111" stroke-width="0.25" />
-<rect x="38.15" y="300.92" width="61.23" height="18.92" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
-<rect x="38.15" y="281.69" width="61.23" height="18.92" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
-<rect x="38.15" y="262.46" width="61.23" height="18.92" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
+<rect x="41.08" y="314.62" width="55.38" height="5.38" fill="url(#hatch)" stroke="#111" stroke-width="0.15" />
+<rect x="38.15" y="297.33" width="61.23" height="17.13" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
+<rect x="38.15" y="279.90" width="61.23" height="17.13" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
+<rect x="38.15" y="262.46" width="61.23" height="17.13" fill="#f4f2ee" stroke="#111" stroke-width="0.35" />
+<line x1="102.54" y1="295.68" x2="102.54" y2="316.12" stroke="#111" stroke-width="0.18"/>
+<line x1="101.64" y1="298.08" x2="103.44" y2="296.28" stroke="#111" stroke-width="0.35"/>
+<line x1="101.64" y1="315.52" x2="103.44" y2="313.72" stroke="#111" stroke-width="0.35"/>
+<text x="101.74" y="305.90" font-size="2.4699999999999998" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 101.74 305.90)">227</text>
+<line x1="102.54" y1="278.24" x2="102.54" y2="298.68" stroke="#111" stroke-width="0.18"/>
+<line x1="101.64" y1="280.64" x2="103.44" y2="278.84" stroke="#111" stroke-width="0.35"/>
+<line x1="101.64" y1="298.08" x2="103.44" y2="296.28" stroke="#111" stroke-width="0.35"/>
+<text x="101.74" y="288.46" font-size="2.4699999999999998" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 101.74 288.46)">227</text>
+<line x1="102.54" y1="260.81" x2="102.54" y2="281.24" stroke="#111" stroke-width="0.18"/>
+<line x1="101.64" y1="263.21" x2="103.44" y2="261.41" stroke="#111" stroke-width="0.35"/>
+<line x1="101.64" y1="280.64" x2="103.44" y2="278.84" stroke="#111" stroke-width="0.35"/>
+<text x="101.74" y="271.03" font-size="2.4699999999999998" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 101.74 271.03)">227</text>
+<line x1="102.54" y1="313.12" x2="102.54" y2="321.50" stroke="#111" stroke-width="0.18"/>
+<line x1="101.64" y1="315.52" x2="103.44" y2="313.72" stroke="#111" stroke-width="0.35"/>
+<line x1="101.64" y1="320.90" x2="103.44" y2="319.10" stroke="#111" stroke-width="0.35"/>
+<text x="101.74" y="317.31" font-size="2.4699999999999998" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 101.74 317.31)">70</text>
 <rect x="245.69" y="262.31" width="46.15" height="52.31" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
 <rect x="248.77" y="314.62" width="40.00" height="5.38" fill="url(#hatch)" stroke="#111" stroke-width="0.15" />
 <rect x="38.00" y="259.85" width="211.54" height="2.46" fill="#4a3b31" stroke="#111" stroke-width="0.3" />

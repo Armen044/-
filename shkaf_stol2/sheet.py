@@ -81,10 +81,12 @@ def even(z0, z1, n):
 def interior(v):
     line(v.X(0) - 4, v.Z(0), v.X(W_ALL) + 4, v.Z(0), w=0.5)
     # ---- стол: тумба 800 слева, столешница 2700
-    v.box(0, PED, 0, DESK_H)
+    v.r(40, PED - 40, 0, PL, fill="url(#hatch)", sw=0.15)
+    v.box(0, PED, PL, DESK_H)
+    hh = (DESK_H - PL - 2 * T) / 3
     for i in range(3):
-        z0 = T + 4 + i * (DESK_H - 2 * T) / 3
-        v.r(T + 6, PED - T - 6, z0, z0 + (DESK_H - 2 * T) / 3 - 8, fill="#efe9e1", sw=0.25)
+        z0 = PL + T + 4 + i * hh
+        v.r(T + 6, PED - T - 6, z0, z0 + hh - 8, fill="#efe9e1", sw=0.25)
     text(v.X(PED / 2), v.Z(DESK_H / 2), "тумба 800, 3 ящика", size=1.6, weight="bold")
     v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
     # под нишей – открытая полка под столом
@@ -116,10 +118,23 @@ def interior(v):
         dr = [(s0 + T + 10, s0 + T + 170), (s0 + T + 180, s0 + T + 340)]
         s1 = s0 + T + 360                        # полка над ящиками
         v.shelf(x0 + T, x1 - T, s0)
+        # утолщение 16 + 16 под петли: в левой секции слева, в правой справа
+        ta, tb = (x0 + T, x0 + 3 * T) if k == 0 else (x1 - 3 * T, x1 - T)
+        v.r(ta, ta + T, s0 + T, s1)
+        v.r(ta + T, tb, s0 + T, s1)
+        da, db = (tb, x1 - T) if k == 0 else (x0 + T, ta)
         for a, c in dr:
-            v.r(x0 + T + 8, x1 - T - 8, a, c, fill="#efe9e1", sw=0.3)
-            cx = (v.X(x0) + v.X(x1)) / 2
+            v.r(da + 4, db - 4, a, c, fill="#efe9e1", sw=0.3)
+            cx = (v.X(da) + v.X(db)) / 2
             line(cx - 4, v.Z(c - 40), cx + 4, v.Z(c - 40), w=0.5, color="#222")
+        # высоты ящиков
+        xd = v.X((da + db) / 2) + 9
+        for a, c in dr:
+            dim_v(v.Z(c), v.Z(a), xd, str(c - a), size=1.3)
+        dim_v(v.Z(dr[1][0]), v.Z(dr[0][1]), xd, str(dr[1][0] - dr[0][1]), size=1.1)
+        yy = v.Z(s1) + 3
+        dim_h(v.X(ta), v.X(tb), v.Z(s0 + T + 40), "32", size=1.2)
+
         v.shelf(x0 + T, x1 - T, s1)
         top = PL + LOW - T
         ss = even(s1 + T, top, 4)
@@ -127,7 +142,6 @@ def interior(v):
             v.shelf(x0 + T, x1 - T, z)
         pts = [b, s0, s1 + T] + [p for z in ss for p in (z, z + T)] + [top]
         v.gaps(x1 - T - 4, [b, s0] + pts[2:])
-        dim_v(v.Z(s0 + T + 340), v.Z(s0 + T + 10), v.X(x0 + T + 30), "2 ящика", size=1.2)
         v.gaps(x1 - T - 4, [PL + LOW + T, H - T])
         text(v.X((x0 + x1) / 2), v.Z(H) + 5, f"секция {k + 1} — 600", size=1.6, weight="bold", fill="#8a6a3f")
     # ---- низкая тумба 2150 × 350
@@ -143,10 +157,15 @@ def fronts(v):
     line(v.X(0) - 4, v.Z(0), v.X(W_ALL) + 4, v.Z(0), w=0.5)
     G = 2
     # стол
-    v.box(0, PED, 0, DESK_H, fill=BODY)
+    v.r(40, PED - 40, 0, PL, fill="url(#hatch)", sw=0.15)
+    fh = (DESK_H - PL) / 3
     for i in range(3):
-        z0 = i * DESK_H / 3
-        v.r(G, PED - G, z0 + G, z0 + DESK_H / 3 - G, fill=FRONT, sw=0.35)
+        z0 = PL + i * fh
+        v.r(G, PED - G, z0 + G, z0 + fh - G, fill=FRONT, sw=0.35)
+    for i in range(3):
+        z0 = PL + i * fh
+        dim_v(v.Z(z0 + fh), v.Z(z0), v.X(PED) + 3, str(round(fh)), size=1.3)
+    dim_v(v.Z(PL), v.Z(0), v.X(PED) + 3, str(PL), size=1.3)
     v.r(X_NICHE, N1, PL, DESK_H, fill=BACK, sw=0.3)
     v.r(X_NICHE + 40, N1 - 40, 0, PL, fill="url(#hatch)", sw=0.15)
     v.r(0, TOP_L, DESK_H, DESK, fill=TOPC, sw=0.3)
