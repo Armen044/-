@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297" font-family="DejaVu Sans, Arial, sans-serif">
+<defs><marker id="arr" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L4,2 L0,4 z" fill="#33373b"/></marker><pattern id="hatch" width="1.2" height="1.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="1.2" stroke="#777" stroke-width="0.25"/></pattern><pattern id="wall" width="1.6" height="1.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.6" height="1.6" fill="#e3e3e3"/><line x1="0" y1="0" x2="0" y2="1.6" stroke="#666" stroke-width="0.3"/></pattern><pattern id="drw" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="2" height="2" fill="#efe6da"/><line x1="0" y1="0" x2="0" y2="2" stroke="#b39b7f" stroke-width="0.25"/></pattern></defs>
+<rect x="0.00" y="0.00" width="420.00" height="297.00" fill="#fff" stroke="none" stroke-width="0.25" />
+<rect x="8.00" y="6.00" width="404.00" height="285.00" fill="none" stroke="#111" stroke-width="0.6" />
+<text x="210.00" y="20.00" font-size="6.84" text-anchor="middle" font-weight="bold" fill="#111">ЛИСТ 1 — ПАНЕЛЬ КОРОБА ИНСТАЛЛЯЦИИ</text>
+<text x="210.00" y="28.00" font-size="3.24" text-anchor="middle" font-weight="normal" fill="#555">ЛДСП 2800 × 2070, деталь 2050 × 1154</text>
+<rect x="125.00" y="40.00" width="165.60" height="224.00" fill="#f4f1ec" stroke="#111" stroke-width="0.5" />
+<line x1="130.91" y1="40.00" x2="130.91" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="136.83" y1="40.00" x2="136.83" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="142.74" y1="40.00" x2="142.74" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="148.66" y1="40.00" x2="148.66" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="154.57" y1="40.00" x2="154.57" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="160.49" y1="40.00" x2="160.49" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="166.40" y1="40.00" x2="166.40" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="172.31" y1="40.00" x2="172.31" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="178.23" y1="40.00" x2="178.23" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="184.14" y1="40.00" x2="184.14" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="190.06" y1="40.00" x2="190.06" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="195.97" y1="40.00" x2="195.97" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="201.89" y1="40.00" x2="201.89" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="207.80" y1="40.00" x2="207.80" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="213.71" y1="40.00" x2="213.71" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="219.63" y1="40.00" x2="219.63" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="225.54" y1="40.00" x2="225.54" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="231.46" y1="40.00" x2="231.46" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="237.37" y1="40.00" x2="237.37" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="243.29" y1="40.00" x2="243.29" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="249.20" y1="40.00" x2="249.20" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="255.11" y1="40.00" x2="255.11" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="261.03" y1="40.00" x2="261.03" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="266.94" y1="40.00" x2="266.94" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="272.86" y1="40.00" x2="272.86" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="278.77" y1="40.00" x2="278.77" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<line x1="284.69" y1="40.00" x2="284.69" y2="264.00" stroke="#c9b79f" stroke-width="0.08"/>
+<rect x="125.00" y="40.00" width="164.00" height="92.32" fill="#e8d3b8" stroke="#111" stroke-width="0.5" />
+<rect x="289.00" y="40.00" width="1.60" height="92.32" fill="url(#hatch)" stroke="#111" stroke-width="0.25" />
+<text x="207.00" y="84.80" font-size="4.680000000000001" text-anchor="middle" font-weight="bold" fill="#111">ПАНЕЛЬ КОРОБА</text>
+<text x="207.00" y="91.80" font-size="4.32" text-anchor="middle" font-weight="normal" fill="#111">2050 × 1154 — 1 шт</text>
+<text x="207.80" y="198.72" font-size="3.6" text-anchor="middle" font-weight="normal" fill="#777">остаток 2070 × 1646</text>
+<line x1="125.00" y1="40.00" x2="125.00" y2="33.50" stroke="#111" stroke-width="0.15"/>
+<line x1="289.00" y1="40.00" x2="289.00" y2="33.50" stroke="#111" stroke-width="0.15"/>
+<line x1="123.50" y1="35.00" x2="290.50" y2="35.00" stroke="#111" stroke-width="0.18"/>
+<line x1="124.10" y1="35.90" x2="125.90" y2="34.10" stroke="#111" stroke-width="0.35"/>
+<line x1="288.10" y1="35.90" x2="289.90" y2="34.10" stroke="#111" stroke-width="0.35"/>
+<text x="207.00" y="34.20" font-size="3.9600000000000004" text-anchor="middle" font-weight="normal" fill="#111">2050</text>
+<line x1="125.00" y1="264.00" x2="125.00" y2="272.50" stroke="#111" stroke-width="0.15"/>
+<line x1="290.60" y1="264.00" x2="290.60" y2="272.50" stroke="#111" stroke-width="0.15"/>
+<line x1="123.50" y1="271.00" x2="292.10" y2="271.00" stroke="#111" stroke-width="0.18"/>
+<line x1="124.10" y1="271.90" x2="125.90" y2="270.10" stroke="#111" stroke-width="0.35"/>
+<line x1="289.70" y1="271.90" x2="291.50" y2="270.10" stroke="#111" stroke-width="0.35"/>
+<text x="207.80" y="270.20" font-size="4.32" text-anchor="middle" font-weight="normal" fill="#111">2070</text>
+<line x1="125.00" y1="40.00" x2="118.50" y2="40.00" stroke="#111" stroke-width="0.15"/>
+<line x1="125.00" y1="132.32" x2="118.50" y2="132.32" stroke="#111" stroke-width="0.15"/>
+<line x1="120.00" y1="38.50" x2="120.00" y2="133.82" stroke="#111" stroke-width="0.18"/>
+<line x1="119.10" y1="40.90" x2="120.90" y2="39.10" stroke="#111" stroke-width="0.35"/>
+<line x1="119.10" y1="133.22" x2="120.90" y2="131.42" stroke="#111" stroke-width="0.35"/>
+<text x="119.20" y="86.16" font-size="3.9600000000000004" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 119.20 86.16)">1154</text>
+<line x1="125.00" y1="132.32" x2="118.50" y2="132.32" stroke="#111" stroke-width="0.15"/>
+<line x1="125.00" y1="264.00" x2="118.50" y2="264.00" stroke="#111" stroke-width="0.15"/>
+<line x1="120.00" y1="130.82" x2="120.00" y2="265.50" stroke="#111" stroke-width="0.18"/>
+<line x1="119.10" y1="133.22" x2="120.90" y2="131.42" stroke="#111" stroke-width="0.35"/>
+<line x1="119.10" y1="264.90" x2="120.90" y2="263.10" stroke="#111" stroke-width="0.35"/>
+<text x="119.20" y="198.16" font-size="3.9600000000000004" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 119.20 198.16)">1646</text>
+<line x1="290.60" y1="40.00" x2="299.10" y2="40.00" stroke="#111" stroke-width="0.15"/>
+<line x1="290.60" y1="264.00" x2="299.10" y2="264.00" stroke="#111" stroke-width="0.15"/>
+<line x1="297.60" y1="38.50" x2="297.60" y2="265.50" stroke="#111" stroke-width="0.18"/>
+<line x1="296.70" y1="40.90" x2="298.50" y2="39.10" stroke="#111" stroke-width="0.35"/>
+<line x1="296.70" y1="264.90" x2="298.50" y2="263.10" stroke="#111" stroke-width="0.35"/>
+<text x="296.80" y="152.00" font-size="4.32" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 296.80 152.00)">2800</text>
+<rect x="40.00" y="279.00" width="9.00" height="5.00" fill="#e8d3b8" stroke="#111" stroke-width="0.25" />
+<text x="52.00" y="283.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">деталь</text>
+<rect x="95.00" y="279.00" width="9.00" height="5.00" fill="#f4f1ec" stroke="#111" stroke-width="0.25" />
+<text x="107.00" y="283.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">деловой остаток</text>
+<rect x="150.00" y="279.00" width="9.00" height="5.00" fill="url(#hatch)" stroke="#111" stroke-width="0.25" />
+<text x="162.00" y="283.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">отход / промежуток</text>
+<text x="330.00" y="282.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#555">Лист ЛДСП 2800 × 2070 · размеры в мм</text>
+</svg>
