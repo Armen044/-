@@ -3,398 +3,528 @@
 <rect x="0.00" y="0.00" width="594.00" height="420.00" fill="#fff" stroke="none" stroke-width="0.25" />
 <rect x="10.00" y="5.00" width="579.00" height="410.00" fill="none" stroke="#111" stroke-width="0.6" />
 <text x="297.00" y="18.00" font-size="6.48" text-anchor="middle" font-weight="bold" fill="#111">ШКАФ В КОРИДОРЕ 900 + 900 + 450, глубина 520 — ВАРИАНТЫ НАПОЛНЕНИЯ</text>
-<rect x="30.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="30.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="74.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="30.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="30.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="30.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="30.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="74.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="30.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="30.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="32.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="75.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="75.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="119.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="75.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="75.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="75.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="75.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="119.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="75.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="75.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="77.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="120.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="120.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="141.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="120.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="141.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="122.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<line x1="20.00" y1="212.00" x2="152.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
-<line x1="30.00" y1="212.50" x2="30.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="75.00" y1="212.50" x2="75.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="28.50" y1="216.00" x2="76.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="29.10" y1="216.90" x2="30.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="74.10" y1="216.90" x2="75.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="52.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="75.00" y1="212.50" x2="75.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="120.00" y1="212.50" x2="120.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="73.50" y1="216.00" x2="121.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="74.10" y1="216.90" x2="75.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="119.10" y1="216.90" x2="120.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="97.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="120.00" y1="212.50" x2="120.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="142.50" y1="212.50" x2="142.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="118.50" y1="216.00" x2="144.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="119.10" y1="216.90" x2="120.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="141.60" y1="216.90" x2="143.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="131.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
-<rect x="30.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<line x1="31.05" y1="118.00" x2="73.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
-<rect x="33.69" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="38.52" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="43.34" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="48.16" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="52.98" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="57.80" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="62.63" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="67.45" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="30.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="30.80" y1="200.70" x2="74.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="30.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="30.80" y1="191.20" x2="74.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<text x="52.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
-<text x="52.50" y="197.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 2 полки</text>
-<rect x="75.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<line x1="76.05" y1="118.00" x2="118.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
-<rect x="78.69" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="83.52" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="88.34" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="93.16" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="97.98" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="102.80" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="107.63" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="112.45" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="75.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="75.80" y1="200.70" x2="119.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="75.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="75.80" y1="191.20" x2="119.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="75.80" y="186.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="75.80" y1="181.70" x2="119.20" y2="181.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="75.80" y="177.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<text x="97.50" y="139.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">куртки, сумки</text>
-<text x="97.50" y="193.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 3 полки</text>
-<rect x="121.00" y="198.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="128.25" y1="200.20" x2="134.25" y2="200.20" stroke="#222" stroke-width="0.4"/>
-<rect x="121.00" y="189.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="128.25" y1="191.20" x2="134.25" y2="191.20" stroke="#222" stroke-width="0.4"/>
-<rect x="121.00" y="180.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="128.25" y1="182.20" x2="134.25" y2="182.20" stroke="#222" stroke-width="0.4"/>
-<rect x="120.80" y="179.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="162.90" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="146.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="129.90" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="120.80" y="113.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<text x="131.25" y="193.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">3 ящика</text>
-<text x="131.25" y="152.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">полки</text>
-<text x="86.25" y="34.00" font-size="4.680000000000001" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ А — универсальный</text>
-<line x1="142.50" y1="62.00" x2="149.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="142.50" y1="212.00" x2="149.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="147.50" y1="60.50" x2="147.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="146.60" y1="62.90" x2="148.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="146.60" y1="212.90" x2="148.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="146.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 146.70 137.00)">3000</text>
-<line x1="142.50" y1="208.00" x2="155.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="142.50" y1="212.00" x2="155.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="153.50" y1="206.50" x2="153.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="152.60" y1="208.90" x2="154.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<line x1="152.60" y1="212.90" x2="154.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="152.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 152.70 210.00)">80</text>
-<line x1="142.50" y1="90.50" x2="155.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="142.50" y1="208.00" x2="155.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="153.50" y1="89.00" x2="153.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
-<line x1="152.60" y1="91.40" x2="154.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<line x1="152.60" y1="208.90" x2="154.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<text x="152.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 152.70 149.25)">2350</text>
-<line x1="142.50" y1="62.00" x2="155.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="142.50" y1="90.50" x2="155.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="153.50" y1="60.50" x2="153.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
-<line x1="152.60" y1="62.90" x2="154.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="152.60" y1="91.40" x2="154.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<text x="152.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 152.70 76.25)">570</text>
-<text x="30.00" y="225.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 900: длинная верхняя одежда (штанга 1880) + 2 полки для обуви внизу</text>
-<text x="30.00" y="232.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 900: куртки и сумки + 3 обувные полки внизу</text>
-<text x="30.00" y="239.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 450: 3 выдвижных ящика под мелочь + полки</text>
-<rect x="220.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="220.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="264.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="220.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="220.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="220.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="220.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="264.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="220.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="220.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="222.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="265.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="265.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="309.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="265.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="309.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="267.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="310.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="310.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="331.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="310.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="331.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="312.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<line x1="210.00" y1="212.00" x2="342.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
-<line x1="220.00" y1="212.50" x2="220.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="265.00" y1="212.50" x2="265.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="218.50" y1="216.00" x2="266.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="219.10" y1="216.90" x2="220.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="264.10" y1="216.90" x2="265.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="242.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="265.00" y1="212.50" x2="265.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="310.00" y1="212.50" x2="310.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="263.50" y1="216.00" x2="311.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="264.10" y1="216.90" x2="265.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="309.10" y1="216.90" x2="310.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="287.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="310.00" y1="212.50" x2="310.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="332.50" y1="212.50" x2="332.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="308.50" y1="216.00" x2="334.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="309.10" y1="216.90" x2="310.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="331.60" y1="216.90" x2="333.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="321.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
-<rect x="220.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<line x1="221.05" y1="118.00" x2="263.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
-<rect x="223.69" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="228.52" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="233.34" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="238.16" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="242.98" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="247.80" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="252.63" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="257.45" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="220.80" y="191.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<text x="242.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
-<text x="242.50" y="200.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">сапоги, коробки</text>
-<rect x="266.00" y="198.40" width="43.00" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="284.50" y1="200.20" x2="290.50" y2="200.20" stroke="#222" stroke-width="0.4"/>
-<rect x="266.00" y="189.40" width="43.00" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="284.50" y1="191.20" x2="290.50" y2="191.20" stroke="#222" stroke-width="0.4"/>
-<rect x="265.80" y="188.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="265.80" y="178.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="173.20" x2="309.20" y2="173.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="168.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="163.20" x2="309.20" y2="163.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="158.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="153.20" x2="309.20" y2="153.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="148.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="143.20" x2="309.20" y2="143.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="138.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="133.20" x2="309.20" y2="133.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="128.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="123.20" x2="309.20" y2="123.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="118.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="113.20" x2="309.20" y2="113.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="265.80" y="108.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="265.80" y1="103.20" x2="309.20" y2="103.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<text x="287.50" y="198.00" font-size="2.52" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
-<text x="287.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ОБУВНИЦА, 8 полок 15°</text>
-<rect x="310.80" y="188.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="171.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="153.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="136.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="310.80" y="113.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<text x="321.25" y="162.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">полки</text>
-<text x="321.25" y="199.50" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">пылесос</text>
-<text x="276.25" y="34.00" font-size="4.680000000000001" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ Б — много обуви</text>
-<line x1="332.50" y1="62.00" x2="339.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="332.50" y1="212.00" x2="339.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="337.50" y1="60.50" x2="337.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="336.60" y1="62.90" x2="338.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="336.60" y1="212.90" x2="338.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="336.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 336.70 137.00)">3000</text>
-<line x1="332.50" y1="208.00" x2="345.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="332.50" y1="212.00" x2="345.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="343.50" y1="206.50" x2="343.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="342.60" y1="208.90" x2="344.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<line x1="342.60" y1="212.90" x2="344.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="342.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 342.70 210.00)">80</text>
-<line x1="332.50" y1="90.50" x2="345.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="332.50" y1="208.00" x2="345.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="343.50" y1="89.00" x2="343.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
-<line x1="342.60" y1="91.40" x2="344.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<line x1="342.60" y1="208.90" x2="344.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<text x="342.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 342.70 149.25)">2350</text>
-<line x1="332.50" y1="62.00" x2="345.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="332.50" y1="90.50" x2="345.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="343.50" y1="60.50" x2="343.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
-<line x1="342.60" y1="62.90" x2="344.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="342.60" y1="91.40" x2="344.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<text x="342.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 342.70 76.25)">570</text>
-<text x="220.00" y="225.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 900: вся высота под верхнюю одежду (пальто, пуховики)</text>
-<text x="220.00" y="232.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 900: 2 ящика под мелочь + обувница 8 наклонных полок</text>
-<text x="220.00" y="239.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 450: открытые полки, внизу место под пылесос</text>
-<rect x="410.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="410.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="454.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="410.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="410.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="454.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="412.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="455.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="455.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="499.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="455.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="455.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="455.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="455.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="499.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="455.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="455.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="457.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<rect x="500.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="500.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="521.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="500.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="500.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="500.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
-<rect x="500.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="521.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="500.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="500.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="502.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
-<line x1="400.00" y1="212.00" x2="532.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
-<line x1="410.00" y1="212.50" x2="410.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="455.00" y1="212.50" x2="455.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="408.50" y1="216.00" x2="456.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="409.10" y1="216.90" x2="410.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="454.10" y1="216.90" x2="455.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="432.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="455.00" y1="212.50" x2="455.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="500.00" y1="212.50" x2="500.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="453.50" y1="216.00" x2="501.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="454.10" y1="216.90" x2="455.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="499.10" y1="216.90" x2="500.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="477.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
-<line x1="500.00" y1="212.50" x2="500.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="522.50" y1="212.50" x2="522.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
-<line x1="498.50" y1="216.00" x2="524.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
-<line x1="499.10" y1="216.90" x2="500.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<line x1="521.60" y1="216.90" x2="523.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
-<text x="511.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
-<rect x="410.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<line x1="411.05" y1="118.00" x2="453.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
-<rect x="413.69" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="418.52" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="423.34" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="428.16" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="432.98" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="437.80" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="442.63" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="447.45" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="455.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<line x1="456.05" y1="118.00" x2="498.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
-<rect x="458.69" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="463.52" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="468.34" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="473.16" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="477.98" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="482.80" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="487.63" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<rect x="492.45" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
-<text x="432.50" y="144.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
-<text x="477.50" y="144.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
-<rect x="410.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="195.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<rect x="410.80" y="185.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<text x="432.50" y="191.50" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">выдвижные обувные полки, 3</text>
-<rect x="456.00" y="197.40" width="43.00" height="9.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="474.50" y1="199.20" x2="480.50" y2="199.20" stroke="#222" stroke-width="0.4"/>
-<rect x="456.00" y="187.40" width="43.00" height="9.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
-<line x1="474.50" y1="189.20" x2="480.50" y2="189.20" stroke="#222" stroke-width="0.4"/>
-<rect x="455.80" y="186.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="456.30" y="171.40" width="42.40" height="15.00" fill="#d8cfe3" stroke="#111" stroke-width="0.2" />
-<text x="477.50" y="198.00" font-size="2.52" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
-<text x="477.50" y="179.20" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">корзина сумки</text>
-<rect x="500.80" y="205.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="200.70" x2="521.70" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="195.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="190.20" x2="521.70" y2="190.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="184.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="179.70" x2="521.70" y2="179.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="174.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="169.20" x2="521.70" y2="169.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="163.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="158.70" x2="521.70" y2="158.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="153.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="148.20" x2="521.70" y2="148.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="142.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="137.70" x2="521.70" y2="137.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="132.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="127.20" x2="521.70" y2="127.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="121.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="116.70" x2="521.70" y2="116.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<rect x="500.80" y="111.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
-<line x1="500.80" y1="106.20" x2="521.70" y2="106.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
-<text x="511.25" y="107.00" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь</text>
-<text x="466.25" y="34.00" font-size="4.680000000000001" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ В — две штанги</text>
-<line x1="522.50" y1="62.00" x2="529.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="522.50" y1="212.00" x2="529.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="527.50" y1="60.50" x2="527.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="526.60" y1="62.90" x2="528.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="526.60" y1="212.90" x2="528.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="526.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 526.70 137.00)">3000</text>
-<line x1="522.50" y1="208.00" x2="535.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="522.50" y1="212.00" x2="535.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
-<line x1="533.50" y1="206.50" x2="533.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
-<line x1="532.60" y1="208.90" x2="534.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<line x1="532.60" y1="212.90" x2="534.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
-<text x="532.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 532.70 210.00)">80</text>
-<line x1="522.50" y1="90.50" x2="535.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="522.50" y1="208.00" x2="535.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
-<line x1="533.50" y1="89.00" x2="533.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
-<line x1="532.60" y1="91.40" x2="534.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<line x1="532.60" y1="208.90" x2="534.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
-<text x="532.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 532.70 149.25)">2350</text>
-<line x1="522.50" y1="62.00" x2="535.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
-<line x1="522.50" y1="90.50" x2="535.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
-<line x1="533.50" y1="60.50" x2="533.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
-<line x1="532.60" y1="62.90" x2="534.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
-<line x1="532.60" y1="91.40" x2="534.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
-<text x="532.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 532.70 76.25)">570</text>
-<text x="410.00" y="225.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 900 + 900: штанги для одежды на всю ширину 1800</text>
-<text x="410.00" y="232.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• под ними: выдвижные обувные полки и 2 ящика + корзина</text>
-<text x="410.00" y="239.00" font-size="3.06" text-anchor="start" font-weight="normal" fill="#111">• 450: обувница 10 полок во всю высоту</text>
+<rect x="22.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="22.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="66.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="22.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="22.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="22.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="22.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="66.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="22.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="22.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="24.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="67.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="67.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="111.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="67.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="67.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="67.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="67.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="111.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="67.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="67.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="69.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="112.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="112.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="133.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="112.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="133.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="114.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<line x1="12.00" y1="212.00" x2="144.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
+<line x1="22.00" y1="212.50" x2="22.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="67.00" y1="212.50" x2="67.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="20.50" y1="216.00" x2="68.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="21.10" y1="216.90" x2="22.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="66.10" y1="216.90" x2="67.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="44.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="67.00" y1="212.50" x2="67.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="112.00" y1="212.50" x2="112.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="65.50" y1="216.00" x2="113.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="66.10" y1="216.90" x2="67.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="111.10" y1="216.90" x2="112.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="89.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="112.00" y1="212.50" x2="112.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="134.50" y1="212.50" x2="134.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="110.50" y1="216.00" x2="136.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="111.10" y1="216.90" x2="112.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="133.60" y1="216.90" x2="135.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="123.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
+<rect x="22.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="23.05" y1="118.00" x2="65.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="25.69" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="30.52" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="35.34" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="40.16" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="44.98" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="49.80" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="54.63" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="59.45" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="22.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="22.80" y1="200.70" x2="66.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="22.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="22.80" y1="191.20" x2="66.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<text x="44.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
+<text x="44.50" y="197.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 2 полки</text>
+<rect x="67.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="68.05" y1="118.00" x2="110.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="70.69" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="75.52" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="80.34" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="85.16" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="89.98" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="94.80" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="99.63" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="104.45" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="67.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="67.80" y1="200.70" x2="111.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="67.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="67.80" y1="191.20" x2="111.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="67.80" y="186.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="67.80" y1="181.70" x2="111.20" y2="181.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="67.80" y="177.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="89.50" y="139.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">куртки, сумки</text>
+<text x="89.50" y="193.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 3 полки</text>
+<rect x="113.00" y="198.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="120.25" y1="200.20" x2="126.25" y2="200.20" stroke="#222" stroke-width="0.4"/>
+<rect x="113.00" y="189.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="120.25" y1="191.20" x2="126.25" y2="191.20" stroke="#222" stroke-width="0.4"/>
+<rect x="113.00" y="180.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="120.25" y1="182.20" x2="126.25" y2="182.20" stroke="#222" stroke-width="0.4"/>
+<rect x="112.80" y="179.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="162.90" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="146.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="129.90" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="112.80" y="113.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="123.25" y="193.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">3 ящика</text>
+<text x="123.25" y="152.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">полки</text>
+<text x="78.25" y="34.00" font-size="3.9600000000000004" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ А — универсальный</text>
+<line x1="134.50" y1="62.00" x2="141.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="134.50" y1="212.00" x2="141.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="139.50" y1="60.50" x2="139.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="138.60" y1="62.90" x2="140.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="138.60" y1="212.90" x2="140.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="138.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 138.70 137.00)">3000</text>
+<line x1="134.50" y1="208.00" x2="147.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="134.50" y1="212.00" x2="147.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="145.50" y1="206.50" x2="145.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="144.60" y1="208.90" x2="146.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<line x1="144.60" y1="212.90" x2="146.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="144.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 144.70 210.00)">80</text>
+<line x1="134.50" y1="90.50" x2="147.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="134.50" y1="208.00" x2="147.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="145.50" y1="89.00" x2="145.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
+<line x1="144.60" y1="91.40" x2="146.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<line x1="144.60" y1="208.90" x2="146.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<text x="144.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 144.70 149.25)">2350</text>
+<line x1="134.50" y1="62.00" x2="147.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="134.50" y1="90.50" x2="147.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="145.50" y1="60.50" x2="145.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
+<line x1="144.60" y1="62.90" x2="146.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="144.60" y1="91.40" x2="146.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<text x="144.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 144.70 76.25)">570</text>
+<text x="22.00" y="225.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: длинная верхняя одежда (штанга 1880) + 2 полки для обуви внизу</text>
+<text x="22.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: куртки и сумки + 3 обувные полки внизу</text>
+<text x="22.00" y="239.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 450: 3 выдвижных ящика под мелочь + полки</text>
+<rect x="164.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="164.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="208.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="164.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="164.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="164.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="164.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="208.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="164.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="164.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="166.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="209.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="209.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="253.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="209.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="253.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="211.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="254.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="254.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="275.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="254.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="275.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="256.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<line x1="154.00" y1="212.00" x2="286.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
+<line x1="164.00" y1="212.50" x2="164.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="209.00" y1="212.50" x2="209.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="162.50" y1="216.00" x2="210.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="163.10" y1="216.90" x2="164.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="208.10" y1="216.90" x2="209.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="186.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="209.00" y1="212.50" x2="209.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="254.00" y1="212.50" x2="254.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="207.50" y1="216.00" x2="255.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="208.10" y1="216.90" x2="209.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="253.10" y1="216.90" x2="254.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="231.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="254.00" y1="212.50" x2="254.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="276.50" y1="212.50" x2="276.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="252.50" y1="216.00" x2="278.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="253.10" y1="216.90" x2="254.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="275.60" y1="216.90" x2="277.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="265.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
+<rect x="164.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="165.05" y1="118.00" x2="207.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="167.69" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="172.52" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="177.34" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="182.16" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="186.98" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="191.80" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="196.63" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="201.45" y="118.80" width="3.86" height="66.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="164.80" y="191.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="186.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
+<text x="186.50" y="200.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">сапоги, коробки</text>
+<rect x="210.00" y="198.40" width="43.00" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="228.50" y1="200.20" x2="234.50" y2="200.20" stroke="#222" stroke-width="0.4"/>
+<rect x="210.00" y="189.40" width="43.00" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="228.50" y1="191.20" x2="234.50" y2="191.20" stroke="#222" stroke-width="0.4"/>
+<rect x="209.80" y="188.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="209.80" y="178.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="173.20" x2="253.20" y2="173.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="168.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="163.20" x2="253.20" y2="163.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="158.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="153.20" x2="253.20" y2="153.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="148.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="143.20" x2="253.20" y2="143.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="138.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="133.20" x2="253.20" y2="133.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="128.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="123.20" x2="253.20" y2="123.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="118.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="113.20" x2="253.20" y2="113.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="209.80" y="108.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="209.80" y1="103.20" x2="253.20" y2="103.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<text x="231.50" y="198.00" font-size="2.52" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
+<text x="231.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ОБУВНИЦА, 8 полок 15°</text>
+<rect x="254.80" y="188.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="171.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="153.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="136.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="254.80" y="113.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="265.25" y="162.00" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">полки</text>
+<text x="265.25" y="199.50" font-size="2.3400000000000003" text-anchor="middle" font-weight="bold" fill="#5b4636">пылесос</text>
+<text x="220.25" y="34.00" font-size="3.9600000000000004" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ Б — много обуви</text>
+<line x1="276.50" y1="62.00" x2="283.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="276.50" y1="212.00" x2="283.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="281.50" y1="60.50" x2="281.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="280.60" y1="62.90" x2="282.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="280.60" y1="212.90" x2="282.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="280.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 280.70 137.00)">3000</text>
+<line x1="276.50" y1="208.00" x2="289.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="276.50" y1="212.00" x2="289.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="287.50" y1="206.50" x2="287.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="286.60" y1="208.90" x2="288.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<line x1="286.60" y1="212.90" x2="288.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="286.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 286.70 210.00)">80</text>
+<line x1="276.50" y1="90.50" x2="289.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="276.50" y1="208.00" x2="289.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="287.50" y1="89.00" x2="287.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
+<line x1="286.60" y1="91.40" x2="288.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<line x1="286.60" y1="208.90" x2="288.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<text x="286.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 286.70 149.25)">2350</text>
+<line x1="276.50" y1="62.00" x2="289.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="276.50" y1="90.50" x2="289.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="287.50" y1="60.50" x2="287.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
+<line x1="286.60" y1="62.90" x2="288.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="286.60" y1="91.40" x2="288.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<text x="286.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 286.70 76.25)">570</text>
+<text x="164.00" y="225.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: вся высота под верхнюю одежду (пальто, пуховики)</text>
+<text x="164.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: 2 ящика под мелочь + обувница 8 наклонных полок</text>
+<text x="164.00" y="239.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 450: открытые полки, внизу место под пылесос</text>
+<rect x="306.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="306.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="350.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="306.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="306.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="350.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="308.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="351.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="351.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="395.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="351.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="351.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="351.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="351.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="395.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="351.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="351.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="353.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="396.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="396.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="417.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="396.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="396.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="396.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="396.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="417.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="396.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="396.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="398.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<line x1="296.00" y1="212.00" x2="428.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
+<line x1="306.00" y1="212.50" x2="306.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="351.00" y1="212.50" x2="351.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="304.50" y1="216.00" x2="352.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="305.10" y1="216.90" x2="306.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="350.10" y1="216.90" x2="351.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="328.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="351.00" y1="212.50" x2="351.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="396.00" y1="212.50" x2="396.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="349.50" y1="216.00" x2="397.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="350.10" y1="216.90" x2="351.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="395.10" y1="216.90" x2="396.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="373.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="396.00" y1="212.50" x2="396.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="212.50" x2="418.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="394.50" y1="216.00" x2="420.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="395.10" y1="216.90" x2="396.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="417.60" y1="216.90" x2="419.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="407.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
+<rect x="306.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="307.05" y1="118.00" x2="349.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="309.69" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="314.52" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="319.34" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="324.16" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="328.98" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="333.80" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="338.63" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="343.45" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="351.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="352.05" y1="118.00" x2="394.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="354.69" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="359.52" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="364.34" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="369.16" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="373.98" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="378.80" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="383.63" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="388.45" y="118.80" width="3.86" height="49.20" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<text x="328.50" y="144.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
+<text x="373.50" y="144.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
+<rect x="306.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="195.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<rect x="306.80" y="185.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<text x="328.50" y="191.50" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">выдвижные обувные полки, 3</text>
+<rect x="352.00" y="197.40" width="43.00" height="9.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="370.50" y1="199.20" x2="376.50" y2="199.20" stroke="#222" stroke-width="0.4"/>
+<rect x="352.00" y="187.40" width="43.00" height="9.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="370.50" y1="189.20" x2="376.50" y2="189.20" stroke="#222" stroke-width="0.4"/>
+<rect x="351.80" y="186.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="352.30" y="171.40" width="42.40" height="15.00" fill="#d8cfe3" stroke="#111" stroke-width="0.2" />
+<text x="373.50" y="198.00" font-size="2.52" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
+<text x="373.50" y="179.20" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">корзина сумки</text>
+<rect x="396.80" y="205.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="200.70" x2="417.70" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="195.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="190.20" x2="417.70" y2="190.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="184.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="179.70" x2="417.70" y2="179.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="174.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="169.20" x2="417.70" y2="169.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="163.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="158.70" x2="417.70" y2="158.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="153.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="148.20" x2="417.70" y2="148.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="142.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="137.70" x2="417.70" y2="137.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="132.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="127.20" x2="417.70" y2="127.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="121.90" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="116.70" x2="417.70" y2="116.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="396.80" y="111.40" width="20.90" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="396.80" y1="106.20" x2="417.70" y2="106.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<text x="407.25" y="107.00" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь</text>
+<text x="362.25" y="34.00" font-size="3.9600000000000004" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ В — две штанги</text>
+<line x1="418.50" y1="62.00" x2="425.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="212.00" x2="425.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="423.50" y1="60.50" x2="423.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="422.60" y1="62.90" x2="424.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="422.60" y1="212.90" x2="424.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="422.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 422.70 137.00)">3000</text>
+<line x1="418.50" y1="208.00" x2="431.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="212.00" x2="431.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="429.50" y1="206.50" x2="429.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="428.60" y1="208.90" x2="430.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<line x1="428.60" y1="212.90" x2="430.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="428.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 428.70 210.00)">80</text>
+<line x1="418.50" y1="90.50" x2="431.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="208.00" x2="431.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="429.50" y1="89.00" x2="429.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
+<line x1="428.60" y1="91.40" x2="430.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<line x1="428.60" y1="208.90" x2="430.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<text x="428.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 428.70 149.25)">2350</text>
+<line x1="418.50" y1="62.00" x2="431.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="418.50" y1="90.50" x2="431.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="429.50" y1="60.50" x2="429.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
+<line x1="428.60" y1="62.90" x2="430.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="428.60" y1="91.40" x2="430.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<text x="428.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 428.70 76.25)">570</text>
+<text x="306.00" y="225.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900 + 900: штанги на всю ширину 1800</text>
+<text x="306.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• под ними: обувные полки, 2 ящика, корзина</text>
+<text x="306.00" y="239.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 450: обувница 10 полок во всю высоту</text>
+<rect x="448.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="448.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="492.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="448.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="448.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="448.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="448.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="492.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="448.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="448.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="450.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="493.00" y="90.50" width="45.00" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="493.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="537.20" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="493.80" y="207.20" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="493.80" y="90.50" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="493.00" y="62.00" width="45.00" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="493.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="537.20" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="493.80" y="89.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="493.80" y="62.00" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="495.00" y="208.00" width="41.00" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<rect x="538.00" y="90.50" width="22.50" height="117.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="538.00" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="559.70" y="90.50" width="0.80" height="117.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="538.80" y="207.20" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="538.80" y="90.50" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="538.00" y="62.00" width="22.50" height="28.50" fill="#fbfaf8" stroke="#111" stroke-width="0.3" />
+<rect x="538.00" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="559.70" y="62.00" width="0.80" height="28.50" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="538.80" y="89.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="538.80" y="62.00" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="540.00" y="208.00" width="18.50" height="4.00" fill="url(#hatch)" stroke="#111" stroke-width="0.12" />
+<line x1="438.00" y1="212.00" x2="570.50" y2="212.00" stroke="#111" stroke-width="0.4"/>
+<line x1="448.00" y1="212.50" x2="448.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="493.00" y1="212.50" x2="493.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="446.50" y1="216.00" x2="494.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="447.10" y1="216.90" x2="448.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="492.10" y1="216.90" x2="493.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="470.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="493.00" y1="212.50" x2="493.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="538.00" y1="212.50" x2="538.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="491.50" y1="216.00" x2="539.50" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="492.10" y1="216.90" x2="493.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="537.10" y1="216.90" x2="538.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="515.50" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">900</text>
+<line x1="538.00" y1="212.50" x2="538.00" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="560.50" y1="212.50" x2="560.50" y2="217.50" stroke="#111" stroke-width="0.15"/>
+<line x1="536.50" y1="216.00" x2="562.00" y2="216.00" stroke="#111" stroke-width="0.18"/>
+<line x1="537.10" y1="216.90" x2="538.90" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<line x1="559.60" y1="216.90" x2="561.40" y2="215.10" stroke="#111" stroke-width="0.35"/>
+<text x="549.25" y="215.20" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111">450</text>
+<rect x="448.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="449.05" y1="118.00" x2="491.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="451.69" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="456.52" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="461.34" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="466.16" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="470.98" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="475.80" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="480.63" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="485.45" y="118.80" width="3.86" height="56.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="448.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="448.80" y1="200.70" x2="492.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="448.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="448.80" y1="191.20" x2="492.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<text x="470.50" y="147.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">ВЕРХНЯЯ ОДЕЖДА</text>
+<text x="470.50" y="197.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 2 полки</text>
+<rect x="493.80" y="113.70" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<line x1="494.05" y1="118.00" x2="536.95" y2="118.00" stroke="#222" stroke-width="0.6"/>
+<rect x="496.69" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="501.52" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="506.34" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="511.16" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="515.98" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="520.80" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="525.63" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="530.45" y="118.80" width="3.86" height="41.70" fill="#ece7e1" stroke="#b5aca2" stroke-width="0.1" />
+<rect x="493.80" y="205.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="493.80" y1="200.70" x2="537.20" y2="200.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="493.80" y="196.40" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="493.80" y1="191.20" x2="537.20" y2="191.20" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="493.80" y="186.90" width="43.40" height="0.80" fill="#cfc2b0" stroke="#111" stroke-width="0.22" />
+<line x1="493.80" y1="181.70" x2="537.20" y2="181.70" stroke="#8c7b62" stroke-width="0.15" stroke-dasharray="1 0.6"/>
+<rect x="493.80" y="177.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="515.50" y="139.50" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">куртки, сумки</text>
+<text x="515.50" y="193.00" font-size="2.7" text-anchor="middle" font-weight="bold" fill="#5b4636">обувь, 3 полки</text>
+<rect x="538.80" y="113.70" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<rect x="547.25" y="114.50" width="4.00" height="2.00" fill="#6d6d6d" stroke="#111" stroke-width="0.2" />
+<line x1="547.75" y1="116.50" x2="546.50" y2="119.50" stroke="#555" stroke-width="0.4"/>
+<line x1="550.75" y1="116.50" x2="552.00" y2="119.50" stroke="#555" stroke-width="0.4"/>
+<rect x="547.25" y="119.50" width="1.80" height="62.50" fill="#ece7e1" stroke="#111" stroke-width="0.12" />
+<rect x="548.35" y="119.50" width="1.80" height="59.50" fill="#ece7e1" stroke="#111" stroke-width="0.12" />
+<rect x="549.45" y="119.50" width="1.80" height="56.50" fill="#ece7e1" stroke="#111" stroke-width="0.12" />
+<rect x="539.00" y="198.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="546.25" y1="200.20" x2="552.25" y2="200.20" stroke="#222" stroke-width="0.4"/>
+<rect x="539.00" y="189.40" width="20.50" height="8.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
+<line x1="546.25" y1="191.20" x2="552.25" y2="191.20" stroke="#222" stroke-width="0.4"/>
+<rect x="538.80" y="188.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
+<text x="549.25" y="109.50" font-size="1.9800000000000002" text-anchor="middle" font-weight="bold" fill="#5b4636">выдв. штанга</text>
+<text x="549.25" y="198.00" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
+<text x="504.25" y="34.00" font-size="3.9600000000000004" text-anchor="middle" font-weight="bold" fill="#111">ВАРИАНТ Г — выдвижная штанга</text>
+<line x1="560.50" y1="62.00" x2="567.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="560.50" y1="212.00" x2="567.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="565.50" y1="60.50" x2="565.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="564.60" y1="62.90" x2="566.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="564.60" y1="212.90" x2="566.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="564.70" y="137.00" font-size="2.8800000000000003" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 564.70 137.00)">3000</text>
+<line x1="560.50" y1="208.00" x2="573.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="560.50" y1="212.00" x2="573.00" y2="212.00" stroke="#111" stroke-width="0.15"/>
+<line x1="571.50" y1="206.50" x2="571.50" y2="213.50" stroke="#111" stroke-width="0.18"/>
+<line x1="570.60" y1="208.90" x2="572.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<line x1="570.60" y1="212.90" x2="572.40" y2="211.10" stroke="#111" stroke-width="0.35"/>
+<text x="570.70" y="210.00" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 570.70 210.00)">80</text>
+<line x1="560.50" y1="90.50" x2="573.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="560.50" y1="208.00" x2="573.00" y2="208.00" stroke="#111" stroke-width="0.15"/>
+<line x1="571.50" y1="89.00" x2="571.50" y2="209.50" stroke="#111" stroke-width="0.18"/>
+<line x1="570.60" y1="91.40" x2="572.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<line x1="570.60" y1="208.90" x2="572.40" y2="207.10" stroke="#111" stroke-width="0.35"/>
+<text x="570.70" y="149.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 570.70 149.25)">2350</text>
+<line x1="560.50" y1="62.00" x2="573.00" y2="62.00" stroke="#111" stroke-width="0.15"/>
+<line x1="560.50" y1="90.50" x2="573.00" y2="90.50" stroke="#111" stroke-width="0.15"/>
+<line x1="571.50" y1="60.50" x2="571.50" y2="92.00" stroke="#111" stroke-width="0.18"/>
+<line x1="570.60" y1="62.90" x2="572.40" y2="61.10" stroke="#111" stroke-width="0.35"/>
+<line x1="570.60" y1="91.40" x2="572.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
+<text x="570.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 570.70 76.25)">570</text>
+<text x="448.00" y="225.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: верхняя одежда + 2 обувные полки</text>
+<text x="448.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900: куртки, сумки + 3 обувные полки</text>
+<text x="448.00" y="239.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 450: выдвижная штанга BELLE + 2 ящика</text>
 <text x="30.00" y="260.00" font-size="4.680000000000001" text-anchor="start" font-weight="bold" fill="#111">ОБЩЕЕ ДЛЯ ВСЕХ ВАРИАНТОВ</text>
 <text x="30.00" y="268.00" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">1. Высота 3000: цоколь 80 + корпус 2350 + антресоль 570 (сезонные вещи, коробки); над штангой — полка.</text>
 <text x="30.00" y="274.50" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">2. Глубина 520: штанга поперёк секции работает, плечики ~450–480 мм проходят; фасад 18 сверху глубины.</text>
 <text x="30.00" y="281.00" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">3. Ящики под мелочь — внутренние, полного выдвижения с доводчиком; в 900 — утолщение 16 + 16 у петель.</text>
 <text x="30.00" y="287.50" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">4. Обувные полки — наклонные 15° с бортиком 30, шаг 190–200 мм, LED по желанию.</text>
 <text x="30.00" y="294.00" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">5. Фасады как на визуализации: распашные, ручки-профили вертикальные; 5 дверей + 5 на антресоли.</text>
+<text x="30.00" y="300.50" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">6. Выдвижная штанга BELLE (Pulse, BEHA, графит) крепится под полку; при глубине 520 брать длину 450 (350 — для неглубоких).</text>
 <rect x="445.00" y="362.00" width="140.00" height="46.00" fill="none" stroke="#111" stroke-width="0.5" />
 <line x1="445.00" y1="376.00" x2="585.00" y2="376.00" stroke="#111" stroke-width="0.3"/>
 <text x="515.00" y="369.00" font-size="5.4" text-anchor="middle" font-weight="bold" fill="#111">ШКАФ В КОРИДОРЕ</text>

@@ -163,6 +163,42 @@ def var_c(v):
     v.label(c0, c1, 2100, "обувь", 1.2)
 
 
+def pullout(v, x0, x1, z, length):
+    """Выдвижная штанга BELLE под полкой: вид спереди — торец, одежда висит вдоль глубины."""
+    cx = (x0 + x1) / 2
+    v.r(cx - 40, cx + 40, z, z + 40, fill="#6d6d6d", sw=0.2)              # направляющая
+    line(v.X(cx - 30), v.Z(z), v.X(cx - 55), v.Z(z - 60), w=0.4, color="#555")
+    line(v.X(cx + 30), v.Z(z), v.X(cx + 55), v.Z(z - 60), w=0.4, color="#555")
+    for k in range(3):                                                     # вещи вдоль глубины, видны торцом
+        dx = (k - 1) * 22
+        v.r(cx + dx - 18, cx + dx + 18, z - 60 - length + k * 60, z - 60, fill="#ece7e1", sw=0.12)
+
+
+def var_g(v):
+    e_ = frame(v)
+    a0, a1, b0, b1, c0, c1 = e_[0], e_[1], e_[1], e_[2], e_[2], e_[3]
+    # 900 №1 — верхняя одежда + обувь
+    v.shelf(a0, a1, 1950)
+    v.rail(a0, a1, 1880, 1150)
+    v.shoes(a0, a1, PL + T + 10, 2, step=190)
+    v.label(a0, a1, 1300, "ВЕРХНЯЯ ОДЕЖДА")
+    v.label(a0, a1, PL + 210, "обувь, 2 полки")
+    # 900 №2 — куртки + обувь
+    v.shelf(b0, b1, 1950)
+    v.rail(b0, b1, 1880, 850)
+    z = v.shoes(b0, b1, PL + T + 10, 3, step=190)
+    v.shelf(b0, b1, z)
+    v.label(b0, b1, 1450, "куртки, сумки")
+    v.label(b0, b1, PL + 300, "обувь, 3 полки")
+    # 450 — выдвижная штанга BELLE + 2 ящика
+    v.shelf(c0, c1, 1950)
+    pullout(v, c0, c1, 1950 - 40, 1250)
+    z = v.drawers(c0, c1, PL + T, 2)
+    v.shelf(c0, c1, z)
+    v.label(c0, c1, 2050, "выдв. штанга", 1.1)
+    v.label(c0, c1, PL + 200, "2 ящика", 1.2)
+
+
 def main():
     g.out.clear()
     e('<svg xmlns="http://www.w3.org/2000/svg" width="594mm" height="420mm" viewBox="0 0 594 420" '
@@ -183,21 +219,26 @@ def main():
             "450: открытые полки, внизу место под пылесос",
         ],
         "ВАРИАНТ В — две штанги": [
-            "900 + 900: штанги для одежды на всю ширину 1800",
-            "под ними: выдвижные обувные полки и 2 ящика + корзина",
+            "900 + 900: штанги на всю ширину 1800",
+            "под ними: обувные полки, 2 ящика, корзина",
             "450: обувница 10 полок во всю высоту",
         ],
+        "ВАРИАНТ Г — выдвижная штанга": [
+            "900: верхняя одежда + 2 обувные полки",
+            "900: куртки, сумки + 3 обувные полки",
+            "450: выдвижная штанга BELLE + 2 ящика",
+        ],
     }
-    for k, (fn, (title, rows)) in enumerate(zip((var_a, var_b, var_c), notes.items())):
-        ox = 30 + k * 190
+    for k, (fn, (title, rows)) in enumerate(zip((var_a, var_b, var_c, var_g), notes.items())):
+        ox = 22 + k * 142
         v = V(ox, 212)
         fn(v)
-        text(v.X(W / 2), 34, title, size=2.6, weight="bold")
+        text(v.X(W / 2), 34, title, size=2.2, weight="bold")
         dim_v(v.Z(H), v.Z(0), v.X(W) + 5, str(H), ext_from=v.X(W), size=1.6)
         for a, b in ((0, PL), (PL, TOP), (TOP, H)):
             dim_v(v.Z(b), v.Z(a), v.X(W) + 11, str(b - a), ext_from=v.X(W), size=1.4)
         for i, s in enumerate(rows):
-            text(ox, 225 + i * 7, "• " + s, size=1.7, anchor="start")
+            text(ox, 225 + i * 7, "• " + s, size=1.5, anchor="start")
     y = 260
     text(30, y, "ОБЩЕЕ ДЛЯ ВСЕХ ВАРИАНТОВ", size=2.6, weight="bold", anchor="start")
     common = [
@@ -206,6 +247,7 @@ def main():
         "Ящики под мелочь — внутренние, полного выдвижения с доводчиком; в 900 — утолщение 16 + 16 у петель.",
         "Обувные полки — наклонные 15° с бортиком 30, шаг 190–200 мм, LED по желанию.",
         "Фасады как на визуализации: распашные, ручки-профили вертикальные; 5 дверей + 5 на антресоли.",
+        "Выдвижная штанга BELLE (Pulse, BEHA, графит) крепится под полку; при глубине 520 брать длину 450 (350 — для неглубоких).",
     ]
     for i, s in enumerate(common):
         text(30, y + 8 + i * 6.5, f"{i + 1}. {s}", size=1.8, anchor="start")
