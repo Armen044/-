@@ -337,9 +337,7 @@
 <rect x="456.00" y="187.40" width="43.00" height="9.60" fill="#efe5d6" stroke="#111" stroke-width="0.25" />
 <line x1="474.50" y1="189.20" x2="480.50" y2="189.20" stroke="#222" stroke-width="0.4"/>
 <rect x="455.80" y="186.40" width="43.40" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
-<rect x="456.30" y="171.40" width="42.40" height="15.00" fill="#d8cfe3" stroke="#111" stroke-width="0.2" />
 <text x="477.50" y="198.00" font-size="2.52" text-anchor="middle" font-weight="bold" fill="#5b4636">2 ящика</text>
-<text x="477.50" y="179.20" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">корзина сумки</text>
 <rect x="500.80" y="146.40" width="20.90" height="0.80" fill="#e9e6e1" stroke="#111" stroke-width="0.22" />
 <text x="511.25" y="178.00" font-size="2.16" text-anchor="middle" font-weight="bold" fill="#5b4636">пылесос</text>
 <line x1="519.20" y1="145.70" x2="519.20" y2="208.70" stroke="#111" stroke-width="0.18"/>
@@ -381,7 +379,7 @@
 <line x1="532.60" y1="91.40" x2="534.40" y2="89.60" stroke="#111" stroke-width="0.35"/>
 <text x="532.70" y="76.25" font-size="2.52" text-anchor="middle" font-weight="normal" fill="#111" transform="rotate(-90 532.70 76.25)">570</text>
 <text x="410.00" y="225.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 900 + 900: штанги на всю ширину 1800</text>
-<text x="410.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• под ними: обувные полки, 2 ящика, корзина</text>
+<text x="410.00" y="232.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• под ними: обувные полки и 2 ящика</text>
 <text x="410.00" y="239.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#111">• 450: отсек 1200 под пылесос, выше обувные полки</text>
 <rect x="445.00" y="362.00" width="140.00" height="46.00" fill="none" stroke="#111" stroke-width="0.5" />
 <line x1="445.00" y1="376.00" x2="585.00" y2="376.00" stroke="#111" stroke-width="0.3"/>
