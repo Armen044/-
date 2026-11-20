@@ -7,7 +7,7 @@
 <style>
 html,body{margin:0;height:100%;background:#eef0f2;font-family:DejaVu Sans,Arial,sans-serif;overflow:hidden}
 canvas{display:block;touch-action:none}
-#ui{position:fixed;left:12px;top:12px;background:#fffe;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.7;box-shadow:0 1px 4px #0002;max-width:270px}
+#ui{position:fixed;left:12px;top:12px;background:#fffe;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.7;box-shadow:0 1px 4px #0002;max-width:280px}
 #ui b{font-size:14px}#ui label{display:block;cursor:pointer}
 body.static #ui{display:none}
 </style>
@@ -16,12 +16,13 @@ body.static #ui{display:none}
 </head>
 <body>
 <div id="ui"><b>Шлифовальный стол 2800 × 700</b><br>
-<label><input type="checkbox" id="hideTop"> снять столешницу (видно короб и рёбра)</label>
-<label><input type="checkbox" id="hideFront"> снять лицевую панель</label>
+<label><input type="checkbox" id="drawer"> выдвинуть средний ящик</label>
+<label><input type="checkbox" id="hideTop"> снять столешницу и фасад камеры</label>
+<label><input type="checkbox" id="hideWall"> снять перфостенку (виден канал)</label>
 <span style="color:#666">мышь/палец — вращать, колесо/щипок — масштаб</span></div>
 <script>
 const P = new URLSearchParams(location.search);
-const view = P.get('view');          // front | back | open — статичные кадры для листа
+const view = P.get('view');          // front | back | open — кадры для листа
 if (view) document.body.classList.add('static');
 const W = view ? 2000 : innerWidth, H = view ? 1400 : innerHeight;
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -33,61 +34,87 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 const C = { x: DIM.L / 2, y: DIM.D / 2 };
-// x → X, z (высота) → Y, y (вглубь) → -Z
 const pos = (x, y, z) => new THREE.Vector3(x - C.x, z, -(y - C.y));
 const MAT = {
   'ЛДСП 16 антрацит': new THREE.MeshStandardMaterial({ color: 0x55595d, roughness: 0.8 }),
   'МДФ 16': new THREE.MeshStandardMaterial({ color: 0xd8c3a0, roughness: 0.85 }),
   'МДФ 19': new THREE.MeshStandardMaterial({ color: 0xdcc8a5, roughness: 0.85 }),
 };
-const groups = { top: new THREE.Group(), front: new THREE.Group() };
-Object.values(groups).forEach(g => scene.add(g));
-function box(x0, x1, y0, y1, z0, z1, mat, parent = scene, edges = true) {
-  const g = new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0);
-  const m = new THREE.Mesh(g, mat);
-  m.position.copy(pos((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2));
+const edgeMat = new THREE.LineBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.55 });
+const G = { top: new THREE.Group(), wall: new THREE.Group(), drawer: new THREE.Group() };
+Object.values(G).forEach(g => scene.add(g));
+function mesh(geo, mat, parent, edges = true) {
+  const m = new THREE.Mesh(geo, mat);
   m.castShadow = m.receiveShadow = true;
-  if (edges) m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), new THREE.LineBasicMaterial({ color: 0x2a2a2a, transparent: true, opacity: 0.55 })));
+  if (edges) m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), edgeMat));
   parent.add(m);
   return m;
 }
-for (const [x0, x1, y0, y1, z0, z1, mat, name] of PARTS) {
-  const parent = name.startsWith('Столешница') ? groups.top : name.startsWith('Лицевая') ? groups.front : scene;
-  if (name.startsWith('Ребро')) {          // ребро с проходами для воздуха: верхний пояс + 3 ножки
-    const zt = z1 - 60;
-    box(x0, x1, y0, y1, zt, z1, MAT[mat], parent);
-    for (const [a, b] of [[y0, y0 + 100], [(y0 + y1) / 2 - 50, (y0 + y1) / 2 + 50], [y1 - 100, y1]]) box(x0, x1, a, b, z0, zt, MAT[mat], parent);
+function box(x0, x1, y0, y1, z0, z1, mat, parent = scene, edges = true) {
+  const m = mesh(new THREE.BoxGeometry(x1 - x0, z1 - z0, y1 - y0), mat, parent, edges);
+  m.position.copy(pos((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2));
+  return m;
+}
+function prism(p, parent) {
+  const sh = new THREE.Shape(p.poly.map(([y, z]) => new THREE.Vector2(y - C.y, z)));
+  const m = mesh(new THREE.ExtrudeGeometry(sh, { depth: p.x1 - p.x0, bevelEnabled: false }), MAT[p.mat], parent);
+  m.rotation.y = Math.PI / 2;
+  m.position.set(p.x0 - C.x, 0, 0);
+}
+function parentOf(p) {
+  if (p.tag === 'drawer1') return G.drawer;
+  if (p.name.startsWith('Столешница') || p.name.startsWith('Фасад камеры')) return G.top;
+  if (p.name.startsWith('Перфостенка')) return G.wall;
+  return scene;
+}
+for (const p of PARTS) {
+  const par = parentOf(p);
+  if (p.kind === 'prism') { prism(p, par); continue; }
+  if (p.name.startsWith('Ребро')) {          // рёбра с вырезами: верхний пояс + ножки
+    const zt = p.z1 - 60;
+    box(p.x0, p.x1, p.y0, p.y1, zt, p.z1, MAT[p.mat], par);
+    for (const [a, b] of [[p.y0, p.y0 + 80], [p.y1 - 80, p.y1]]) box(p.x0, p.x1, a, b, p.z0, zt, MAT[p.mat], par);
     continue;
   }
-  box(x0, x1, y0, y1, z0, z1, MAT[mat], parent);
+  box(p.x0, p.x1, p.y0, p.y1, p.z0, p.z1, MAT[p.mat], par);
 }
-// прорези (инстансами)
+// прорези
 const slotMat = new THREE.MeshBasicMaterial({ color: 0x2b241c });
-function slots(list, geo, place, parent) {
+function inst(list, geo, place, parent, rot) {
   const im = new THREE.InstancedMesh(geo, slotMat, list.length);
-  const m = new THREE.Matrix4();
-  list.forEach((s, i) => { m.makeTranslation(...place(s).toArray()); im.setMatrixAt(i, m); });
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion().setFromEuler(rot || new THREE.Euler()), s = new THREE.Vector3(1, 1, 1);
+  list.forEach((v, i) => { m.compose(place(v), q, s); im.setMatrixAt(i, m); });
   parent.add(im);
 }
-slots(TOP_SLOTS, new THREE.BoxGeometry(40, 1, 10), ([x, y]) => pos(x, y, DIM.ZT + 0.6), groups.top);
-slots(WALL_SLOTS, new THREE.BoxGeometry(30, 8, 1), ([x, z]) => pos(x, DIM.D - DIM.T - 0.6, z), scene);
-slots(WALL_SLOTS, new THREE.BoxGeometry(30, 8, 1), ([x, z]) => pos(x, DIM.D + 0.6, z), scene);
-const fr = [];
-FRONT.rows.forEach(z => FRONT.seg.forEach(([a, b]) => fr.push([a, b, z])));
-fr.forEach(([a, b, z]) => box(a, b, 19.2, 20, z - 5, z + 5, slotMat, groups.front, false));
-// светодиодная лента под козырьком
-const led = box(DIM.T + 20, DIM.L - DIM.T - 20, DIM.D - 160, DIM.D - 140, DIM.ZW - DIM.T - 8, DIM.ZW - DIM.T, new THREE.MeshBasicMaterial({ color: 0xfffbe8 }), scene, false);
-const ledLight = new THREE.PointLight(0xfff6dd, 0.5, 2500); ledLight.position.copy(pos(DIM.L / 2, DIM.D - 200, DIM.ZW - 60)); scene.add(ledLight);
-// патрубки Ø160 и опоры
+inst(TOP_SLOTS, new THREE.BoxGeometry(40, 1, 10), ([x, y]) => pos(x, y, DIM.ZT + 0.6), G.top);
+inst(WALL_SLOTS, new THREE.BoxGeometry(30, 8, 1), ([x, z]) => pos(x, DIM.YT - 0.6, z), G.wall);
+const phi = Math.atan2(84, 490);
+const fs = [];
+FASCIA.rows.forEach(([y, z]) => FASCIA.seg.forEach(([a, b]) => fs.push([a, b, y, z])));
+fs.forEach(([a, b, y, z]) => {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(b - a, 10, 1), slotMat);
+  m.rotation.x = phi;
+  m.position.copy(pos((a + b) / 2, y - 0.8, z));
+  G.top.add(m);
+});
+// ручки ящиков (профиль на верхнем крае фасада)
+const hMat = new THREE.MeshStandardMaterial({ color: 0x9aa0a6, metalness: 0.7, roughness: 0.3 });
+for (const p of PARTS.filter(p => p.name === 'Фасад ящика')) {
+  const xc = (p.x0 + p.x1) / 2;
+  box(xc - 128, xc + 128, -28, -4, p.z1 - 40, p.z1 - 26, hMat, p.tag === 'drawer1' ? G.drawer : scene, false);
+}
+// светодиодная лента под стеллажом
+box(36, DIM.L - 36, DIM.SH_Y + 12, DIM.SH_Y + 32, DIM.ZW - 8, DIM.ZW, new THREE.MeshBasicMaterial({ color: 0xfffbe8 }), scene, false);
+const ledL = new THREE.PointLight(0xfff6dd, 0.45, 2200); ledL.position.copy(pos(DIM.L / 2, 280, DIM.ZW - 80)); scene.add(ledL);
+// патрубки и опоры
 for (const x of OUTLETS.x) {
   const c = new THREE.Mesh(new THREE.CylinderGeometry(OUTLETS.d / 2, OUTLETS.d / 2, 120, 40), new THREE.MeshStandardMaterial({ color: 0xb8bcc0, metalness: 0.6, roughness: 0.35 }));
   c.rotation.x = Math.PI / 2; c.position.copy(pos(x, DIM.D + 60, OUTLETS.z)); c.castShadow = true; scene.add(c);
 }
-for (const x of [60, 936, 1864, DIM.L - 60]) for (const y of [DIM.SET + 60, DIM.D - 60]) {
+for (const x of [60, 936, 1864, DIM.L - 60]) for (const y of [60, DIM.D - 60]) {
   const l = new THREE.Mesh(new THREE.CylinderGeometry(22, 30, DIM.LEG, 24), new THREE.MeshStandardMaterial({ color: 0x1e1e1e }));
   l.position.copy(pos(x, y, DIM.LEG / 2)); l.castShadow = true; scene.add(l);
 }
-// пол
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(20000, 20000), view ? new THREE.ShadowMaterial({ opacity: 0.18 }) : new THREE.MeshStandardMaterial({ color: 0xdcdad5 }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 scene.add(new THREE.HemisphereLight(0xffffff, 0x9a958c, 0.85));
@@ -96,18 +123,20 @@ sun.position.set(-1800, 4200, 3200); sun.castShadow = true;
 Object.assign(sun.shadow.camera, { left: -3000, right: 3000, top: 3000, bottom: -3000, near: 100, far: 12000 });
 sun.shadow.mapSize.set(2048, 2048); scene.add(sun);
 
+const setDrawer = on => { G.drawer.position.z = on ? 450 : 0; };
 const cam = new THREE.PerspectiveCamera(30, W / H, 20, 50000);
-let az = -2.2, el = 0.42, dist = 6200;
-if (view === 'back') { az = 0.85; el = 0.38; }
-if (view === 'open') { az = -2.0; el = 0.75; dist = 5600; groups.top.visible = false; groups.front.visible = false; }
-const target = new THREE.Vector3(0, 650, 0);
+let az = -2.2, el = 0.32, dist = 7200;
+const target = new THREE.Vector3(0, 900, 0);
+if (view === 'back') { az = 0.85; el = 0.3; }
+if (view === 'open') { az = -2.05; el = 0.55; dist = 6600; G.top.visible = false; G.wall.visible = false; setDrawer(true); }
 function place() {
   cam.position.set(target.x + dist * Math.cos(el) * Math.cos(az), target.y + dist * Math.sin(el), target.z - dist * Math.cos(el) * Math.sin(az));
   cam.lookAt(target);
 }
 place();
-document.getElementById('hideTop').onchange = e => { groups.top.visible = !e.target.checked; draw(); };
-document.getElementById('hideFront').onchange = e => { groups.front.visible = !e.target.checked; draw(); };
+document.getElementById('drawer').onchange = e => { setDrawer(e.target.checked); draw(); };
+document.getElementById('hideTop').onchange = e => { G.top.visible = !e.target.checked; draw(); };
+document.getElementById('hideWall').onchange = e => { G.wall.visible = !e.target.checked; draw(); };
 let drag = null, pinch = null;
 const cv = renderer.domElement;
 cv.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId); });

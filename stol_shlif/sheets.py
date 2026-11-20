@@ -65,150 +65,163 @@ def header(s, title, sub, n):
 
 
 # ---------------------------------------------------------------- лист 1
-def front_view(s, X, G):
-    """Вид спереди: X — лево листа, G — уровень пола на листе."""
-    f = lambda x, z: (X + x * K, G - z * K)
-    R = lambda x0, z0, x1, z1, **kw: s.rc(*f(x0, z0), *f(x1, z1), **kw)
+COL = {M.LDSP: LDSP_C, M.MDF16: MDF_C, M.MDF19: MDF_C}
+
+
+def profile(p):
+    """Контур детали в плоскости Y–Z (для разреза)."""
+    if p["kind"] == "prism":
+        return p["poly"]
+    return [(p["y0"], p["z0"]), (p["y1"], p["z0"]), (p["y1"], p["z1"]), (p["y0"], p["z1"])]
+
+
+def poly(s, pts, fill, stroke="#111", w=0.2, dash=None):
+    d = f' stroke-dasharray="{dash}"' if dash else ""
+    s.e('<path d="M' + "L".join(f"{x:.2f} {y:.2f}" for x, y in pts) + f'Z" fill="{fill}" stroke="{stroke}" stroke-width="{w}"{d}/>')
+
+
+def front_view(s, X, G, k):
+    f = lambda x, z: (X + x * k, G - z * k)
     for x in (60, 936, 1864, M.L - 60):
-        R(x - 25, 0, x + 25, M.LEG, fill="#222", stroke="#000")
-    # основание (утоплено на 100) — открытые секции с полками
-    R(0, M.LEG, M.L, M.PLB, fill=LDSP_C, stroke="#111", w=0.25)
-    for a, b in M.SEC:
-        R(a, M.LEG + M.T, b, M.PLB, fill="#3c3f42", stroke="#111", w=0.15)
-        R(a, 375, b, 391, fill=LDSP_C, stroke="#111", w=0.15)
-    # короб
-    R(0, M.PLB, M.L, M.ZT - M.TM, fill=LDSP_C, stroke="#111", w=0.25)
-    R(M.T, M.PLB + M.T, M.L - M.T, M.ZT - M.TM, fill=MDF_C, stroke="#111", w=0.2)
-    for z in M.FRONT_ROWS:
-        for a, b in M.FRONT_SEG:
-            R(a, z - 5, b, z + 5, fill="#3a2f22", stroke="none", rx=0.5)
-    R(0, M.ZT - M.TM, M.L, M.ZT, fill=MDF_C, stroke="#111", w=0.25)
-    s.ln(*f(M.L / 2, M.ZT - M.TM), *f(M.L / 2, M.ZT), 0.25)
-    # задняя стенка
-    for x in (0, M.L - M.T):
-        R(x, M.ZT, x + M.T, M.ZW, fill=LDSP_C, stroke="#111", w=0.2)
-    R(M.T, M.ZT, M.L - M.T, M.ZW - M.T, fill=MDF_C, stroke="#111", w=0.2)
-    for x, z in M.WALL_SLOTS:
-        R(x - 15, z - 4, x + 15, z + 4, fill="#3a2f22", stroke="none", rx=0.4)
-    R(M.T, M.ZW - M.T, M.L - M.T, M.ZW, fill=LDSP_C, stroke="#111", w=0.2)
-    s.ln(*f(M.T + 20, M.ZW - M.T - 4), *f(M.L - M.T - 20, M.ZW - M.T - 4), 0.6, "#f5c518")
-    # размеры
-    dim_h(s, *f(0, 0)[:1], f(M.L, 0)[0], G + 9, "2800", 2.6)
+        s.rc(*f(x - 25, 0), *f(x + 25, M.LEG), fill="#222", stroke="#000")
+    for p in sorted(M.PARTS, key=lambda p: -p["y0"]):
+        fill = COL[p["mat"]]
+        if p["y0"] >= M.D - M.T - 1:
+            fill = "#3c3f42" if p["mat"] == M.LDSP else fill
+        s.rc(*f(p["x0"], p["z0"]), *f(p["x1"], p["z1"]), fill=fill, stroke="#111", w=0.15)
+        if p["name"].startswith("Перфостенка"):
+            for x, z in M.WALL_SLOTS:
+                s.rc(*f(x - 15, z - 4), *f(x + 15, z + 4), fill="#3a2f22", stroke="none")
+        if p["name"].startswith("Фасад камеры"):
+            for t in M.FASCIA_ROWS:
+                z = M.fascia_point(t)[1]
+                for a, b in M.FRONT_SEG:
+                    s.rc(*f(a, z - 5), *f(b, z + 5), fill="#3a2f22", stroke="none")
+        if p["name"] == "Фасад ящика":
+            xc = (p["x0"] + p["x1"]) / 2
+            s.rc(*f(xc - 128, p["z1"] - 40), *f(xc + 128, p["z1"] - 26), fill="#9aa0a6", stroke="#555", w=0.1)
+    s.ln(*f(M.T + 20, M.ZW - 4), *f(M.L - M.T - 20, M.ZW - 4), 0.6, "#f5c518")
+    dim_h(s, f(0, 0)[0], f(M.L, 0)[0], G + 9, "2800", 2.6)
     for a, b in M.SEC:
         dim_h(s, f(a, 0)[0], f(b, 0)[0], G + 4.5, f"{b-a}", 2.0)
     xr = f(M.L, 0)[0]
-    for z0, z1 in ((0, M.LEG), (M.LEG, M.PLB), (M.PLB, M.ZT), (M.ZT, M.ZW)):
-        dim_v(s, f(0, z0)[1], f(0, z1)[1], xr + 5, f"{z1-z0}", 2.2, side=1.8)
-    dim_v(s, G, f(0, M.ZT)[1], xr + 11, "900", 2.4, side=1.8)
-    dim_v(s, G, f(0, M.ZW)[1], X - 6, "1450", 2.6)
-    s.t(X + M.L * K / 2, G - M.ZW * K - 4, "ВИД СПЕРЕДИ", 3, weight="bold")
-    # указатель разреза
-    for z, tag in ((M.ZW + 60, "А"), (-60, "А")):
+    lv = [0, M.LEG, M.ZD + M.T, M.ZT, M.ZW, M.ZS]
+    for z0, z1 in zip(lv, lv[1:]):
+        dim_v(s, f(0, z0)[1], f(0, z1)[1], xr + 5, f"{z1-z0}", 2.1, side=1.8)
+    dim_v(s, G, f(0, M.ZT)[1], xr + 11, "900", 2.3, side=1.8)
+    dim_v(s, G, f(0, M.ZS)[1], X - 5, "1950", 2.5)
+    s.t(X + M.L * k / 2, G - M.ZS * k - 4, "ВИД СПЕРЕДИ  М 1:15", 3, weight="bold")
+    for z, tag, dy in ((M.ZS + 40, "А", -1), (-40, "А", 3.5)):
         x, y = f(700, z)
-        s.t(x, y + (1 if z < 0 else 0) + (2.5 if z < 0 else -0.5), tag, 3, weight="bold")
-    s.ln(*f(700, M.ZW + 30), *f(700, M.ZW - 60), 0.5, "#111")
-    s.ln(*f(700, 30), *f(700, -40), 0.5, "#111")
+        s.t(x, y + dy, tag, 3, weight="bold")
+    s.ln(*f(700, M.ZS + 20), *f(700, M.ZS - 80), 0.5)
+    s.ln(*f(700, 20), *f(700, -30), 0.5)
 
 
-def top_view(s, X, Yt):
-    """Вид сверху: передний край стола — снизу, Yt — задний край (y = 700) на листе."""
-    f = lambda x, y: (X + x * K, Yt + (M.D - y) * K)
-    R = lambda x0, y0, x1, y1, **kw: s.rc(*f(x0, y0), *f(x1, y1), **kw)
-    for x0 in (0, M.L / 2):
-        R(x0, 0, x0 + M.L / 2, M.TOPY, fill=MDF_C, stroke="#111", w=0.25)
+def top_view(s, X, Yt, k):
+    f = lambda x, y: (X + x * k, Yt + (M.D - y) * k)
+    shelf = [p for p in M.PARTS if "стеллаж" in p["name"]]
+    for p in sorted([p for p in M.PARTS if p not in shelf], key=lambda p: p["z1"]):
+        s.rc(*f(p["x0"], p["y0"]), *f(p["x1"], p["y1"]), fill=COL[p["mat"]], stroke="#111", w=0.15)
     for x, y in M.TOP_SLOTS:
-        R(x - 20, y - 5, x + 20, y + 5, fill="#3a2f22", stroke="none", rx=0.5)
-    for xc in M.RIBS:
-        s.ln(*f(xc, 36), *f(xc, M.TOPY), 0.2, "#777", "1.2 0.8")
-    R(M.T, M.TOPY, M.L - M.T, M.D, fill=MDF_C, stroke="#111", w=0.2)
-    for x in (0, M.L - M.T):
-        R(x, M.D - 166, x + M.T, M.D, fill=LDSP_C, stroke="#111", w=0.2)
-    R(M.T, M.D - 166, M.L - M.T, M.D, fill="none", stroke="#111", w=0.25, dash="2 1")
-    for x in M.OUTLETS:
-        R(x - 80, M.D, x + 80, M.D + 80, fill="#c9cdd1", stroke="#555", w=0.2)
-        x0, y0 = f(x, M.D + 80)
-        s.t(x0, y0 - 1.3, "Ø160", 1.8)
-    dim_h(s, f(0, 0)[0], f(M.L / 2, 0)[0], f(0, 0)[1] + 5, "1400 (стык над сдвоенным ребром)", 2.1)
-    dim_h(s, f(M.L / 2, 0)[0], f(M.L, 0)[0], f(0, 0)[1] + 5, "1400", 2.1)
-    dim_v(s, f(0, 0)[1], f(0, M.D)[1], X - 6, "700", 2.4)
-    dim_v(s, f(0, 0)[1], f(0, M.TOPY)[1], X - 2.5, "684", 2.0)
-    s.t(X + M.L * K / 2, Yt - 10.5, "ВИД СВЕРХУ  (пунктир — рёбра под столешницей и козырёк)", 3, weight="bold")
+        s.rc(*f(x - 20, y - 5), *f(x + 20, y + 5), fill="#3a2f22", stroke="none")
+    s.rc(*f(0, M.SH_Y), *f(M.L, M.D), stroke="#111", w=0.3, dash="2 1")
+    x, y = f(M.L / 2, 600)
+    s.t(x, y + 1, "стеллаж над (пунктир)", 2.2, fill="#fff", weight="bold")
+    for xo in M.OUTLETS:
+        s.rc(*f(xo - 80, M.D), *f(xo + 80, M.D + 80), fill="#c9cdd1", stroke="#555")
+    dim_h(s, f(0, 0)[0], f(M.L, 0)[0], f(0, 0)[1] + 5, "2800", 2.3)
+    dim_v(s, f(0, 0)[1], f(0, M.D)[1], X - 9, "700", 2.3)
+    dim_v(s, f(0, 0)[1], f(0, M.YT)[1], X - 4.5, "450", 2.0)
+    s.t(X + M.L * k / 2, Yt - 7, "ВИД СВЕРХУ  М 1:15", 3, weight="bold")
 
 
-def section(s, X, G):
-    """Разрез А–А: передний край стола — слева."""
-    f = lambda y, z: (X + y * K, G - z * K)
-    R = lambda y0, z0, y1, z1, **kw: s.rc(*f(y0, z0), *f(y1, z1), **kw)
-    cut = dict(fill="url(#hatch)", stroke="#111", w=0.25)
-    # ребро за плоскостью разреза (вид)
-    zt = M.ZT - M.TM - 60
-    R(36, zt, M.TOPY, M.ZT - M.TM, fill="#d5d7d9", stroke="#777", w=0.15)
-    for a, b in ((36, 136), ((36 + M.TOPY) / 2 - 50, (36 + M.TOPY) / 2 + 50), (M.TOPY - 100, M.TOPY)):
-        R(a, M.PLB + M.T, b, zt, fill="#d5d7d9", stroke="#777", w=0.15)
-    # бок основания за разрезом (контур)
-    R(M.SET, M.LEG, M.D, M.PLB, fill="none", stroke="#999", w=0.15, dash="1.5 1")
-    for y in (M.SET + 60, M.D - 60):
-        R(y - 25, 0, y + 25, M.LEG, fill="#222", stroke="#000")
-    R(M.SET, M.LEG, M.D, M.LEG + M.T, **cut)                    # дно основания
-    R(M.SET + 10, 375, M.D - M.T, 391, **cut)                   # полка
-    R(M.D - M.T, M.LEG + M.T, M.D, M.PLB, **cut)                # задняя стенка основания
-    R(20, M.PLB, M.TOPY, M.PLB + M.T, **cut)                    # дно короба
-    R(M.D - M.T, M.PLB + M.T, M.D, M.ZT, **cut)                 # задняя стенка короба
-    R(20, M.PLB + M.T, 36, M.ZT - M.TM, **cut)                  # лицевая панель
-    R(0, M.ZT - M.TM, M.TOPY, M.ZT, **cut)                      # столешница
-    R(M.TOPY, M.ZT, M.D, M.ZW - M.T, **cut)                     # перфостенка
-    R(M.D - 166, M.ZW - M.T, M.D, M.ZW, **cut)                  # козырёк
-    R(M.D - 166, M.ZT, M.D, M.ZW, fill="none", stroke="#999", w=0.15, dash="1.5 1")   # стойка за разрезом
-    # патрубок
-    R(M.D, M.OUT_Z - 80, M.D + 90, M.OUT_Z + 80, fill="#c9cdd1", stroke="#555", w=0.2)
-    s.ln(*f(M.D - 166 + 20, M.ZW - M.T - 4), *f(M.D - 20, M.ZW - M.T - 4), 0.7, "#f5c518")
+def section(s, X, G, k, xc=700):
+    f = lambda y, z: (X + y * k, G - z * k)
+    behind = sorted([p for p in M.PARTS if p["x0"] >= xc], key=lambda p: -p["x0"])
+    for p in behind:
+        if p["name"].startswith("Ребро"):
+            zt = p["z1"] - 60
+            for y0, y1, z0, z1 in ((p["y0"], p["y1"], zt, p["z1"]), (p["y0"], p["y0"] + 80, p["z0"], zt), (p["y1"] - 80, p["y1"], p["z0"], zt)):
+                s.rc(*f(y0, z0), *f(y1, z1), fill="#d5d7d9", stroke="#888", w=0.12)
+            continue
+        if p["tag"] and p["tag"] != "drawer0":
+            continue
+        poly(s, [f(*q) for q in profile(p)], "#eceeef" if p["kind"] == "box" else "#f6f6f6", "#999", 0.12)
+    for y in (60, M.D - 60):
+        s.rc(*f(y - 25, 0), *f(y + 25, M.LEG), fill="#222", stroke="#000")
+    for p in M.PARTS:
+        if p["x0"] < xc < p["x1"]:
+            poly(s, [f(*q) for q in profile(p)], "url(#hatch)", "#111", 0.25)
+    s.rc(*f(M.D, M.OUT_Z - 80), *f(M.D + 90, M.OUT_Z + 80), fill="#c9cdd1", stroke="#555")
+    s.ln(*f(M.SH_Y + 12, M.ZW - 4), *f(M.SH_Y + 32, M.ZW - 4), 0.9, "#f5c518")
     # поток воздуха
-    for y in (150, 330, 510):
-        x0, y0 = f(y, M.ZT + 90)
-        x1, y1 = f(y, M.ZT - 120)
-        s.e(f'<path d="M{x0:.2f} {y0:.2f} L{x1:.2f} {y1:.2f}" stroke="#2e86de" stroke-width="0.4" fill="none" marker-end="url(#arr)"/>')
-    x0, y0 = f(400, M.OUT_Z)
-    x1, y1 = f(M.D + 120, M.OUT_Z)
-    s.e(f'<path d="M{x0:.2f} {y0:.2f} L{x1:.2f} {y1:.2f}" stroke="#2e86de" stroke-width="0.4" fill="none" marker-end="url(#arr)"/>')
+    def arrow(pts):
+        s.e('<path d="M' + "L".join(f"{f(*q)[0]:.2f} {f(*q)[1]:.2f}" for q in pts) +
+            '" stroke="#2e86de" stroke-width="0.45" fill="none" marker-end="url(#arr)"/>')
     s.e('<defs><marker id="arr" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4Z" fill="#2e86de"/></marker></defs>')
-    x, y = f(M.D + 90, M.OUT_Z - 140)
-    s.t(x, y, "Ø160 → к", 1.9, "end", fill="#2e86de")
-    s.t(x, y + 2.4, "аспирации", 1.9, "end", fill="#2e86de")
-    # размеры
-    dim_h(s, f(0, 0)[0], f(M.D, 0)[0], G + 9, "700", 2.4)
-    dim_h(s, f(0, 0)[0], f(M.SET, 0)[0], G + 4.5, "100", 2.0)
-    dim_h(s, f(M.SET, 0)[0], f(M.D, 0)[0], G + 4.5, "600", 2.0)
-    dim_h(s, f(M.D - 166, 0)[0], f(M.D, 0)[0], f(0, M.ZW)[1] - 3, "166", 2.0)
-    xr = f(M.D, 0)[0]
-    for z0, z1 in ((0, M.LEG), (M.LEG, 375), (375, M.PLB), (M.PLB, M.ZT), (M.ZT, M.ZW)):
+    for y in (120, 260, 380):
+        arrow([(y, M.ZT + 110), (y, M.ZT - 160)])
+    arrow([(M.YT - 120, 1200), (M.YT + 90, 1200), (M.YT + 120, 1120)])
+    arrow([(M.YT + 130, 1050), (M.YT + 130, 620), (M.D + 140, M.OUT_Z)])
+    x, y = f(M.D + 100, M.OUT_Z - 60)
+    s.t(x, y, "Ø160 → к", 1.9, "start", fill="#2e86de")
+    s.t(x, y + 2.4, "пылесосу /", 1.9, "start", fill="#2e86de")
+    s.t(x, y + 4.8, "аспирации", 1.9, "start", fill="#2e86de")
+    dim_h(s, f(0, 0)[0], f(M.D, 0)[0], G + 9, "700", 2.3)
+    dim_h(s, f(0, 0)[0], f(M.YT, 0)[0], G + 4.5, "450", 2.0)
+    dim_h(s, f(M.YT, 0)[0], f(M.D, 0)[0], G + 4.5, "250", 2.0)
+    dim_h(s, f(0, 0)[0], f(M.SH_Y, 0)[0], f(0, M.ZS)[1] - 3, "250", 2.0)
+    dim_h(s, f(M.SH_Y, 0)[0], f(M.D, 0)[0], f(0, M.ZS)[1] - 3, "450", 2.0)
+    dim_h(s, f(0, 0)[0], f(M.SLANT, 0)[0], f(0, M.ZD)[1] + 4, "84", 1.8)
+    lv = [0, M.LEG, M.ZD + M.T, M.ZT, M.ZW, M.ZS]
+    for z0, z1 in zip(lv, lv[1:]):
         dim_v(s, f(0, z0)[1], f(0, z1)[1], X - 4, f"{z1-z0}", 2.0)
-    dim_v(s, f(0, M.PLB + M.T)[1], f(0, M.ZT - M.TM)[1], xr + 12, "231 короб", 1.9, side=1.8)
-    s.t(X + M.D * K / 2, f(0, M.ZW)[1] - 9, "РАЗРЕЗ А–А", 3, weight="bold")
+    s.t(X + M.D * k / 2, f(0, M.ZS)[1] - 9, "РАЗРЕЗ А–А  М 1:10", 3, weight="bold")
 
 
 def sheet1():
     s = S()
-    header(s, "Стол шлифовальный с нижней вытяжкой 2800 × 700",
-           "Высота столешницы 900, задняя стенка 550  |  ЛДСП 16 антрацит, МДФ 19 (столешница), МДФ 16 (лицевая панель, перфостенка)  |  М 1:10, размеры в мм", 1)
-    front_view(s, 22, 180)
-    top_view(s, 22, 210)
-    section(s, 322, 180)
-    X, Y = 330, 210
-    s.t(X, Y, "Как работает", 3.2, "start", "bold")
-    for i, txt in enumerate([
-        "Воздух с пылью уходит вниз через прорези",
-        "столешницы в короб высотой 250 мм и",
-        "отводится через 2 патрубка Ø160 сзади",
-        "в общую аспирацию (тройник → Ø200).",
-        f"Прорези 40×10: {len(M.TOP_SLOTS)} шт., живое сечение",
-        f"{M.open_area():.2f} м². Рекомендуемая производитель-",
-        "ность вытяжки — от 2000 м³/ч.",
-        "Шлифмашинки дополнительно — к пылесосам,",
-        "как сейчас в цеху.",
-        "Столешница из двух половин по 1400 —",
-        "изношенную меняют по частям.",
-    ]):
-        s.t(X, Y + 5 + i * 3.6, txt, 2.3, "start")
+    header(s, "Стол шлифовальный 2800 × 700: камера вытяжки, выкатные ящики, стеллаж",
+           "Столешница на 900, перфостенка 550, открытый стеллаж 500 со светом  |  ЛДСП 16 антрацит, МДФ 19 / МДФ 16  |  Размеры в мм", 1)
+    front_view(s, 28, 172, 1 / 15)
+    top_view(s, 28, 200, 1 / 15)
+    section(s, 268, 262, 1 / 10)
+    X, Y = 355, 40
+    s.t(X, Y, "Как устроено", 3.2, "start", "bold")
+    lines = [
+        "Камера (пустота) под",
+        "столешницей и за перфо-",
+        "стенкой — единый объём.",
+        "Пылесос / аспирация тянет",
+        "воздух через 2 патрубка",
+        "Ø160 сзади (высота 520).",
+        "",
+        "Воздух входит через:",
+        f"• столешницу — {len(M.TOP_SLOTS)} прорезей",
+        "  40×10;",
+        f"• перфостенку — {len(M.WALL_SLOTS)} прорезей",
+        "  30×8 (и под крючки);",
+        "• наклонный фасад —",
+        "  5 рядов прорезей.",
+        "",
+        "Внизу — 3 выкатных",
+        "ящика 908×255 на",
+        "направляющих 600 мм",
+        "полного выдвижения.",
+        "",
+        "Сверху — открытый",
+        "стеллаж 500, глубина",
+        "450, 3 секции; под ним",
+        "LED-лента над столом.",
+        "",
+        "Рабочая глубина",
+        "столешницы — 450.",
+        "Стол можно сделать",
+        "глубже — скажите.",
+    ]
+    for i, txt in enumerate(lines):
+        s.t(X, Y + 5 + i * 3.5, txt, 2.25, "start")
     s.save("stol_list1.svg")
 
 
@@ -216,9 +229,9 @@ def sheet1():
 def sheet2():
     s = S()
     header(s, "Стол шлифовальный — 3D, детали, фурнитура",
-           "Детали для раскроя: размер L × W × толщина, кромка ПВХ 2 мм — по лицевым торцам ЛДСП", 2)
-    for i, (v, cap) in enumerate((("front", "Общий вид"), ("back", "Сзади: патрубки Ø160"),
-                                  ("open", "Без столешницы и лицевой панели: рёбра короба"))):
+           "Детали для раскроя: L × W × толщина (для фигурных — габарит), кромка ПВХ 2 мм — по лицевым торцам ЛДСП", 2)
+    for i, (v, cap) in enumerate((("front", "Общий вид"), ("back", "Сзади: патрубки Ø160 к пылесосу"),
+                                  ("open", "Без столешницы и перфостенки, ящик выдвинут"))):
         b64 = base64.b64encode(open(os.path.join(HERE, f"3d_{v}.png"), "rb").read()).decode()
         x = 12 + i * 133
         s.e(f'<image x="{x}" y="28" width="128" height="89.6" href="data:image/png;base64,{b64}"/>')
@@ -226,7 +239,7 @@ def sheet2():
         s.t(x + 64, 122, cap, 2.6)
     X, Y = 12, 132
     s.t(X, Y, "Детали", 3.4, "start", "bold")
-    cols = [X, X + 8, X + 82, X + 122, X + 172, X + 188]
+    cols = [X, X + 8, X + 86, X + 124, X + 168, X + 182]
     Y += 3
     s.rc(X, Y, X + 205, Y + 6, fill="#eef1f4", stroke="#999", w=0.15)
     for c, h in zip(cols, ["№", "Деталь", "Материал", "L × W × t, мм", "Кол.", "Площадь, м²"]):
@@ -236,10 +249,10 @@ def sheet2():
     for i, ((name, mat, a, b, t), n) in enumerate(M.spec().items()):
         ar = a * b * n / 1e6
         area[mat] = area.get(mat, 0) + ar
-        s.rc(X, Y, X + 205, Y + 4.6, fill="#fff" if i % 2 else "#fafafa", stroke="#ddd", w=0.1)
+        s.rc(X, Y, X + 205, Y + 4.2, fill="#fff" if i % 2 else "#fafafa", stroke="#ddd", w=0.1)
         for c, v in zip(cols, [i + 1, name, mat, f"{a} × {b} × {t}", n, f"{ar:.2f}"]):
-            s.t(c + 1.5, Y + 3.3, str(v), 2.2, "start")
-        Y += 4.6
+            s.t(c + 1.5, Y + 3.1, str(v), 2.1, "start")
+        Y += 4.2
     Y += 3
     for mat, ar in area.items():
         sheets = math.ceil(ar * 1.2 / (2.8 * 2.07) * 2) / 2
@@ -250,14 +263,16 @@ def sheet2():
     s.t(X2, Y2, "Фурнитура и комплектующие", 3.4, "start", "bold")
     items = [
         ("Опора регулируемая h 100 (±15), под 100 кг", "8 шт."),
-        ("Патрубок Ø160 с фланцем (в задней стенке короба)", "2 шт."),
+        ("Направляющие шариковые 600, полного выдвижения, 45 кг", "3 пары"),
+        ("Ручка-скоба 256 мм (или профиль Gola)", "3 шт."),
+        ("Патрубок Ø160 с фланцем (в задней стенке камеры)", "2 шт."),
         ("Тройник 2×Ø160 → Ø200 + хомуты, гофра Ø160", "1 к-т"),
-        ("Лента LED 24 В, 4000 К, с алюминиевым профилем", "2,7 м"),
+        ("Лента LED 24 В, 4000 К, с профилем (под стеллажом)", "2,7 м"),
         ("Блок питания 24 В 60 Вт + выключатель", "1 к-т"),
-        ("Блок розеток 3 × 220 В (на стойку задней стенки)", "1–2 шт."),
-        ("Конфирмат 7×50", "≈ 120 шт."),
-        ("Саморез 4×30 (столешница к рёбрам, без клея)", "≈ 60 шт."),
-        ("Герметик / уплотнитель швов короба", "1 туба"),
+        ("Блок розеток 3 × 220 В (на боковину)", "1–2 шт."),
+        ("Конфирмат 7×50", "≈ 200 шт."),
+        ("Саморез 4×30 (столешница к рёбрам, без клея)", "≈ 40 шт."),
+        ("Герметик / уплотнитель швов камеры", "1 туба"),
         ("Крючки для перфостенки (по месту)", "—"),
     ]
     for i, (a, b) in enumerate(items):
@@ -269,11 +284,12 @@ def sheet2():
     s.t(X2, y, "Примечания", 3.2, "start", "bold")
     for i, txt in enumerate([
         "• Все детали ≤ 2768 мм — режутся из листа 2800×2070 с обрезкой кромок.",
-        "• Швы короба (дно, бока, задняя стенка, лицевая панель) — на герметик,",
-        "  иначе вытяжка тянет воздух через щели, а не через столешницу.",
+        "• Швы камеры (перекрытие, боковины, задняя стенка, фасад, крышка канала)",
+        "  — на герметик, иначе пылесос тянет воздух через щели.",
         "• Столешницу крепить саморезами в рёбра без клея — сменная.",
-        "• Рёбра короба — с вырезами (верхний пояс 60 мм + 3 ножки 100 мм),",
+        "• Рёбра камеры и канала — с вырезами (пояс 60 + ножки 80),",
         "  чтобы воздух свободно шёл к патрубкам.",
+        "• Боковины фигурные (скос под наклонный фасад) — по шаблону, ЧПУ.",
         "• Прорези столешницы и перфостенки — на ЧПУ, фреза Ø8–10.",
         "• Цвета на 3D условные; ЛДСП — антрацит, как на фото.",
     ]):
