@@ -24,15 +24,17 @@ S = 1 / 15
 WM, WR, H = 4000, 1830, 2750
 PL, CB, TOP = 100, 920 - 40, 920
 D = 600
-UB, UT = 1520, 2240                          # верхние шкафы (фартук 600, высота 720)
+UB, UT = 1520, 2350                          # верхние шкафы: фартук 600, верх на уровне антресоли пеналов
+UD, R = 340, 300                             # глубина верхних, радиус торцевых
 G = 2
 FRONT, WHITE, DARK, TOPC, TILE = "#e8e4dd", "#fbfaf8", "#5a4636", "#e9e3da", "#f1efec"
 
 # основная стена, слева направо: (x0, x1, вид, подпись)
-BASE = [(0, 600, "doors2", "2 распашные"), (600, 1200, "drw3", "3 ящика · варка"),
+BASE = [(0, 600, "door1", "распашной"), (600, 1200, "drw3", "3 ящика · варка"),
         (1200, 1800, "dw", "ПММ 600"), (1800, 2400, "sink", "мойка · ведро"),
-        (2400, 2850, "door", "распашной"), (2850, 3400, "corner", "ящик (уходит в угол)")]
+        (2400, 2900, "door", "распашной"), (2900, 3400, "corner", "ящик (уходит в угол)")]
 UPPERS = [(600, 1050), (1050, 1500), (1500, 1950), (1950, 2400)]
+RAD = [(UPPERS[0][0] - R, UPPERS[0][0]), (UPPERS[-1][1], UPPERS[-1][1] + R)]   # радиусные торцы
 ANT = 400
 AZ = H - ANT                                 # низ антресоли пеналов 2350
 # правая стена (от угла): угол 600 (столешница + ниша бойлера над ней), холодильник 600, духовка 600, планка 30
@@ -73,7 +75,11 @@ def main_wall(v):
     v.r(0, 3400, 0, PL, fill="#cfcac2", sw=0.2)
     v.r(0, WM, CB, TOP, fill=TOPC, sw=0.35)
     for x0, x1, k, lab in BASE:
-        if k == "doors2":
+        if k == "door1":
+            v.r(x0 + G, x1 - G, PL + G, CB - G)
+            v.swing(x0 + G, x1 - G, PL + G, CB - G, True)
+            v.handle_v(x1 - 60, CB - 300, CB - 60)
+        elif k == "doors2":
             m = (x0 + x1) / 2
             for a, b, left in ((x0, m, True), (m, x1, False)):
                 v.r(a + G, b - G, PL + G, CB - G)
@@ -106,6 +112,15 @@ def main_wall(v):
     for i, (x0, x1) in enumerate(UPPERS):
         v.r(x0 + G, x1 - G, UB + G, UT - G, fill="#6d6259")
         v.swing(x0 + G, x1 - G, UB + G, UT - G, i % 2 == 0)
+    for k, (x0, x1) in enumerate(RAD):                    # радиусные двери R300
+        v.r(x0 + G, x1 - G, UB + G, UT - G, fill="#7d7168")
+        for f in (0.33, 0.66):                            # штриховка изгиба
+            xx = x0 + (x1 - x0) * (f if k else 1 - f)
+            line(v.X(xx), v.Z(UT - G), v.X(xx), v.Z(UB + G), w=0.15, color="#bbb")
+        v.swing(x0 + G, x1 - G, UB + G, UT - G, k == 1)
+        text(v.X((x0 + x1) / 2), v.Z((UB + UT) / 2), "R300", size=1.4, fill="#fff", rot=-90)
+    line(v.X(RAD[0][0]), v.Z(AZ), v.X(3400), v.Z(AZ), w=0.25, color="#c0392b", dash="2 1")
+    text(v.X(2900), v.Z(AZ) - 1.5, "верх на уровне антресоли 2350", size=1.3, fill="#c0392b")
     # правая стена в разрезе: пеналы / ниша бойлера
     v.r(3400, WM, PL, H, fill="url(#drw)", sw=0.3)
     text(v.X(3700), v.Z(1500), "пеналы — см. вид Б", size=1.5, rot=-90, fill="#555")
@@ -117,8 +132,10 @@ def main_wall(v):
     dim_h(v.X(0), v.X(WM), y + 12, f"{WM}", size=2.3)
     for a, b in zip([UPPERS[0][0]] + [u[1] for u in UPPERS], [u[1] for u in UPPERS]):
         pass
-    dim_h(v.X(UPPERS[0][0]), v.X(UPPERS[-1][1]), v.Z(UT) - 4, f"4 × 450 = {UPPERS[-1][1] - UPPERS[0][0]}",
-          ext_from=v.Z(UT), size=1.7)
+    for a, b in ((RAD[0][0], RAD[0][1]), (UPPERS[0][0], UPPERS[-1][1]), (RAD[1][0], RAD[1][1])):
+        lab = f"4 × 450 = {b - a}" if b - a > 400 else "R300"
+        dim_h(v.X(a), v.X(b), v.Z(UT) - 4, lab, ext_from=v.Z(UT), size=1.6)
+    dim_h(v.X(RAD[0][0]), v.X(RAD[1][1]), v.Z(UT) - 10, str(RAD[1][1] - RAD[0][0]), size=1.8)
     zs = [0, PL, CB, TOP, UB, UT, H]
     for a, b in zip(zs, zs[1:]):
         dim_v(v.Z(b), v.Z(a), v.X(0) - 5, str(b - a), ext_from=v.X(0), size=1.6)
@@ -159,15 +176,15 @@ def right_wall(v):
     # духовка + СВЧ
     x0, x1 = R_OV
     v.r(x0 + 40, x1 - 40, 0, PL, fill="#cfcac2", sw=0.2)
-    v.r(x0 + G, x1 - G, PL + G, 580 - G, fill="#6d6259")
-    v.handle_h(x0 + 150, x1 - 150, 520)
-    v.r(x0 + G, x1 - G, 580 + G, 1180 - G, fill="#1f1f1f")
-    v.r(x0 + G, x1 - G, 1180 + G, 1560 - G, fill="#2c2c2c")
-    v.r(x0 + G, x1 - G, 1560 + G, AZ - G, fill="#6d6259")
-    v.swing(x0 + G, x1 - G, 1560 + G, AZ - G, False)
-    text(v.X((x0 + x1) / 2), v.Z(340), "ящик", size=1.4, fill="#fff")
-    text(v.X((x0 + x1) / 2), v.Z(880), "ДУХОВКА", size=1.5, weight="bold", fill="#fff")
-    text(v.X((x0 + x1) / 2), v.Z(1370), "СВЧ", size=1.5, weight="bold", fill="#fff")
+    v.r(x0 + G, x1 - G, PL + G, 460 - G, fill="#6d6259")
+    v.handle_h(x0 + 150, x1 - 150, 400)
+    v.r(x0 + G, x1 - G, 460 + G, 1060 - G, fill="#1f1f1f")
+    v.r(x0 + G, x1 - G, 1060 + G, 1440 - G, fill="#2c2c2c")
+    v.r(x0 + G, x1 - G, 1440 + G, AZ - G, fill="#6d6259")
+    v.swing(x0 + G, x1 - G, 1440 + G, AZ - G, False)
+    text(v.X((x0 + x1) / 2), v.Z(280), "ящик", size=1.4, fill="#fff")
+    text(v.X((x0 + x1) / 2), v.Z(760), "ДУХОВКА", size=1.5, weight="bold", fill="#fff")
+    text(v.X((x0 + x1) / 2), v.Z(1250), "СВЧ", size=1.5, weight="bold", fill="#fff")
     v.r(1800, WR, PL, H, fill="#6d6259", sw=0.25)
     # размеры
     y = v.Z(0)
@@ -175,7 +192,7 @@ def right_wall(v):
     for a, b in zip(xs, xs[1:]):
         dim_h(v.X(a), v.X(b), y + 5, str(b - a), ext_from=y + 0.5, size=1.8 if b - a > 50 else 1.3)
     dim_h(v.X(0), v.X(WR), y + 12, str(WR), size=2.3)
-    for zs, x in (([0, PL, 580, 1180, 1560, AZ], v.X(1200) - 3), ([0, PL, 1880, AZ, H], v.X(WR) + 5)):
+    for zs, x in (([0, PL, 460, 1060, 1440, AZ], v.X(1200) - 3), ([0, PL, 1880, AZ, H], v.X(WR) + 5)):
         for a, b in zip(zs, zs[1:]):
             dim_v(v.Z(b), v.Z(a), x, str(b - a), ext_from=v.X(WR) if x > v.X(WR) else None, size=1.5)
     dim_v(v.Z(AZ), v.Z(TOP), v.X(600) - 3, str(AZ - TOP), size=1.5)
@@ -195,7 +212,13 @@ def plan(ox, oy):
     line(X(3400), Y(1200), X(WM), Y(1200), w=0.3)
     for x0, x1, k, lab in BASE:
         line(X(x1), Y(0), X(x1), Y(D), w=0.2)
-    text(X(1700), Y(D / 2) + 1, "столешница 40, верх 920", size=1.3, fill="#555")
+    x0, x1 = RAD[0][0], RAD[1][1]
+    r = R * s
+    e(f'<path d="M{X(x0):.2f},{Y(0):.2f} L{X(x1):.2f},{Y(0):.2f} L{X(x1):.2f},{Y(UD - R):.2f} '
+      f'A{r:.2f},{r:.2f} 0 0 1 {X(x1 - R):.2f},{Y(UD):.2f} L{X(x0 + R):.2f},{Y(UD):.2f} '
+      f'A{r:.2f},{r:.2f} 0 0 1 {X(x0):.2f},{Y(UD - R):.2f} Z" fill="none" stroke="#6d6259" stroke-width="0.4" stroke-dasharray="1.5 0.8"/>')
+    text(X(1500), Y(D) + 5, "пунктир — верхние шкафы, глубина 340, торцы R300", size=1.2, fill="#6d6259")
+    text(X(1700), Y(D / 2) + 3, "столешница 40, верх 920", size=1.3, fill="#555")
     text(X(3700), Y(300) + 1, "бойлер", size=1.2, fill="#555")
     text(X(3700), Y(900) + 1, "духовка", size=1.2, fill="#fff")
     text(X(3700), Y(1500) + 1, "холод.", size=1.2, fill="#fff")
@@ -219,10 +242,10 @@ def main():
     text(vb.X(WR / 2), vb.Z(0) + 22, "ВИД Б — правая стена 1830 (пеналы)", size=2.4, weight="bold")
     plan(60, 290)
     rows = ["Цоколь 100 + корпус 780 + столешница 40 = 920; фартук 600; общая высота 2750.",
-            "Низ слева направо: 2 распашные · 3 ящика под варкой · ПММ 600 · мойка (ведро) · распашной ·",
-            "угловой ящик: фасад 550, короб уходит вправо под нишу бойлера.",
+            "Низ слева направо: распашной 600 · 3 ящика под варкой · ПММ 600 · мойка (ведро) · распашной 500 ·",
+            "угловой ящик: фасад 500, короб уходит вправо под нишу бойлера.",
             "Правая стена: ниша бойлера · пенал: ящик, духовка, СВЧ · пенал холодильника; сверху антресоль 400.",
-            "Ширины модулей и верхние шкафы (4 × 450, высота 720) — предварительно, уточнить."]
+            "Верх: 4 × 450 + радиусные торцы R300, глубина 340, высота 830, верх на уровне антресоли 2350."]
     for i, s in enumerate(rows):
         text(200, 300 + i * 6.5, s, size=1.8, anchor="start")
     bx, by, bw, bh = 445, 362, 140, 46
