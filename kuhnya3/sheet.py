@@ -248,6 +248,23 @@ def main():
             "Верх: 4 × 450 + радиусные торцы R300, глубина 340, высота 830, верх на уровне антресоли 2350."]
     for i, s in enumerate(rows):
         text(200, 300 + i * 6.5, s, size=1.8, anchor="start")
+    import math
+    import rashod as rs
+    y0 = 338
+    text(200, y0, "РАСХОД ЛДСП 16 (корпус + фасады, +15 % на раскрой; лист 2800 × 2070)", size=2.1,
+         weight="bold", anchor="start")
+    rows = [("Тёмный — древесный", "пеналы, ниша бойлера, верхние шкафы (корпус = фасад)", rs.area(rs.dark)),
+            ("Светлый — однотонный", "нижние шкафы, фасады низа, цоколь", rs.area(rs.light))]
+    for i, (nm, where, ar) in enumerate(rows):
+        yy = y0 + 8 + i * 7
+        sheets = math.ceil(ar * rs.WASTE / rs.SHEET)
+        rect(200, yy - 4, 7, 5, fill="#6d6259" if i == 0 else "#e8e4dd", sw=0.25)
+        text(210, yy, nm, size=1.9, weight="bold", anchor="start")
+        text(258, yy, where, size=1.6, anchor="start", fill="#444")
+        text(365, yy, f"{ar:.1f} м² → {sheets} " + ("лист" if sheets == 1 else "листа" if sheets < 5 else "листов"), size=1.9, weight="bold", anchor="start")
+    text(200, y0 + 24, f"Радиусные фасады R300 — 2 шт (~{rs.radius_area:.1f} м²): гнутый МДФ, заказ отдельно.",
+         size=1.5, anchor="start", fill="#555")
+    text(200, y0 + 30, "Столешница и задние стенки ХДФ в расход ЛДСП не входят.", size=1.5, anchor="start", fill="#555")
     bx, by, bw, bh = 445, 362, 140, 46
     rect(bx, by, bw, bh, sw=0.5)
     line(bx, by + 14, bx + bw, by + 14, w=0.3)

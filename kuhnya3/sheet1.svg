@@ -353,6 +353,17 @@
 <text x="200.00" y="313.00" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">угловой ящик: фасад 500, короб уходит вправо под нишу бойлера.</text>
 <text x="200.00" y="319.50" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">Правая стена: ниша бойлера · пенал: ящик, духовка, СВЧ · пенал холодильника; сверху антресоль 400.</text>
 <text x="200.00" y="326.00" font-size="3.24" text-anchor="start" font-weight="normal" fill="#111">Верх: 4 × 450 + радиусные торцы R300, глубина 340, высота 830, верх на уровне антресоли 2350.</text>
+<text x="200.00" y="338.00" font-size="3.7800000000000002" text-anchor="start" font-weight="bold" fill="#111">РАСХОД ЛДСП 16 (корпус + фасады, +15 % на раскрой; лист 2800 × 2070)</text>
+<rect x="200.00" y="342.00" width="7.00" height="5.00" fill="#6d6259" stroke="#111" stroke-width="0.25" />
+<text x="210.00" y="346.00" font-size="3.42" text-anchor="start" font-weight="bold" fill="#111">Тёмный — древесный</text>
+<text x="258.00" y="346.00" font-size="2.8800000000000003" text-anchor="start" font-weight="normal" fill="#444">пеналы, ниша бойлера, верхние шкафы (корпус = фасад)</text>
+<text x="365.00" y="346.00" font-size="3.42" text-anchor="start" font-weight="bold" fill="#111">23.3 м² → 5 листов</text>
+<rect x="200.00" y="349.00" width="7.00" height="5.00" fill="#e8e4dd" stroke="#111" stroke-width="0.25" />
+<text x="210.00" y="353.00" font-size="3.42" text-anchor="start" font-weight="bold" fill="#111">Светлый — однотонный</text>
+<text x="258.00" y="353.00" font-size="2.8800000000000003" text-anchor="start" font-weight="normal" fill="#444">нижние шкафы, фасады низа, цоколь</text>
+<text x="365.00" y="353.00" font-size="3.42" text-anchor="start" font-weight="bold" fill="#111">10.6 м² → 3 листа</text>
+<text x="200.00" y="362.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#555">Радиусные фасады R300 — 2 шт (~0.8 м²): гнутый МДФ, заказ отдельно.</text>
+<text x="200.00" y="368.00" font-size="2.7" text-anchor="start" font-weight="normal" fill="#555">Столешница и задние стенки ХДФ в расход ЛДСП не входят.</text>
 <rect x="445.00" y="362.00" width="140.00" height="46.00" fill="none" stroke="#111" stroke-width="0.5" />
 <line x1="445.00" y1="376.00" x2="585.00" y2="376.00" stroke="#111" stroke-width="0.3"/>
 <text x="515.00" y="369.00" font-size="5.760000000000001" text-anchor="middle" font-weight="bold" fill="#111">КУХНЯ</text>
