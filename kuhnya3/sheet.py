@@ -29,12 +29,14 @@ G = 2
 FRONT, WHITE, DARK, TOPC, TILE = "#e8e4dd", "#fbfaf8", "#5a4636", "#e9e3da", "#f1efec"
 
 # основная стена, слева направо: (x0, x1, вид, подпись)
-BASE = [(0, 700, "doors2", "2 распашные"), (700, 1300, "drw3", "3 ящика · варка"),
-        (1300, 1900, "dw", "ПММ 600"), (1900, 2500, "sink", "мойка · ведро"),
-        (2500, 2950, "door", "распашной"), (2950, 3400, "corner", "ящик (уходит в угол)")]
-UPPERS = [(700, 1150), (1150, 1600), (1600, 2050), (2050, 2500)]
+BASE = [(0, 600, "doors2", "2 распашные"), (600, 1200, "drw3", "3 ящика · варка"),
+        (1200, 1800, "dw", "ПММ 600"), (1800, 2400, "sink", "мойка · ведро"),
+        (2400, 2850, "door", "распашной"), (2850, 3400, "corner", "ящик (уходит в угол)")]
+UPPERS = [(600, 1050), (1050, 1500), (1500, 1950), (1950, 2400)]
+ANT = 400
+AZ = H - ANT                                 # низ антресоли пеналов 2350
 # правая стена (от угла): угол 600 (столешница + ниша бойлера над ней), холодильник 600, духовка 600, планка 30
-R_CORNER, R_FR, R_OV = (0, 600), (600, 1200), (1200, 1800)
+R_CORNER, R_OV, R_FR = (0, 600), (600, 1200), (1200, 1800)
 
 
 class V:
@@ -96,10 +98,10 @@ def main_wall(v):
                 v.handle_v(x1 - 60 if left else x0 + 60, CB - 300, CB - 60)
         text(v.X((x0 + x1) / 2), v.Z(PL + 300), lab, size=1.4, fill="#555")
     # техника на столешнице
-    v.r(760, 1240, TOP, TOP + 6, fill="#1d1d1d", sw=0.2)
-    v.r(2000, 2400, TOP - 4, TOP + 2, fill="#2b2b2b", sw=0.2)
-    line(v.X(2350), v.Z(TOP), v.X(2350), v.Z(TOP + 280), w=0.8, color="#222")
-    line(v.X(2350), v.Z(TOP + 280), v.X(2250), v.Z(TOP + 280), w=0.8, color="#222")
+    v.r(660, 1140, TOP, TOP + 6, fill="#1d1d1d", sw=0.2)
+    v.r(1900, 2300, TOP - 4, TOP + 2, fill="#2b2b2b", sw=0.2)
+    line(v.X(2250), v.Z(TOP), v.X(2250), v.Z(TOP + 280), w=0.8, color="#222")
+    line(v.X(2250), v.Z(TOP + 280), v.X(2150), v.Z(TOP + 280), w=0.8, color="#222")
     # верхние шкафы
     for i, (x0, x1) in enumerate(UPPERS):
         v.r(x0 + G, x1 - G, UB + G, UT - G, fill="#6d6259")
@@ -123,7 +125,7 @@ def main_wall(v):
     dim_v(v.Z(H), v.Z(0), v.X(0) - 11, str(H), ext_from=v.X(0), size=2.2)
     dim_v(v.Z(TOP), v.Z(0), v.X(0) - 17, str(TOP), ext_from=v.X(0), size=1.8)
     z = PL
-    xd = v.X(1300) + 2.5
+    xd = v.X(1200) + 2.5
     for h_ in (260, 260, CB - PL - 520):
         dim_v(v.Z(z + h_), v.Z(z), xd, str(h_), size=1.3)
         z += h_
@@ -136,8 +138,12 @@ def right_wall(v):
     # угол: нижняя часть (ящик уходит сюда) в разрезе + столешница + ниша бойлера
     v.r(0, 600, 0, CB, fill="url(#drw)", sw=0.3)
     v.r(0, 600, CB, TOP, fill=TOPC, sw=0.35)
-    v.r(0 + G, 600 - G, TOP + G, H - G, fill="#6d6259")
-    v.swing(G, 600 - G, TOP + G, H - G, True)
+    v.r(0 + G, 600 - G, TOP + G, AZ - G, fill="#6d6259")
+    v.swing(G, 600 - G, TOP + G, AZ - G, True)
+    for a, b in (R_CORNER, R_OV, R_FR):
+        v.r(a + G, b - G, AZ + G, H - G, fill="#6d6259")
+        v.swing(a + G, b - G, AZ + G, H - G, a == 0)
+    text(v.X(900), v.Z(AZ + 200) + 1, "антресоль 400", size=1.3, fill="#fff")
     text(v.X(280), v.Z(1850), "НИША БОЙЛЕРА", size=1.4, weight="bold", fill="#fff")
     text(v.X(280), v.Z(1850) + 4, "на столешнице", size=1.3, fill="#fff")
     text(v.X(300), v.Z(450), "угловой ящик", size=1.3, fill="#555")
@@ -145,9 +151,9 @@ def right_wall(v):
     x0, x1 = R_FR
     v.r(x0 + 40, x1 - 40, 0, PL, fill="#cfcac2", sw=0.2)
     v.r(x0 + G, x1 - G, PL + G, 1880 - G, fill="#6d6259")
-    v.r(x0 + G, x1 - G, 1880 + G, H - G, fill="#6d6259")
+    v.r(x0 + G, x1 - G, 1880 + G, AZ - G, fill="#6d6259")
     v.swing(x0 + G, x1 - G, PL + G, 1880 - G, False)
-    v.swing(x0 + G, x1 - G, 1880 + G, H - G, False)
+    v.swing(x0 + G, x1 - G, 1880 + G, AZ - G, False)
     text(v.X((x0 + x1) / 2), v.Z(1100), "ХОЛОДИЛЬНИК", size=1.6, weight="bold", fill="#fff")
     text(v.X((x0 + x1) / 2), v.Z(1100) + 4, "встраиваемый", size=1.3, fill="#fff")
     # духовка + СВЧ
@@ -157,8 +163,8 @@ def right_wall(v):
     v.handle_h(x0 + 150, x1 - 150, 520)
     v.r(x0 + G, x1 - G, 580 + G, 1180 - G, fill="#1f1f1f")
     v.r(x0 + G, x1 - G, 1180 + G, 1560 - G, fill="#2c2c2c")
-    v.r(x0 + G, x1 - G, 1560 + G, H - G, fill="#6d6259")
-    v.swing(x0 + G, x1 - G, 1560 + G, H - G, False)
+    v.r(x0 + G, x1 - G, 1560 + G, AZ - G, fill="#6d6259")
+    v.swing(x0 + G, x1 - G, 1560 + G, AZ - G, False)
     text(v.X((x0 + x1) / 2), v.Z(340), "ящик", size=1.4, fill="#fff")
     text(v.X((x0 + x1) / 2), v.Z(880), "ДУХОВКА", size=1.5, weight="bold", fill="#fff")
     text(v.X((x0 + x1) / 2), v.Z(1370), "СВЧ", size=1.5, weight="bold", fill="#fff")
@@ -169,10 +175,10 @@ def right_wall(v):
     for a, b in zip(xs, xs[1:]):
         dim_h(v.X(a), v.X(b), y + 5, str(b - a), ext_from=y + 0.5, size=1.8 if b - a > 50 else 1.3)
     dim_h(v.X(0), v.X(WR), y + 12, str(WR), size=2.3)
-    for zs, x in (([0, PL, 1880, H], v.X(1200) - 3), ([0, PL, 580, 1180, 1560, H], v.X(WR) + 5)):
+    for zs, x in (([0, PL, 580, 1180, 1560, AZ], v.X(1200) - 3), ([0, PL, 1880, AZ, H], v.X(WR) + 5)):
         for a, b in zip(zs, zs[1:]):
             dim_v(v.Z(b), v.Z(a), x, str(b - a), ext_from=v.X(WR) if x > v.X(WR) else None, size=1.5)
-    dim_v(v.Z(H), v.Z(TOP), v.X(600) - 3, str(H - TOP), size=1.5)
+    dim_v(v.Z(AZ), v.Z(TOP), v.X(600) - 3, str(AZ - TOP), size=1.5)
     dim_v(v.Z(H), v.Z(0), v.X(WR) + 11, str(H), ext_from=v.X(WR), size=2.2)
 
 
@@ -191,8 +197,8 @@ def plan(ox, oy):
         line(X(x1), Y(0), X(x1), Y(D), w=0.2)
     text(X(1700), Y(D / 2) + 1, "столешница 40, верх 920", size=1.3, fill="#555")
     text(X(3700), Y(300) + 1, "бойлер", size=1.2, fill="#555")
-    text(X(3700), Y(900) + 1, "холод.", size=1.2, fill="#fff")
-    text(X(3700), Y(1500) + 1, "духовка", size=1.2, fill="#fff")
+    text(X(3700), Y(900) + 1, "духовка", size=1.2, fill="#fff")
+    text(X(3700), Y(1500) + 1, "холод.", size=1.2, fill="#fff")
     dim_h(X(0), X(WM), Y(-100) - 3, str(WM), size=1.5)
     dim_v(Y(0), Y(WR), X(WM + 100) + 3, str(WR), size=1.5)
 
@@ -212,10 +218,10 @@ def main():
     right_wall(vb)
     text(vb.X(WR / 2), vb.Z(0) + 22, "ВИД Б — правая стена 1830 (пеналы)", size=2.4, weight="bold")
     plan(60, 290)
-    rows = ["Цоколь 100 + корпус 820 + столешница 40 = 920; фартук 600; общая высота 2750.",
+    rows = ["Цоколь 100 + корпус 780 + столешница 40 = 920; фартук 600; общая высота 2750.",
             "Низ слева направо: 2 распашные · 3 ящика под варкой · ПММ 600 · мойка (ведро) · распашной ·",
-            "угловой ящик: фасад 450, короб уходит вправо под нишу бойлера.",
-            "Правая стена: ниша под бойлер на столешнице · пенал холодильника · пенал: ящик, духовка, СВЧ.",
+            "угловой ящик: фасад 550, короб уходит вправо под нишу бойлера.",
+            "Правая стена: ниша бойлера · пенал: ящик, духовка, СВЧ · пенал холодильника; сверху антресоль 400.",
             "Ширины модулей и верхние шкафы (4 × 450, высота 720) — предварительно, уточнить."]
     for i, s in enumerate(rows):
         text(200, 300 + i * 6.5, s, size=1.8, anchor="start")
