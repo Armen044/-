@@ -71,6 +71,11 @@ def facade(code, x0, x1, z0, z1, y, kind, mat):
 # ---- холодильник: боковины до пола (шпон), без дна, крышка
 MODULES.append(("П1", "Пенал под холодильник (без дна, боковины до пола)", 0, X0, 0, ZU1, DFR, "шпон"))
 carcass("П1", 0, X0, 0, ZU1, DFR, mat=LDSP_N, bottom=False, back=False, lside=SIDE_W, rside=SIDE_W)
+ZFR = 1850                             # дно отсека над холодильником (холодильник h 1800 + 50 вентзазор)
+box("Дно отсека над холодильником", LDSP_N, "П1", FD, X0 - FD, 0, DFR, ZFR, ZFR + T)
+box("Полка", LDSP_N, "П1", FD, X0 - FD, 20, DFR - 20, 2200, 2200 + T)
+for k in range(2):
+    facade("П1", X0 * k / 2, X0 * (k + 1) / 2, ZFR + 3, ZU1 - GAP, DFR + GAP, "door", WALNUT)
 CONTEXT.append(dict(name="Холодильник 900 (отдельностоящий)", x0=X0 / 2 - 450, x1=X0 / 2 + 450, y0=20, y1=730, z0=0, z1=1800, c="black"))
 # ---- нижний ряд
 ZC = 451                                # верх нижнего ящика; над ним профиль Gola C (32)

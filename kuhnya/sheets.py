@@ -147,15 +147,6 @@ def elevation(s, X, G):
             R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#f5c518", stroke="none")
     s.ln(*f(M.X0, M.ZU0 - 8), *f(M.X0 + 1050, M.ZU0 - 8), 0.7, "#f5c518")
     s.ln(*f(M.X0 + 1650, M.ZU0 - 8), *f(M.XT, M.ZU0 - 8), 0.7, "#f5c518")
-    for code, name, x0, x1, z0, z1, d, mat in M.MODULES:
-        if code == "Р":
-            continue
-        zc = {"П": 2250, "Н": 640, "В": 2050, "А": 2780}[code[0]]
-        if code == "П1":
-            zc = 2200
-        if code == "В3":
-            continue
-        tag(s, *f((x0 + x1) / 2, zc), code)
     xs = [0, M.X0]
     for w, _ in M.BASE + M.TALL:
         xs.append(xs[-1] + w)
@@ -196,9 +187,6 @@ def plan(s, X, Yw):
     R(M.XT, 0, M.L, M.DTALL + 22, fill="#e9e3dc", stroke="#111", w=0.2)
     s.ln(*f(M.XT + 600, 0), *f(M.XT + 600, M.DTALL + 22), 0.2)
     s.ln(*f(M.X0, M.DU + 22), *f(M.XT, M.DU + 22), 0.25, "#111", "2 1")
-    for xx, txt in ((M.X0 / 2, "П1"), (M.XT + 300, "П2"), (M.XT + 750, "П3")):
-        x, y = f(xx, 380)
-        s.t(x, y, txt, 1.9, fill="#333")
     dim_v(s, f(0, 0)[1], f(0, M.DFR)[1], X - 4, "700", 1.8)
     dim_v(s, f(0, 0)[1], f(0, 600)[1], f(M.L, 0)[0] + 4, "600", 1.8, side=1.6)
     s.t(X + M.L * K / 2, Yw - 3, "ПЛАН  М 1:20  (пунктир — верхний ряд и вытяжка)", 2.8, weight="bold")
@@ -239,8 +227,7 @@ def sheet1():
         y = Y + 3 + i * 4.3
         s.rc(X, y, X + 7, y + 2.8, fill=fill, stroke="#111", w=0.15)
         s.t(X + 9, y + 2.3, txt, 2.1, "start")
-    s.t(X, Y + 28, "Н-нижние, В-верхние, А-антресоли, П-пеналы", 2.0, "start")
-    s.t(X, Y + 31.5, "Вид сбоку с материалами и глубинами — лист 2", 2.0, "start")
+    s.t(X, Y + 28, "Вид сбоку с материалами и глубинами — лист 2", 2.0, "start")
     s.save("kuhnya_list1.svg")
 
 
@@ -540,6 +527,7 @@ def axo():
     boxi(fr["x0"], fr["x1"], fr["y0"], fr["y1"], 0, fr["z1"], "#2b2d30", side="#1d1f21", top="#3a3c3f")
     boxi(0, M.FD, 0, M.DFR, 0, M.ZU1, WN_F, side=WN_S, top=WN_T)
     boxi(M.X0 - M.FD, M.X0, 0, M.DFR, 0, M.ZU1, WN_F, side=WN_S, top=WN_T)
+    boxi(M.FD, M.X0 - M.FD, 0, M.DFR, M.ZFR, M.ZU1, WN_S, front=WN_F, top=WN_T, extra=facades_of({"П1"}, M.DFR + 22.5))
     # нижний ряд
     boxi(M.X0, M.XT, M.DB - 60, M.DB - 44, 0, M.PL, "#e6e6e3")
     for code, name, x0, x1, z0, z1, d, mat in M.MODULES:
@@ -616,7 +604,7 @@ def axo():
     X, Y = 330, 250
     s.t(X, Y, "Глубины (красным)", 2.8, "start", "bold")
     for i, txt in enumerate(["700 — пенал под холодильник (без фасада)", "600 — столешница (корпус 560 + фасад 22)",
-                             "372 — верхние шкафы (корпус 350 + фасад)", "602 — пеналы П2, П3 (корпус 580 + фасад)",
+                             "372 — верхние шкафы (корпус 350 + фасад)", "602 — стеклянный шкаф и шкаф под специи",
                              "Антресоль — по глубине того, что под ней"]):
         s.t(X, Y + 4.5 + i * 3.6, txt, 2.15, "start")
 
