@@ -77,6 +77,15 @@ def tag(s, x, y, code):
     s.t(x, y + 0.8, code, 1.8, weight="bold", fill="#1f4e79")
 
 
+def skeleton(s, R, f, x0, x1, z0, z1):
+    """Ящик контуром: борта, дно и задняя стенка (вид спереди без фасада)."""
+    R(x0, z0, x1, z1, fill="none", stroke="#333", w=0.3)
+    R(x0 + 15, z0 + 15, x1 - 15, z1 - 25, fill="none", stroke="#777", w=0.15, dash="1 0.7")
+    s.ln(*f(x0, z1 - 25), *f(x1, z1 - 25), 0.15, "#777")
+    s.ln(*f(x0 + 15, z0), *f(x0 + 15, z1), 0.25, "#333")
+    s.ln(*f(x1 - 15, z0), *f(x1 - 15, z1), 0.25, "#333")
+
+
 def ctx(name):
     return [c for c in M.CONTEXT if c["name"].startswith(name)]
 
@@ -123,10 +132,49 @@ def elevation(s, X, G):
     R(M.XT, 0, M.L, M.PL, fill="url(#veneer)", stroke="#888", w=0.15)
     R(M.X0, M.ZB, M.XT, M.ZB + M.CT, fill="#e6e3dc", stroke="#111", w=0.22)
     s.ln(*f(M.X0, M.ZB - 15), *f(M.XT, M.ZB - 15), 0.9, "#444")
-    for fa in M.FACADES:
-        facade_draw(s, R, f, fa, K)
-        if fa["kind"] == "drawer" and fa["z1"] < 700 and fa["z1"] > 300:
-            s.ln(*f(fa["x0"], fa["z1"] + 16), *f(fa["x1"], fa["z1"] + 16), 0.9, "#444")
+    # фасады сняты — видно наполнение
+    colors = {M.LDSP_W: "#f1f0ec", M.LDSP_N: "#d8c7b3"}
+    for p in M.PARTS_ALL:
+        if p.get("thin"):
+            R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#e7e3dc", stroke="none")
+    for p in M.PARTS_ALL:
+        if p.get("thin") or p["group"] in ("top", "plinth"):
+            continue
+        if p["mat"] in colors:
+            R(p["x0"], p["z0"], p["x1"], p["z1"], fill=colors[p["mat"]], stroke="#333", w=0.15)
+        elif p["mat"] == M.SIDE_W:
+            R(p["x0"], p["z0"], p["x1"], p["z1"], fill="url(#veneer)", stroke="#333", w=0.15)
+        elif p["mat"] == "Сушка":
+            if p["name"].startswith("Поддон"):
+                R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#b9bcbf", stroke="#555", w=0.15)
+            else:
+                R(p["x0"], p["z0"], p["x1"], p["z1"], fill="none", stroke="#555", w=0.2)
+                for xx in range(int(p["x0"]) + 20, int(p["x1"]), 30):
+                    s.ln(*f(xx, p["z1"]), *f(xx, p["z1"] + (180 if "тарел" in p["name"] else 90)), 0.2, "#777")
+        elif p["mat"] == "Ящик":
+            skeleton(s, R, f, p["x0"], p["x1"], p["z0"], p["z1"])
+        elif p["name"].startswith("Дистанц"):
+            R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#d9b98c", stroke="#333", w=0.12)
+    for code, a0, a1, z0, z1 in M.DRAWERS:
+        skeleton(s, R, f, a0, a1, z0, z1)
+    # карго-бутылочница
+    xb0, xb1 = M.XT - 150 + M.T + 8, M.XT - M.T - 8
+    for zz in (180, 560):
+        R(xb0, zz, xb1, zz + 10, fill="#9aa0a6", stroke="#555", w=0.12)
+        s.ln(*f(xb0, zz + 10), *f(xb0, zz + 120), 0.25, "#555")
+        s.ln(*f(xb1, zz + 10), *f(xb1, zz + 120), 0.25, "#555")
+    s.ln(*f((xb0 + xb1) / 2, M.PL + M.T + 10), *f((xb0 + xb1) / 2, M.ZB - M.T - 20), 0.3, "#555")
+    dw = ctx("Посудомоечная")[0]
+    R(dw["x0"] + 5, dw["z0"] + 25, dw["x1"] - 5, dw["z1"], fill="#cfd2d5", stroke="#555", w=0.2)
+    x, y = f((dw["x0"] + dw["x1"]) / 2, 500)
+    s.t(x, y, "ПММ 600", 1.8, fill="#555")
+    xs_ = [p for p in M.PARTS if p["name"].startswith("Сушка — решётка для тарелок")][0]
+    x, y = f((xs_["x0"] + xs_["x1"]) / 2, 2350)
+    s.t(x, y, "сушка", 2.0, fill="#555")
+    for p in M.PARTS:
+        if p["name"] == "Полка" and p["group"].startswith("Н"):
+            x, y = f((p["x0"] + p["x1"]) / 2, p["z1"] + 60)
+    x, y = f((M.X0 + 3000 + 200), 0)
     ov = ctx("Духовой")[0]
     R(ov["x0"], ov["z0"], ov["x1"], ov["z1"], fill="#1f2022", stroke="#000", w=0.2)
     R(ov["x0"] + 50, ov["z0"] + 80, ov["x1"] - 50, ov["z1"] - 140, fill="#3a3d41", stroke="#555", w=0.1)
@@ -163,7 +211,7 @@ def elevation(s, X, G):
     for z0, z1 in zip(lv, lv[1:]):
         dim_v(s, f(0, z0)[1], f(0, z1)[1], xr + 5, str(z1 - z0), 1.8, side=1.6)
     dim_v(s, f(0, 0)[1], f(0, M.H)[1], X - 5, "3000", 2.3)
-    s.t(X + M.L * K / 2, f(0, M.H)[1] - 9, "РАЗВЁРТКА ПО СТЕНЕ  М 1:20", 3, weight="bold")
+    s.t(X + M.L * K / 2, f(0, M.H)[1] - 9, "РАЗВЁРТКА ПО СТЕНЕ БЕЗ ФАСАДОВ (наполнение)  М 1:20", 3, weight="bold")
     for z, d in ((M.H + 80, -0.6), (-80, 3.2)):
         x, y = f(1900, z)
         s.t(x - 2.5, y + d, "А", 2.6, weight="bold")
@@ -187,7 +235,22 @@ def plan(s, X, Yw):
     R(M.XT, 0, M.L, M.DTALL + 22, fill="#e9e3dc", stroke="#111", w=0.2)
     s.ln(*f(M.XT + 600, 0), *f(M.XT + 600, M.DTALL + 22), 0.2)
     s.ln(*f(M.X0, M.DU + 22), *f(M.XT, M.DU + 22), 0.25, "#111", "2 1")
+    hb, sk = ctx("Варочная")[0], ctx("Мойка")[0]
     dim_v(s, f(0, 0)[1], f(0, M.DFR)[1], X - 4, "700", 1.8)
+    dim_v(s, f(0, M.DFR + 22)[1], f(0, M.DFR)[1], X - 4, "", 1.8)
+    yb = f(0, M.DFR + 22)[1] + 5
+    xs = sorted({0, M.X0, hb["x0"], hb["x1"], sk["x0"], sk["x1"], M.XT, M.XT + 600, M.L})
+    for a_, b_ in zip(xs, xs[1:]):
+        dim_h(s, f(a_, 0)[0], f(b_, 0)[0], yb, str(round(b_ - a_)), 1.8)
+    dim_h(s, f(M.X0, 0)[0], f(M.XT, 0)[0], yb + 5, f"столешница {M.XT - M.X0} × 600", 1.9)
+    x, y = f((sk["x0"] + sk["x1"]) / 2, (sk["y0"] + sk["y1"]) / 2)
+    s.t(x, y - 1, "мойка", 2.0, fill="#333", weight="bold")
+    s.t(x, y + 2.2, f"{round(sk['x1'] - sk['x0'])} × {round(sk['y1'] - sk['y0'])}", 1.9, fill="#333")
+    x, y = f((hb["x0"] + hb["x1"]) / 2, (hb["y0"] + hb["y1"]) / 2)
+    s.t(x, y - 1, "варочная", 2.0, fill="#fff", weight="bold")
+    s.t(x, y + 2.2, f"{round(hb['x1'] - hb['x0'])} × {round(hb['y1'] - hb['y0'])}", 1.9, fill="#fff")
+    dim_v(s, f(0, 0)[1], f(0, 600)[1], f(M.X0, 0)[0] + 3, "600", 1.7, side=1.5)
+    dim_v(s, f(0, 0)[1], f(0, M.DU + 22)[1], f(M.X0 + 500, 0)[0], "372", 1.7, side=1.5)
     dim_v(s, f(0, 0)[1], f(0, 600)[1], f(M.L, 0)[0] + 4, "600", 1.8, side=1.6)
     s.t(X + M.L * K / 2, Yw - 3, "ПЛАН  М 1:20  (пунктир — верхний ряд и вытяжка)", 2.8, weight="bold")
 
@@ -222,8 +285,8 @@ def sheet1():
     section(s, 350, 205)
     X, Y = 330, 234
     s.t(X, Y, "Обозначения", 3.0, "start", "bold")
-    for i, (fill, txt) in enumerate(((EN, "МДФ эмаль белая, покраска 2 стороны"), ("url(#veneer)", "МДФ шпон американского ореха"),
-                                     ("url(#glass)", "алюм. рамка + стекло"), ("#444", "профиль Gola"), ("#f5c518", "LED-подсветка"))):
+    for i, (fill, txt) in enumerate((("#f1f0ec", "корпус ЛДСП белый"), ("#d8c7b3", "корпус ЛДСП орех (пеналы, антресоль)"),
+                                     ("url(#veneer)", "видимые боковины МДФ шпон ореха"), ("#444", "профиль Gola"), ("#f5c518", "LED-подсветка"))):
         y = Y + 3 + i * 4.3
         s.rc(X, y, X + 7, y + 2.8, fill=fill, stroke="#111", w=0.15)
         s.t(X + 9, y + 2.3, txt, 2.1, "start")

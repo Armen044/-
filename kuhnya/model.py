@@ -32,12 +32,12 @@ LDSP_W, LDSP_N, SIDE_W = "ЛДСП 16 белый", "ЛДСП 16 орех (в т�
 X0 = 950
 BASE = [(450, "door"), (600, "drawers"), (600, "oven"), (600, "dw"), (600, "drawers"), (800, "sink"), (150, "bottle")]
 XT = X0 + sum(w for w, _ in BASE)                 # 4750
-UPPER = [(525, "door"), (525, "door"), (600, "hood"), (537.5, "door"), (537.5, "door"), (537.5, "door"), (537.5, "door")]
+UPPER = [(525, "door"), (525, "door"), (600, "hood"), (537.5, "dry"), (537.5, "door"), (537.5, "door"), (537.5, "door")]
 TALL = [(600, "glass"), (300, "spice")]
 L = XT + sum(w for w, _ in TALL)                  # 5650
 assert sum(w for w, _ in UPPER) == XT - X0
 
-PARTS, FACADES, MODULES, CONTEXT = [], [], [], []
+PARTS, FACADES, MODULES, CONTEXT, DRAWERS = [], [], [], [], []
 
 
 def box(name, mat, group, x0, x1, y0, y1, z0, z1):
@@ -101,22 +101,26 @@ for i, (w, kind) in enumerate(BASE):
     if kind == "oven":
         carcass(code, x, x + w, PL, ZB, DB, rails=True, back=False, shelves=(OVEN_Z0 - T,))
         facade(code, x, x + w, PL + 3, OVEN_Z0 - 3, yF, "drawer", ENAMEL)
+        DRAWERS.append((code, x + T + 13, x + w - T - 13, PL + T + 12, OVEN_Z0 - T - 10))
         CONTEXT.append(dict(name="Духовой шкаф 600", x0=x + 2, x1=x + w - 2, y0=20, y1=DB + 22, z0=OVEN_Z0, z1=OVEN_Z0 + 595, c="black"))
-        CONTEXT.append(dict(name="Варочная панель", x0=x + 30, x1=x + w - 30, y0=60, y1=580, z0=900, z1=906, c="black"))
+        CONTEXT.append(dict(name="Варочная панель", x0=x + 5, x1=x + w - 5, y0=40, y1=560, z0=900, z1=906, c="black"))
     elif kind == "drawers":
         carcass(code, x, x + w, PL, ZB, DB, rails=True)
         for zz in (DR_LOW, DR_MID, DR_TOP):
             facade(code, x, x + w, *zz, yF, "drawer", ENAMEL)
+        # 2 ящика: нижний (через C) и верхний высокий — на нём оба верхних фасада (L и C)
+        DRAWERS.append((code, x + T + 13, x + w - T - 13, PL + T + 15, ZC - 25))
+        DRAWERS.append((code, x + T + 13, x + w - T - 13, ZC + 32 + 12, ZB - T - 25))
     elif kind == "sink":
         carcass(code, x, x + w, PL, ZB, DB, rails=True, back=False)
         facade(code, x, x + w / 2, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
         facade(code, x + w / 2, x + w, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
-        CONTEXT.append(dict(name="Мойка", x0=x + 120, x1=x + w - 120, y0=80, y1=540, z0=880, z1=901, c="steel"))
+        CONTEXT.append(dict(name="Мойка 700", x0=x + 50, x1=x + w - 50, y0=70, y1=550, z0=880, z1=901, c="steel"))
     elif kind == "bottle":
         carcass(code, x, x + w, PL, ZB, DB, rails=True)
         facade(code, x, x + w, PL + 3, ZB - GOLA, yF, "cargo", ENAMEL)
     else:
-        carcass(code, x, x + w, PL, ZB, DB, rails=True, shelves=((PL + ZB) / 2,))
+        carcass(code, x, x + w, PL, ZB, DB, rails=True, shelves=((PL + T + ZB - T) / 2 - T / 2,))
         facade(code, x, x + w, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
     x += w
 box("Столешница (искусств. камень, напр. Corian)", "Столешница 38", "top", X0, XT, 0, 600, ZB, ZB + CT)
@@ -135,7 +139,16 @@ for i, (w, kind) in enumerate(UPPER):
         carcass(code, x, x + w, ZU0, ZU1, DU, mat=SIDE_W, shelves=(1850, 2200), back=False, lside=SIDE_W, rside=SIDE_W)
         x += w
         continue
-    MODULES.append((code, f"Шкаф верхний {w}, дверь на CLIP top + TIP-ON", x, x + w, ZU0, ZU1, DU, "эмаль"))
+    if kind == "dry":
+        MODULES.append((code, f"Шкаф верхний {w} с сушкой (без дна, поддон)", x, x + w, ZU0, ZU1, DU, "эмаль"))
+        carcass(code, x, x + w, ZU0, ZU1, DU, bottom=False)
+        box("Поддон сушки", "Сушка", code, x + T + 2, x + w - T - 2, 20, DU - 20, ZU0 + 5, ZU0 + 20)
+        box("Сушка — решётка для тарелок", "Сушка", code, x + T + 2, x + w - T - 2, 30, DU - 30, 1640, 1650)
+        box("Сушка — решётка для чашек", "Сушка", code, x + T + 2, x + w - T - 2, 30, DU - 30, 1990, 2000)
+        facade(code, x, x + w, ZU0, ZU1 - GAP, DU + GAP, "door", ENAMEL)
+        x += w
+        continue
+    MODULES.append((code, f"Шкаф верхний {w}, 2 полки", x, x + w, ZU0, ZU1, DU, "эмаль"))
     carcass(code, x, x + w, ZU0, ZU1, DU, shelves=(1850, 2200))
     facade(code, x, x + w, ZU0, ZU1 - GAP, DU + GAP, "door", ENAMEL)
     x += w
@@ -178,6 +191,9 @@ for code, a, b, d, n in ANTR:
             lside=SIDE_W if code == "А1" else None)
     for k in range(n):
         facade(code, a + (b - a) * k / n, a + (b - a) * (k + 1) / n, ZU1 + GAP, H - 3, d + GAP, "lift" if (b - a) / n >= 300 else "door", WALNUT)
+
+
+PARTS_ALL = PARTS
 
 
 def size(p):
