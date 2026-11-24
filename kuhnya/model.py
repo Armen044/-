@@ -8,7 +8,7 @@
   0,60 стеклянный шкаф с подсветкой | 0,30 шкаф под специи (внутренние ящики Blum MERIVOBOX).
 Шкафы с ящиками: один профиль Gola C посередине; внизу большой ящик (открывается через C), вверху 2 ящика
 друг над другом без профиля между ними: верхний — через Gola L, второй — через C (за нижний край).
-Верхний ряд: шкафы 1050 + антресоль 450; над варочной — проём 600 под каминную вытяжку до потолка.
+Верхний ряд: шкафы 1050 + антресоль 450 (525 · 525 · проём 600 под вытяжку · 4 × 537,5).
 Фасады: нижний и верхний ряд — МДФ эмаль белая (покраска с двух сторон), ручка Gola;
 пеналы и антресоль — МДФ шпон американского ореха, торцевая ручка из массива ореха.
 Фурнитура Blum: ящики MERIVOBOX, петли CLIP top BLUMOTION, подъёмники AVENTOS HK top, TIP-ON.
@@ -32,7 +32,7 @@ LDSP_W, LDSP_N, SIDE_W = "ЛДСП 16 белый", "ЛДСП 16 орех (в т�
 X0 = 950
 BASE = [(450, "door"), (600, "drawers"), (600, "oven"), (600, "dw"), (600, "drawers"), (800, "sink"), (150, "bottle")]
 XT = X0 + sum(w for w, _ in BASE)                 # 4750
-UPPER = [(525, "door"), (525, "door"), (600, "hood"), (500, "door"), (500, "door"), (500, "door"), (500, "door"), (150, "open")]
+UPPER = [(525, "door"), (525, "door"), (600, "hood"), (537.5, "door"), (537.5, "door"), (537.5, "door"), (537.5, "door")]
 TALL = [(600, "glass"), (300, "spice")]
 L = XT + sum(w for w, _ in TALL)                  # 5650
 assert sum(w for w, _ in UPPER) == XT - X0
@@ -165,16 +165,14 @@ for xsp in (xs0 + T, xs1 - FD - 16):
 for z0, z1 in INNER:
     box("Внутренний ящик MERIVOBOX (условно)", "Ящик", "П3", xs0 + T + 16 + 13, xs1 - FD - 16 - 13, 40, DTALL - 50, z0, z1)
 # ---- антресоль: шпон ореха; над вытяжкой — реечная панель на стене
-ANTR = [("А1", 0, X0, DFR, 2), ("А2", X0, X0 + 1050, DU, 2), ("А3", X0 + 1650, XT - 150, DU, 4),
-        ("А4", XT - 150, XT, DU, 1), ("А5", XT, XT + 600, DTALL, 1), ("А6", XT + 600, L, DTALL, 1)]
+ANTR = [("А1", 0, X0, DFR, 2), ("А2", X0, X0 + 1050, DU, 2), ("А3", X0 + 1650, XT, DU, 4),
+        ("А4", XT, XT + 600, DTALL, 1), ("А5", XT + 600, L, DTALL, 1)]
 for code, a, b, d, n in ANTR:
     MODULES.append((code, f"Антресоль {b-a}, AVENTOS HK top" if (b - a) / n >= 300 else f"Антресоль {b-a}, дверь", a, b, ZU1, ZA1, d, "шпон"))
-    carcass(code, a, b, ZU1, ZA1, d, mat=LDSP_N, rside=SIDE_W if code == "А6" else None,
+    carcass(code, a, b, ZU1, ZA1, d, mat=LDSP_N, rside=SIDE_W if code == "А5" else None,
             lside=SIDE_W if code == "А1" else None)
     for k in range(n):
         facade(code, a + (b - a) * k / n, a + (b - a) * (k + 1) / n, ZU1 + GAP, H - 3, d + GAP, "lift" if (b - a) / n >= 300 else "door", WALNUT)
-MODULES.append(("Р", "Реечная панель шпон ореха над вытяжкой", X0 + 1050, X0 + 1650, ZU0, H, 30, "шпон"))
-box("Реечная панель (рейки 40×20 шаг 60)", "Рейка орех", "Р", X0 + 1050, X0 + 1650, 0, 20, ZU1, H)
 
 
 def size(p):
