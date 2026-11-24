@@ -4,8 +4,10 @@
 Оси: X — вдоль стены слева направо, Y — от стены (0) к фасадам, Z — вверх. Потолок 3000.
 Слева направо (сумма ширин 5650; на рендере подписано 5,60 м — сверить с замером):
   0,95 холодильник (пенал без дна, боковины до пола) | 0,45 шкаф | 0,60 ящики | 0,60 духовка + варочная |
-  0,60 посудомойка | 0,60 ящики | 0,80 мойка | 0,15 скрытая деревянная панель (высокое карго) |
+  0,60 посудомойка | 0,60 ящики | 0,80 мойка | 0,15 бутылочница (под столешницей) |
   0,60 стеклянный шкаф с подсветкой | 0,30 шкаф под специи (внутренние ящики Blum MERIVOBOX).
+Шкафы с ящиками: один профиль Gola C посередине; внизу большой ящик (открывается через C), вверху 2 ящика
+друг над другом без профиля между ними: верхний — через Gola L, второй — через C (за нижний край).
 Верхний ряд: шкафы 1050 + антресоль 450; над варочной — проём 600 под каминную вытяжку до потолка.
 Фасады: нижний и верхний ряд — МДФ эмаль белая (покраска с двух сторон), ручка Gola;
 пеналы и антресоль — МДФ шпон американского ореха, торцевая ручка из массива ореха.
@@ -28,10 +30,10 @@ ENAMEL, WALNUT, ALU = "МДФ 19 эмаль белая (2 стороны)", "М�
 LDSP_W, LDSP_N, SIDE_W = "ЛДСП 16 белый", "ЛДСП 16 орех (в тон)", "МДФ 19 шпон ам. ореха (видимая боковина)"
 
 X0 = 950
-BASE = [(450, "door"), (600, "drawers"), (600, "oven"), (600, "dw"), (600, "drawers"), (800, "sink")]
-XT = X0 + sum(w for w, _ in BASE)                 # 4600
-UPPER = [(525, "door"), (525, "door"), (600, "hood"), (500, "door"), (500, "door"), (500, "door"), (500, "door")]
-TALL = [(150, "panel"), (600, "glass"), (300, "spice")]
+BASE = [(450, "door"), (600, "drawers"), (600, "oven"), (600, "dw"), (600, "drawers"), (800, "sink"), (150, "bottle")]
+XT = X0 + sum(w for w, _ in BASE)                 # 4750
+UPPER = [(525, "door"), (525, "door"), (600, "hood"), (500, "door"), (500, "door"), (500, "door"), (500, "door"), (150, "open")]
+TALL = [(600, "glass"), (300, "spice")]
 L = XT + sum(w for w, _ in TALL)                  # 5650
 assert sum(w for w, _ in UPPER) == XT - X0
 
@@ -71,7 +73,10 @@ MODULES.append(("П1", "Пенал под холодильник (без дна,
 carcass("П1", 0, X0, 0, ZU1, DFR, mat=LDSP_N, bottom=False, back=False, lside=SIDE_W, rside=SIDE_W)
 CONTEXT.append(dict(name="Холодильник 900 (отдельностоящий)", x0=X0 / 2 - 450, x1=X0 / 2 + 450, y0=20, y1=730, z0=0, z1=1800, c="black"))
 # ---- нижний ряд
-DR3 = [(PL + 3, PL + 224), (PL + 256, PL + 478), (PL + 510, ZB - GOLA)]
+ZC = 451                                # верх нижнего ящика; над ним профиль Gola C (32)
+DR_LOW = (PL + 3, ZC)
+DR_MID = (ZC + 32, ZC + 32 + 173)
+DR_TOP = (ZC + 32 + 176, ZB - GOLA)
 OVEN_Z0 = 235                          # низ ниши духовки (духовка 595 → верх 830)
 x = X0
 for i, (w, kind) in enumerate(BASE):
@@ -85,7 +90,8 @@ for i, (w, kind) in enumerate(BASE):
         x += w
         continue
     names = {"door": "Шкаф нижний, дверь", "drawers": "Шкаф нижний, 3 ящика MERIVOBOX",
-             "oven": "Шкаф под духовку + варочную, нижний ящик", "sink": "Шкаф под мойку, 2 двери"}
+             "oven": "Шкаф под духовку + варочную, нижний ящик", "sink": "Шкаф под мойку, 2 двери",
+             "bottle": "Бутылочница (карго) под столешницей"}
     MODULES.append((code, f"{names[kind]} {w}", x, x + w, PL, ZB, DB, "эмаль"))
     if kind == "oven":
         carcass(code, x, x + w, PL, ZB, DB, rails=True, back=False, shelves=(OVEN_Z0 - T,))
@@ -94,13 +100,16 @@ for i, (w, kind) in enumerate(BASE):
         CONTEXT.append(dict(name="Варочная панель", x0=x + 30, x1=x + w - 30, y0=60, y1=580, z0=900, z1=906, c="black"))
     elif kind == "drawers":
         carcass(code, x, x + w, PL, ZB, DB, rails=True)
-        for z0, z1 in DR3:
-            facade(code, x, x + w, z0, z1, yF, "drawer", ENAMEL)
+        for zz in (DR_LOW, DR_MID, DR_TOP):
+            facade(code, x, x + w, *zz, yF, "drawer", ENAMEL)
     elif kind == "sink":
         carcass(code, x, x + w, PL, ZB, DB, rails=True, back=False)
         facade(code, x, x + w / 2, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
         facade(code, x + w / 2, x + w, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
         CONTEXT.append(dict(name="Мойка", x0=x + 120, x1=x + w - 120, y0=80, y1=540, z0=880, z1=901, c="steel"))
+    elif kind == "bottle":
+        carcass(code, x, x + w, PL, ZB, DB, rails=True)
+        facade(code, x, x + w, PL + 3, ZB - GOLA, yF, "cargo", ENAMEL)
     else:
         carcass(code, x, x + w, PL, ZB, DB, rails=True, shelves=((PL + ZB) / 2,))
         facade(code, x, x + w, PL + 3, ZB - GOLA, yF, "door", ENAMEL)
@@ -116,6 +125,11 @@ for i, (w, kind) in enumerate(UPPER):
         CONTEXT.append(dict(name="Вытяжка каминная (цилиндр)", x0=x + 150, x1=x + w - 150, y0=100, y1=400, z0=ZU0 + 50, z1=H, c="black", round=True))
         x += w
         continue
+    if kind == "open":
+        MODULES.append((code, f"Открытая полка {w}, шпон ореха", x, x + w, ZU0, ZU1, DU, "шпон"))
+        carcass(code, x, x + w, ZU0, ZU1, DU, mat=SIDE_W, shelves=(1850, 2200), back=False, lside=SIDE_W, rside=SIDE_W)
+        x += w
+        continue
     MODULES.append((code, f"Шкаф верхний {w}, дверь на CLIP top + TIP-ON", x, x + w, ZU0, ZU1, DU, "эмаль"))
     carcass(code, x, x + w, ZU0, ZU1, DU, shelves=(1850, 2200))
     facade(code, x, x + w, ZU0, ZU1 - GAP, DU + GAP, "door", ENAMEL)
@@ -125,17 +139,13 @@ x = XT
 for i, (w, kind) in enumerate(TALL):
     code = f"П{i+2}"
     rs = SIDE_W if i == len(TALL) - 1 else None
-    if kind == "panel":
-        MODULES.append((code, "Скрытая деревянная панель 150 — пенал с высоким карго за фасадом", x, x + w, PL, ZU1, DTALL, "шпон"))
-        carcass(code, x, x + w, PL, ZU1, DTALL, mat=LDSP_N)
-        facade(code, x, x + w, PL + 3, ZU1 - GAP, DTALL + GAP, "cargo", WALNUT)
-    elif kind == "glass":
+    if kind == "glass":
         MODULES.append((code, "Стеклянный шкаф 600: полки стекло 8 мм, LED по бокам", x, x + w, PL, ZU1, DTALL, "алюм."))
-        carcass(code, x, x + w, PL, ZU1, DTALL, mat=LDSP_N)
+        carcass(code, x, x + w, PL, ZU1, DTALL, mat=LDSP_N, lside=SIDE_W)
         for k in range(1, 6):
             z = PL + T + (ZU1 - PL - 2 * T) * k / 6
-            box("Полка стеклянная 8 мм", "Стекло 8 закалённое", code, x + T + 14, x + w - T - 14, 30, DTALL - 30, z - 4, z + 4)
-        for xl in (x + T, x + w - T - 12):
+            box("Полка стеклянная 8 мм", "Стекло 8 закалённое", code, x + FD + 14, x + w - T - 14, 30, DTALL - 30, z - 4, z + 4)
+        for xl in (x + FD, x + w - T - 12):
             box("Профиль LED вертикальный", "LED", code, xl, xl + 12, DTALL - 60, DTALL - 48, PL + T + 20, ZU1 - T - 20)
         facade(code, x, x + w, PL + 3, ZU1 - GAP, DTALL + GAP, "glass", ALU)
     else:
@@ -145,18 +155,18 @@ for i, (w, kind) in enumerate(TALL):
     x += w
 box("Цоколь", "Цоколь шпон ореха", "plinth", XT, L, DTALL - 60, DTALL - 44, 0, PL)
 # внутренние ящики пенала специй: дистанционные планки 16 мм по боковинам, чтобы ящики проходили мимо петель
-xs0, xs1 = XT + 750, L
+xs0, xs1 = XT + 600, L
 INNER = []
 for k in range(6):
     z0 = PL + T + 40 + k * 260
     INNER.append((z0, z0 + 160))
 for xsp in (xs0 + T, xs1 - FD - 16):
-    box("Дистанционная планка 16", LDSP_N, "П4", xsp, xsp + 16, 0, DTALL - 40, PL + T, 1700)
+    box("Дистанционная планка 16", LDSP_N, "П3", xsp, xsp + 16, 0, DTALL - 40, PL + T, 1700)
 for z0, z1 in INNER:
-    box("Внутренний ящик MERIVOBOX (условно)", "Ящик", "П4", xs0 + T + 16 + 13, xs1 - FD - 16 - 13, 40, DTALL - 50, z0, z1)
+    box("Внутренний ящик MERIVOBOX (условно)", "Ящик", "П3", xs0 + T + 16 + 13, xs1 - FD - 16 - 13, 40, DTALL - 50, z0, z1)
 # ---- антресоль: шпон ореха; над вытяжкой — реечная панель на стене
-ANTR = [("А1", 0, X0, DFR, 2), ("А2", X0, X0 + 1050, DU, 2), ("А3", X0 + 1650, XT, DU, 4),
-        ("А4", XT, XT + 150, DTALL, 1), ("А5", XT + 150, XT + 750, DTALL, 1), ("А6", XT + 750, L, DTALL, 1)]
+ANTR = [("А1", 0, X0, DFR, 2), ("А2", X0, X0 + 1050, DU, 2), ("А3", X0 + 1650, XT - 150, DU, 4),
+        ("А4", XT - 150, XT, DU, 1), ("А5", XT, XT + 600, DTALL, 1), ("А6", XT + 600, L, DTALL, 1)]
 for code, a, b, d, n in ANTR:
     MODULES.append((code, f"Антресоль {b-a}, AVENTOS HK top" if (b - a) / n >= 300 else f"Антресоль {b-a}, дверь", a, b, ZU1, ZA1, d, "шпон"))
     carcass(code, a, b, ZU1, ZA1, d, mat=LDSP_N, rside=SIDE_W if code == "А6" else None,

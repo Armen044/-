@@ -62,7 +62,7 @@ def dim_v(s, y1, y2, x, label, size=2.0, side=-1):
     s.t(x + side * 0.7, (y1 + y2) / 2, label, size, fill=RED, rot=-90)
 
 
-def header(s, title, sub, n, tot=3):
+def header(s, title, sub, n, tot=4):
     s.t(12, 15, title, 5.6, "start", "bold")
     s.t(12, 21.5, sub, 2.8, "start")
     s.t(408, 15, f"Лист {n}/{tot}", 3.2, "end")
@@ -104,6 +104,8 @@ def elevation(s, X, G):
     for p in M.PARTS:
         if p["group"] == "П1" and p["name"] in ("Боковина", "Крышка"):
             R(p["x0"], p["z0"], p["x1"], p["z1"], fill="url(#veneer)" if p["name"] == "Боковина" else "#c9b8a6", stroke="#111", w=0.2)
+        if p["group"] == "В8":
+            R(p["x0"], p["z0"], p["x1"], p["z1"], fill="url(#veneer)", stroke="#111", w=0.2)
         if p["group"] == "Р":
             for xx in range(int(p["x0"]) + 30, int(p["x1"]), 60):
                 R(xx - 20, p["z0"], xx + 20, p["z1"], fill="url(#veneer)", stroke="#5a3a22", w=0.1)
@@ -135,7 +137,7 @@ def elevation(s, X, G):
         if p["name"].startswith("Профиль LED"):
             R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#f5c518", stroke="none")
     s.ln(*f(M.X0, M.ZU0 - 8), *f(M.X0 + 1050, M.ZU0 - 8), 0.7, "#f5c518")
-    s.ln(*f(M.X0 + 1650, M.ZU0 - 8), *f(M.XT, M.ZU0 - 8), 0.7, "#f5c518")
+    s.ln(*f(M.X0 + 1650, M.ZU0 - 8), *f(M.XT - 150, M.ZU0 - 8), 0.7, "#f5c518")
     for code, name, x0, x1, z0, z1, d, mat in M.MODULES:
         if code == "Р":
             continue
@@ -183,10 +185,9 @@ def plan(s, X, Yw):
     xc = (hd["x0"] + hd["x1"]) / 2
     s.e(f'<circle cx="{f(xc, 0)[0]:.2f}" cy="{f(0, 250)[1]:.2f}" r="{120 * K:.2f}" fill="none" stroke="#111" stroke-width="0.25" stroke-dasharray="1.2 0.8"/>')
     R(M.XT, 0, M.L, M.DTALL + 22, fill="#e9e3dc", stroke="#111", w=0.2)
-    for xx in (M.XT + 150, M.XT + 750):
-        s.ln(*f(xx, 0), *f(xx, M.DTALL + 22), 0.2)
+    s.ln(*f(M.XT + 600, 0), *f(M.XT + 600, M.DTALL + 22), 0.2)
     s.ln(*f(M.X0, M.DU + 22), *f(M.XT, M.DU + 22), 0.25, "#111", "2 1")
-    for xx, txt in ((M.X0 / 2, "П1"), (M.XT + 75, "П2"), (M.XT + 450, "П3"), (M.XT + 900, "П4")):
+    for xx, txt in ((M.X0 / 2, "П1"), (M.XT + 300, "П2"), (M.XT + 750, "П3")):
         x, y = f(xx, 380)
         s.t(x, y, txt, 1.9, fill="#333")
     dim_v(s, f(0, 0)[1], f(0, M.DFR)[1], X - 4, "700", 1.8)
@@ -205,7 +206,7 @@ def section(s, X, G, xc=1900):
     for fa in M.FACADES:
         if fa["x0"] < xc < fa["x1"]:
             R(fa["y"], fa["z0"], fa["y"] + M.FD, fa["z1"], fill="url(#veneer)" if fa["mat"] == M.WALNUT else "#fff", stroke="#111", w=0.25)
-    for z in [M.ZB - 15] + [fa["z1"] + 16 for fa in M.FACADES if fa["module"] == "Н2" and fa["z1"] < 700]:
+    for z in [M.ZB - 15, M.ZC + 16]:
         R(M.DB - 40, z - 12, M.DB, z + 12, fill="#888", stroke="#333", w=0.15)
     lv = [0, M.PL, M.ZB + M.CT, M.ZU0, M.ZU1, M.H]
     for z0, z1 in zip(lv, lv[1:]):
@@ -230,16 +231,16 @@ def sheet1():
         s.rc(X, y, X + 7, y + 2.8, fill=fill, stroke="#111", w=0.15)
         s.t(X + 9, y + 2.3, txt, 2.1, "start")
     s.t(X, Y + 28, "Н-нижние, В-верхние, А-антресоли, П-пеналы, Р-рейки", 2.0, "start")
-    s.t(X, Y + 31.5, "Узлы — лист 2, спецификация — лист 3", 2.0, "start")
+    s.t(X, Y + 31.5, "Узлы — лист 2, спецификация — лист 3, вид сбоку — лист 4", 2.0, "start")
     s.save("kuhnya_list1.svg")
 
 
 # ---------------------------------------------------------------- лист 2: узлы
 def detail_spice(s, X, G, k=1 / 15):
-    f = lambda x, z: (X + (x - (M.XT + 750)) * k, G - z * k)
+    f = lambda x, z: (X + (x - (M.XT + 600)) * k, G - z * k)
     R = lambda x0, z0, x1, z1, **kw: s.rc(*f(x0, z0), *f(x1, z1), **kw)
     for p in M.PARTS:
-        if p["group"] in ("П4", "А6"):
+        if p["group"] in ("П3", "А6"):
             if p["name"].startswith("Внутренний"):
                 R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#5f6368", stroke="#222", w=0.2)
                 R(p["x0"] + 10, p["z1"] - 25, p["x1"] - 10, p["z1"] - 5, fill="#7b8086", stroke="none")
@@ -247,15 +248,15 @@ def detail_spice(s, X, G, k=1 / 15):
                 R(p["x0"], p["z0"], p["x1"], p["z1"], fill="#d9b98c", stroke="#111", w=0.15)
             else:
                 R(p["x0"], p["z0"], p["x1"], p["z1"], fill="url(#veneer)" if "шпон" in p["mat"] else "#cbb9a6", stroke="#111", w=0.2)
-    R(M.XT + 750, 0, M.L, M.PL, fill="url(#veneer)", stroke="#888", w=0.15)
-    s.ln(*f(M.XT + 730, 0), *f(M.L + 30, 0), 0.4)
+    R(M.XT + 600, 0, M.L, M.PL, fill="url(#veneer)", stroke="#888", w=0.15)
+    s.ln(*f(M.XT + 580, 0), *f(M.L + 30, 0), 0.4)
     zs = [M.PL] + [z for zz in M.INNER for z in zz] + [1760, 2150, M.ZU1]
     for a, b in zip(zs, zs[1:]):
         if b - a > 60:
             dim_v(s, f(0, a)[1], f(0, b)[1], f(M.L, 0)[0] + 3, str(round(b - a)), 1.6, side=1.5)
-    dim_h(s, f(M.XT + 750, 0)[0], f(M.L, 0)[0], G + 4, "300", 1.8)
-    s.t(f(M.XT + 900, 0)[0], f(0, M.H)[1] - 4, "П4 — шкаф под специи", 2.6, weight="bold")
-    s.t(f(M.XT + 900, 0)[0], f(0, M.H)[1] - 0.8, "без фасада, М 1:15", 2.2)
+    dim_h(s, f(M.XT + 600, 0)[0], f(M.L, 0)[0], G + 4, "300", 1.8)
+    s.t(f(M.XT + 750, 0)[0], f(0, M.H)[1] - 4, "П3 — шкаф под специи", 2.6, weight="bold")
+    s.t(f(M.XT + 750, 0)[0], f(0, M.H)[1] - 0.8, "без фасада, М 1:15", 2.2)
 
 
 def detail_section_tall(s, X, G, k=1 / 15):
@@ -273,7 +274,7 @@ def detail_section_tall(s, X, G, k=1 / 15):
     R(0, M.ZU1, M.DTALL, M.ZA1, fill="none", stroke="#111", w=0.2)
     R(M.DTALL + 3, M.ZU1 + 3, M.DTALL + 22, M.H - 3, fill="url(#veneer)", stroke="#111", w=0.2)
     dim_h(s, f(0, 0)[0], f(M.DTALL + 22, 0)[0], G + 4, "602", 1.8)
-    s.t(f(300, 0)[0], f(0, M.H)[1] - 4, "разрез П4", 2.4, weight="bold")
+    s.t(f(300, 0)[0], f(0, M.H)[1] - 4, "разрез П3", 2.4, weight="bold")
     s.t(f(300, 0)[0], f(0, M.H)[1] - 0.8, "М 1:15", 2.2)
 
 
@@ -310,22 +311,20 @@ def detail_gola(s, X, G, k=1 / 10):
     R(M.DB - 100, M.ZB - M.T, M.DB, M.ZB, fill="url(#hatch)", stroke="#111", w=0.2)
     R(0, M.ZB - M.T, 100, M.ZB, fill="url(#hatch)", stroke="#111", w=0.2)
     R(0, M.ZB, 600, M.ZB + M.CT, fill="#e6e3dc", stroke="#111", w=0.22)
-    boxes = [(M.PL + M.T + 10, M.PL + 200), (M.PL + 266, M.PL + 400), (M.PL + 520, M.PL + 640)]
-    labels = ["MERIVOBOX E (высокий)", "MERIVOBOX K", "MERIVOBOX M"]
+    boxes = [(M.PL + M.T + 10, M.ZC - 40), (M.DR_MID[0] + 15, M.DR_MID[1] - 25), (M.DR_TOP[0] + 15, M.ZB - M.T - 20)]
+    labels = ["MERIVOBOX E + BOXCAP — через C", "MERIVOBOX M — через C", "MERIVOBOX M — через L"]
     for (z0, z1), lab in zip(boxes, labels):
         R(30, z0, 530, z1, fill="#5f6368", stroke="#222", w=0.15)
         x, y = f(280, (z0 + z1) / 2)
         s.t(x, y + 0.8, lab, 1.9, fill="#fff")
-    for z0, z1 in M.DR3:
+    for z0, z1 in (M.DR_LOW, M.DR_MID, M.DR_TOP):
         R(M.DB + 3, z0, M.DB + 22, z1, fill="#fff", stroke="#111", w=0.25)
-    for z in [M.ZB - 15] + [z1 + 16 for _, z1 in M.DR3[:2]]:
+    for z in [M.ZB - 15, M.ZC + 16]:
         R(M.DB - 40, z - 13, M.DB, z + 13, fill="#888", stroke="#333", w=0.15)
     R(M.DB - 60, 0 + M.PL - 100, M.DB - 44, M.PL, fill="#ddd", stroke="#555", w=0.15)
     x, y = f(M.DB + 30, M.ZB - 15)
     s.t(x, y + 0.7, "Gola L", 1.9, "start")
-    x, y = f(M.DB + 30, M.DR3[0][1] + 16)
-    s.t(x, y + 0.7, "Gola C", 1.9, "start")
-    x, y = f(M.DB + 30, M.DR3[1][1] + 16)
+    x, y = f(M.DB + 30, M.ZC + 16)
     s.t(x, y + 0.7, "Gola C", 1.9, "start")
     dim_h(s, f(0, 0)[0], f(600, 0)[0], G + 4, "600", 1.8)
     s.t(f(300, 0)[0], f(0, M.ZB + M.CT)[1] - 6, "Шкаф с ящиками Н2/Н5 — разрез, М 1:10", 2.5, weight="bold")
@@ -349,7 +348,7 @@ def sheet2():
         "",
         "Н3 — духовой шкаф + варочная",
         "• Корпус без задней стенки; полка под духовку на 219–235; ниша 595 по высоте.",
-        "• Под духовкой — низкий ящик MERIVOBOX N, фасад 129; над ним — профиль Gola C.",
+        "• Под духовкой — низкий ящик MERIVOBOX N, фасад 129; между ним и духовкой — Gola C.",
         "• Варочную и духовку проверить по совместимости (общий бренд / разнесённые провода).",
         "",
         "Н4 — посудомойка 600 (встраиваемая)",
@@ -357,21 +356,24 @@ def sheet2():
         "• Цоколь перед ПММ — с вырезом/сдвигом по паспорту машины.",
         "",
         "Н2/Н5 — ящики с Gola",
-        "• MERIVOBOX NL 500 (корпус 560). Фасады 221/222 по высоте, профили Gola L + 2 × C.",
-        "• Высоты бортов (M / K / E, рейлинги, BOXCAP) — подобрать в конфигураторе Blum.",
+        "• 3 ящика, один профиль Gola C посередине. Нижний (фасад 348) — через C;",
+        "  второй (173) стоит над C и открывается за нижний край через C;",
+        "  верхний (173) — через Gola L под столешницей. Между верхними — зазор 3 мм.",
+        "• MERIVOBOX NL 500 (корпус 560); высоты бортов — по конфигуратору Blum.",
         "",
-        "П4 — шкаф под специи 300 (как на фото 3)",
+        "Н7 — бутылочница 150 под столешницей",
+        "• Карго 150 (бутылки), фасад эмаль 147×729 на карго; столешница до пеналов — 3800.",
+        "• Над ней — открытая полка 150 шпон ореха (В8) и антресоль А4.",
+        "",
+        "П3 — шкаф под специи 300 (как на фото 3)",
         "• Система Blum SPACE TOWER: 6 внутренних ящиков MERIVOBOX + 2 полки сверху.",
         "• Дистанционные планки 16 мм по боковинам — ящики проходят мимо петель двери.",
         "• Дверь 297×2444 шпон, 5 петель CLIP top BLUMOTION, торцевая ручка массив ореха.",
         "",
-        "П2 — скрытая деревянная панель 150",
-        "• Фасад шпон ореха на высоком карго 150 (крупы, бутылки). Если нужна просто",
-        "  декоративная панель без наполнения — уберём корпус и карго.",
-        "",
-        "П3 — стеклянный шкаф 600",
+        "П2 — стеклянный шкаф 600",
         "• Фасад алюм. рамка со стеклом 597×2444 (проверить макс. высоту у поставщика),",
         "  стеклянные полки 8 мм на держателях, LED-профили по бокам + датчик открывания.",
+        "• Левая боковина видна над столешницей — МДФ 19 шпон ореха.",
         "",
         "Верх / антресоль / вытяжка",
         "• Верхние двери 1047: CLIP top + TIP-ON, 3 петли. Антресоль: AVENTOS HK top.",
@@ -426,20 +428,21 @@ def sheet3():
     s.t(X3, Y3, "Фурнитура Blum и комплектующие", 3.2, "start", "bold")
     n_lift = sum(1 for f in M.FACADES if f["kind"] == "lift")
     items = [
-        ("MERIVOBOX, NL 500, BLUMOTION — ящики Н2, Н5", "6 шт."),
+        ("MERIVOBOX E + BOXCAP, NL 500 — нижние ящики Н2, Н5", "2 шт."),
+        ("MERIVOBOX M, NL 500 — верхние ящики Н2, Н5", "4 шт."),
         ("MERIVOBOX N, NL 500 — ящик под духовкой", "1 шт."),
-        ("SPACE TOWER: внутр. ящики MERIVOBOX — П4", "6 шт."),
+        ("SPACE TOWER: внутр. ящики MERIVOBOX — П3", "6 шт."),
         ("CLIP top BLUMOTION 110° — нижние двери (Н1, Н6)", "6 шт."),
         ("CLIP top 110° + TIP-ON — верхние двери (6 × 3)", "18 + 6"),
-        ("CLIP top BLUMOTION — дверь П4 (5) + А4 (2)", "7 шт."),
+        ("CLIP top BLUMOTION — дверь П3 (5) + А4 (2)", "7 шт."),
         ("AVENTOS HK top — антресоль", f"{n_lift} шт."),
-        ("Петли для алюм. рамки — П3", "5 шт."),
-        ("Высокое карго 150 (напр. Kesseböhmer) — П2", "1 шт."),
+        ("Петли для алюм. рамки — П2", "5 шт."),
+        ("Бутылочница-карго 150 под столешницу — Н7", "1 шт."),
         ("Профиль Gola L", f"{(M.XT - M.X0) / 1000:.2f} м"),
-        ("Профиль Gola C (Н2, Н5 — по 2; Н3 — 1)", "5 × 0,6 м"),
-        ("Торцевая ручка массив ореха — П2, П4", "2 шт."),
-        ("Полки стекло 8 мм закал. + держатели — П3", "5 шт."),
-        ("LED-профиль: П3 2 × 2,4 м; под верхом 3,1 м", "к-т"),
+        ("Профиль Gola C (Н2, Н5, Н3 — по 1)", "3 × 0,6 м"),
+        ("Торцевая ручка массив ореха — П3", "1 шт."),
+        ("Полки стекло 8 мм закал. + держатели — П2", "5 шт."),
+        ("LED-профиль: П2 2 × 2,4 м; под верхом 3,1 м", "к-т"),
         ("Блоки питания 24 В, датчики двери/движения", "к-т"),
         ("Опоры цоколя + клипсы", "≈ 30 шт."),
         ("Столешница 38, иск. камень (напр. Corian)", f"{(M.XT - M.X0) / 1000:.2f} м"),
@@ -463,8 +466,161 @@ def sheet3():
     s.save("kuhnya_list3.svg")
 
 
+
+
+# ---------------------------------------------------------------- лист 4: аксонометрия с выносками
+A1, A2, B1, B2 = math.cos(math.radians(12)), math.sin(math.radians(12)), 0.6 * math.cos(math.radians(40)), 0.6 * math.sin(math.radians(40))
+VIEW = (B1, A1, A2 * B1 + B2 * A1)
+
+
+def axo():
+    s = S()
+    header(s, "Кухня — вид сбоку (аксонометрия): материалы и глубины",
+           "Как на примере заказчика: видно глубины пеналов, нижнего и верхнего ряда  |  Размеры в мм, без масштаба", 4)
+    raw = lambda x, y, z: (x * A1 - y * B1, x * A2 + y * B2 - z)
+    pts = [raw(x, y, z) for x in (0, M.L + 500) for y in (0, M.DFR + 200) for z in (0, M.H)]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    k = min(245 / (max(xs) - min(xs)), 262 / (max(ys) - min(ys)))
+    OX, OY = 78 - min(xs) * k, 38 - min(ys) * k
+
+    def P(x, y, z):
+        return OX + (x * A1 - y * B1) * k, OY + (x * A2 + y * B2 - z) * k
+
+    def poly(pts, fill, stroke="#222", w=0.18, extra=""):
+        s.e('<path d="M' + "L".join(f"{a:.2f} {b:.2f}" for a, b in pts) + f'Z" fill="{fill}" stroke="{stroke}" stroke-width="{w}" {extra}/>')
+
+    items = []     # (глубина, функция рисования)
+
+    def boxi(x0, x1, y0, y1, z0, z1, fill, front=None, side=None, top=None, extra=None):
+        def draw():
+            poly([P(x0, y1, z0), P(x1, y1, z0), P(x1, y1, z1), P(x0, y1, z1)], front or fill)
+            poly([P(x1, y0, z0), P(x1, y1, z0), P(x1, y1, z1), P(x1, y0, z1)], side or fill)
+            poly([P(x0, y0, z1), P(x1, y0, z1), P(x1, y1, z1), P(x0, y1, z1)], top or fill)
+            if extra:
+                extra()
+        c = ((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2)
+        items.append((c[0] * VIEW[0] + c[1] * VIEW[1] + c[2] * VIEW[2] + (x1 - x0) * 0.0, draw))
+
+    WN_F, WN_S, WN_T = "url(#veneer)", "#7a5133", "#9c6d48"
+    EN_F, EN_S, EN_T = "#ffffff", "#e9e9e6", "#f4f4f2"
+
+    def facades_of(codes, yf):
+        def f():
+            for fa in M.FACADES:
+                if fa["module"] in codes:
+                    pts = [P(fa["x0"], yf, fa["z0"]), P(fa["x1"], yf, fa["z0"]), P(fa["x1"], yf, fa["z1"]), P(fa["x0"], yf, fa["z1"])]
+                    if fa["kind"] == "glass":
+                        poly(pts, "#b0b4b8", "#222", 0.2)
+                        inner = [P(fa["x0"] + 25, yf, fa["z0"] + 25), P(fa["x1"] - 25, yf, fa["z0"] + 25),
+                                 P(fa["x1"] - 25, yf, fa["z1"] - 25), P(fa["x0"] + 25, yf, fa["z1"] - 25)]
+                        poly(inner, "url(#glass)", "#777", 0.12)
+                        for zz in range(400, 2500, 400):
+                            s.ln(*P(fa["x0"] + 25, yf, zz), *P(fa["x1"] - 25, yf, zz), 0.25, "#5b93a8")
+                    else:
+                        poly(pts, WN_F if fa["mat"] == M.WALNUT else EN_F, "#222", 0.18)
+                        if fa["mat"] == M.WALNUT and fa["z1"] - fa["z0"] > 2000:
+                            poly([P(fa["x0"], yf + 2, fa["z0"] + 900), P(fa["x0"] + 20, yf + 2, fa["z0"] + 900),
+                                  P(fa["x0"] + 20, yf + 2, fa["z0"] + 1700), P(fa["x0"], yf + 2, fa["z0"] + 1700)], "#4a2f1a", "#2b1a0e", 0.1)
+        return f
+
+    # стена и пол
+    poly([P(0, 0, 0), P(M.L, 0, 0), P(M.L, 0, M.H), P(0, 0, M.H)], "#f6f4f0", "#ccc", 0.15)
+    poly([P(0, 0, 0), P(M.L, 0, 0), P(M.L + 300, 1100, 0), P(-300, 1100, 0)], "#efebe4", "none", 0)
+    for xx in range(M.X0 + 1050 + 30, M.X0 + 1650, 60):
+        poly([P(xx - 20, 20, M.ZU1), P(xx + 20, 20, M.ZU1), P(xx + 20, 20, M.H), P(xx - 20, 20, M.H)], "#9c6d48", "#5a3a22", 0.08)
+    # холодильник и пенал под него
+    fr = ctx("Холодильник")[0]
+    boxi(fr["x0"], fr["x1"], fr["y0"], fr["y1"], 0, fr["z1"], "#2b2d30", side="#1d1f21", top="#3a3c3f")
+    boxi(0, M.FD, 0, M.DFR, 0, M.ZU1, WN_F, side=WN_S, top=WN_T)
+    boxi(M.X0 - M.FD, M.X0, 0, M.DFR, 0, M.ZU1, WN_F, side=WN_S, top=WN_T)
+    # нижний ряд
+    boxi(M.X0, M.XT, M.DB - 60, M.DB - 44, 0, M.PL, "#e6e6e3")
+    for code, name, x0, x1, z0, z1, d, mat in M.MODULES:
+        if code.startswith("Н"):
+            boxi(x0, x1, 0, M.DB + 22, M.PL, M.ZB, EN_S, front=EN_F, extra=facades_of({code}, M.DB + 22.5))
+    ov = ctx("Духовой")[0]
+    items.append((1e6 - 3, lambda: poly([P(ov["x0"], M.DB + 23, ov["z0"]), P(ov["x1"], M.DB + 23, ov["z0"]),
+                                          P(ov["x1"], M.DB + 23, ov["z1"]), P(ov["x0"], M.DB + 23, ov["z1"])], "#1f2022", "#000", 0.2)))
+    boxi(M.X0, M.XT, 0, 600, M.ZB, M.ZB + M.CT, "#e3e0d9", top="#efede8", side="#d6d2ca")
+    hb = ctx("Варочная")[0]
+    sk = ctx("Мойка")[0]
+    items.append((1e6 - 2, lambda: (poly([P(hb["x0"], hb["y0"], 901), P(hb["x1"], hb["y0"], 901), P(hb["x1"], hb["y1"], 901), P(hb["x0"], hb["y1"], 901)], "#111", "#000", 0.15),
+                                     poly([P(sk["x0"], sk["y0"], 901), P(sk["x1"], sk["y0"], 901), P(sk["x1"], sk["y1"], 901), P(sk["x0"], sk["y1"], 901)], "#c9ccce", "#666", 0.15))))
+    # верх, антресоль, пеналы
+    for code, name, x0, x1, z0, z1, d, mat in M.MODULES:
+        if code[0] == "В" and d:
+            if "Открытая" in name:
+                boxi(x0, x1, 0, d, z0, z1, WN_F, side=WN_S, top=WN_T)
+            else:
+                boxi(x0, x1, 0, d + 22, z0, z1, EN_S, front=EN_F, top=EN_T, extra=facades_of({code}, d + 22.5))
+        if code[0] == "А" or code in ("П2", "П3"):
+            boxi(x0, x1, 0, d + 22, z0 if code[0] == "А" else 0, z1 if code[0] == "А" else z1, WN_S, front=WN_F, side=WN_S, top=WN_T,
+                 extra=facades_of({code}, d + 22.5))
+    hd = ctx("Вытяжка")[0]
+    xc = (hd["x0"] + hd["x1"]) / 2
+    boxi(xc - 110, xc + 110, 150, 370, M.ZU0 + 60, 2150, "#1f2022", side="#151617", top="#2b2d30")
+    boxi(xc - 80, xc + 80, 180, 340, 2150, M.H, "#1f2022", side="#151617", top="#2b2d30")
+    for _, draw in sorted(items, key=lambda t: t[0]):
+        draw()
+    # Gola на фасадной плоскости нижнего ряда
+    yG = M.DB + 23
+    s.ln(*P(M.X0, yG, M.ZB - 15), *P(M.XT, yG, M.ZB - 15), 0.7, "#444")
+    for code in ("Н2", "Н5", "Н3"):
+        x0, x1 = [(m[2], m[3]) for m in M.MODULES if m[0] == code][0]
+        z = M.ZC + 16 if code != "Н3" else ctx("Духовой")[0]["z0"] - 16
+        s.ln(*P(x0, yG, z), *P(x1, yG, z), 0.7, "#444")
+
+    # размеры (красным): высоты справа, глубины
+    def dim3(p0, p1, label, off=(0, 0), size=2.1):
+        a, b = P(*p0), P(*p1)
+        s.ln(*a, *b, 0.18, RED)
+        for q in (a, b):
+            s.e(f'<circle cx="{q[0]:.2f}" cy="{q[1]:.2f}" r="0.45" fill="{RED}"/>')
+        s.t((a[0] + b[0]) / 2 + off[0], (a[1] + b[1]) / 2 + off[1], label, size, fill=RED, weight="bold")
+
+    xr, yr = M.L + 450, M.DTALL + 22
+    lv = [0, M.PL, M.ZB + M.CT, M.ZU0, M.ZU1, M.H]
+    for z0, z1 in zip(lv, lv[1:]):
+        dim3((xr, yr, z0), (xr, yr, z1), str(z1 - z0), (4, 1))
+    dim3((xr + 450, yr, 0), (xr + 450, yr, M.H), "3000", (5, 1))
+    dim3((M.L, 0, -40), (M.L, M.DTALL + 22, -40), "602", (-1, 5), 2.4)
+    dim3((M.X0 + 40, 0, M.ZB + M.CT + 5), (M.X0 + 40, 600, M.ZB + M.CT + 5), "600", (-4, 2), 2.4)
+    dim3((M.X0 + 1060, 0, M.ZU0 - 20), (M.X0 + 1060, M.DU + 22, M.ZU0 - 20), "372", (2.5, 3.5), 2.4)
+    dim3((M.X0 + 10, 0, 1200), (M.X0 + 10, M.DFR, 1200), "700", (-4, 2.5), 2.4)
+    dim3((0, M.DFR + 22 + 150, 0), (M.L, M.DFR + 22 + 150, 0), f"{M.L}", (0, 6), 2.5)
+    X, Y = 330, 250
+    s.t(X, Y, "Глубины (красным)", 2.8, "start", "bold")
+    for i, txt in enumerate(["700 — пенал под холодильник (без фасада)", "600 — столешница (корпус 560 + фасад 22)",
+                             "372 — верхние шкафы (корпус 350 + фасад)", "602 — пеналы П2, П3 (корпус 580 + фасад)",
+                             "Антресоль — по глубине того, что под ней"]):
+        s.t(X, Y + 4.5 + i * 3.6, txt, 2.15, "start")
+
+    # выноски
+    def callout(pt, tx, ty, lines, anchor="start"):
+        a = P(*pt)
+        s.ln(*a, tx, ty, 0.2, "#333")
+        s.e(f'<circle cx="{a[0]:.2f}" cy="{a[1]:.2f}" r="0.6" fill="#333"/>')
+        for i, l in enumerate(lines):
+            s.t(tx + (1 if anchor == "start" else -1), ty - 1 + i * 3.2, l, 2.3, anchor, "bold" if i == 0 else "normal")
+        s.ln(tx, ty + 0.5, tx + (40 if tx > 100 else 30), ty + 0.5, 0.2, "#333")
+
+    L_, R_ = 18, 322
+    callout((2900, M.DU + 22, 2000), R_, 40, ["Фасады МДФ в эмали, белый", "покраска с двух сторон"])
+    callout((xc, 260, 2400), R_, 56, ["Каминная вытяжка 600", "на стене — рейки шпон ореха"])
+    callout((M.XT + 300, M.DTALL + 22, 1900), R_, 72, ["Стеклянный шкаф 600:", "алюм. рамка + стекло, LED"])
+    callout((M.XT + 610, M.DTALL + 22, 1300), R_, 88, ["Торцевая ручка", "массив ореха"])
+    callout((M.XT + 750, M.DTALL + 22, 700), R_, 104, ["Шкаф под специи 300:", "Blum SPACE TOWER, 6 ящиков"])
+    callout((M.XT - 75, M.DB + 22, 500), R_, 120, ["Бутылочница 150", "под столешницей"])
+    callout((3300, 300, 900), R_, 136, ["Столешница — иск. камень", "(напр. Corian), 38 мм"])
+    callout((300, M.DFR + 22, 2780), L_, 48, ["Антресоль и пеналы —", "МДФ шпон ам. ореха"])
+    callout((M.X0 / 2, M.DFR, 1400), L_, 110, ["Холодильник", "отдельностоящий;", "пенал без дна"])
+    callout((1700, M.DB + 23, M.ZC + 16), L_, 200, ["Gola L + C", "ящики Blum", "MERIVOBOX"])
+    s.save("kuhnya_list4.svg")
+
+
 if __name__ == "__main__":
     assert M.check() == 0
     sheet1()
     sheet2()
     sheet3()
+    axo()

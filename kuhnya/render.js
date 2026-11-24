@@ -6,7 +6,7 @@ const { execFileSync } = require('child_process');
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
   const p = await b.newPage({ viewport: { width: 1588, height: 1123 }, deviceScaleFactor: 2 });
   const pdfs = [];
-  for (const n of ['kuhnya_list1', 'kuhnya_list2', 'kuhnya_list3']) {
+  for (const n of ['kuhnya_list1', 'kuhnya_list2', 'kuhnya_list3', 'kuhnya_list4']) {
     await p.goto('file://' + dir + '/' + n + '.svg');
     await p.screenshot({ path: dir + '/' + n + '.png' });
     await p.pdf({ path: dir + '/' + n + '.pdf', width: '420mm', height: '297mm', printBackground: true, pageRanges: '1' });
